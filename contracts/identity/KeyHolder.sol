@@ -20,8 +20,9 @@ contract KeyHolder is ERC725 {
 
     event ExecutionFailed(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);
 
-    function KeyHolder() public {
-        bytes32 _key = keccak256(msg.sender);
+    function KeyHolder(address _managementKey) public {
+        //bytes32 _key = keccak256(msg.sender);
+        bytes32 _key = keccak256(_managementKey);
         keys[_key].key = _key;
         keys[_key].purpose = 1;
         keys[_key].keyType = 1;
