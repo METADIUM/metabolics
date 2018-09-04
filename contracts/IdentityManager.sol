@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
-import "../openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./MetaIdentity.sol";
-import "../Registry.sol";
+import "./openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./identity/MetaIdentity.sol";
+import "./Registry.sol";
 
 contract IdentityManager is Ownable {
     //Hold the list of MetaIds
