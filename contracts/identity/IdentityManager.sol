@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 import "../openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./ClaimHolder.sol";
+import "./MetaIdentity.sol";
 import "../Registry.sol";
 
 contract IdentityManager is Ownable {
@@ -12,8 +12,7 @@ contract IdentityManager is Ownable {
     address[] public metaIds;
 
     function createMetaId(address _managementKey) permissioned public returns (bool){
-
-        address newMetaId = new ClaimHolder(_managementKey);
+        address newMetaId = new MetaIdentity(_managementKey);
         metaIds.push(newMetaId);
 
         //give reward to newMetaId
