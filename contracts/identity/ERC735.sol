@@ -21,9 +21,10 @@ contract ERC735 is ERC165 {
             this.addClaim.selector ^ this.removeClaim.selector
         );
     }
-
+    
     // Topic
-    uint256 public constant BIOMETRIC_TOPIC = 1; // you're a person and not a business
+    //uint256 public constant BIOMETRIC_TOPIC = 1; // you're a person and not a business
+    uint256 public constant METAID_TOPIC = 1; // TODO: real name, business name, nick name, brand name, alias, etc.
     uint256 public constant RESIDENCE_TOPIC = 2; // you have a physical address or reference point
     uint256 public constant REGISTRY_TOPIC = 3;
     uint256 public constant PROFILE_TOPIC = 4; // TODO: social media profiles, blogs, etc.

@@ -10,7 +10,8 @@ import "./ERC725.sol";
 
 contract MultiSig is Pausable, ERC725 {
     // To prevent replay attacks
-    uint256 private nonce = 1;
+    //uint256 private nonce = 1;
+    uint256 public nonce = 1;
 
     struct Execution {
         address to;

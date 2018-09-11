@@ -30,6 +30,7 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
     mapping(uint256 => bytes32[]) internal claimsByTopic;
     uint public numClaims;
 
+
   /// @dev Requests the ADDITION or the CHANGE of a claim from an issuer.
     ///  Claims can requested to be added by anybody, including the claim holder itself (self issued).
     /// @param _topic Type of claim
@@ -79,6 +80,45 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         }
     }
 
+    function addClaimByProxy(
+        uint256 _topic,
+        uint256 _scheme,
+        address issuer,
+        bytes _signature,
+        bytes _data,
+        string _uri,
+        bytes _idSignature
+    )
+    public
+    whenNotPaused
+    returns (uint256 claimRequestId)
+    {
+        // Check signature
+        require(_validSignature(_topic, _scheme, issuer, _signature, _data));
+        
+        // Check idSignature
+        // Check if management key signed this transaction data
+        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_topic, _scheme, issuer, _signature, _data, _uri)), _idSignature);
+        
+        require(allKeys.find(addrToKey(signedBy), MANAGEMENT_KEY));
+
+        bytes32 claimId = getClaimId(issuer, _topic);
+        if (claims[claimId].issuer == address(0)) {
+            _addClaim(claimId, _topic, _scheme, issuer, _signature, _data, _uri);
+        } else {
+            // Existing claim
+            Claim storage c = claims[claimId];
+            c.scheme = _scheme;
+            c.signature = _signature;
+            c.data = _data;
+            c.uri = _uri;
+            // You can't change issuer or topic without affecting the claimId, so we
+            // don't need to update those two fields
+            emit ClaimChanged(claimId, _topic, _scheme, issuer, _signature, _data, _uri);
+        }
+    }
+
+    
     /// @dev Removes a claim. Can only be removed by the claim issuer, or the claim holder itself.
     /// @param _claimId Claim ID to remove
     /// @return `true` if the claim is found and removed
@@ -226,7 +266,16 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         returns (bool)
     {
         if (_scheme == ECDSA_SCHEME) {
-            address signedBy = getSignatureAddress(claimToSign(address(this), _topic, _data), _signature);
+            address signedBy;
+            /*
+            if (_topic == MetaID_TOPIC) {
+                //metaID validating logic
+                signedBy = keccak256(abi.encodePacked(ETH_PREFIX, _data)).recover(_signature);
+                return allKeys.find(addrToKey(signedBy), CLAIM_SIGNER_KEY);
+            }
+            */
+
+            signedBy = getSignatureAddress(claimToSign(address(this), _topic, _data), _signature);
             if (issuer == signedBy) {
                 // Issuer signed the signature
                 return true;

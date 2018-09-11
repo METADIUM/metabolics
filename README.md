@@ -35,6 +35,7 @@ function getKeysByPurpose(uint256 _purpose) public constant returns(bytes32[] ke
 function addKey(bytes32 _key, uint256 _purpose, uint256 _keyType) public returns (bool success);
 function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId);
 function approve(uint256 _id, bool _approve) public returns (bool success);
+function removeKey(bytes32 _key, uint256 _purpose) public returns (bool success);
 ```
 
 
@@ -44,6 +45,7 @@ function getClaim(bytes32 _claimId) public constant returns(uint256 claimType, u
 function getClaimIdsByType(uint256 _claimType) public constant returns(bytes32[] claimIds);
 function addClaim(uint256 _claimType, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri) public returns (bytes32 claimRequestId);
 function removeClaim(bytes32 _claimId) public returns (bool success);
+function addClaimByProxy(uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri, bytes _idSignature) public returns (uint256 claimRequestId)
 ```
 
 
@@ -72,3 +74,7 @@ Only MetaGovernance can set domain now.
 function getContractAddress(bytes32 _name) public constant returns(address)
 ```
 You can get the specific address of contract you want to read.
+
+## TODO
+--------------------
+1. Move assets to the key owner when destruct the meta identity
