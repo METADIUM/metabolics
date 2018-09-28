@@ -7,7 +7,7 @@ import "./Registry.sol";
 contract IdentityManager is Ownable {
     //Hold the list of MetaIds
     //CreateMetaId
-    //
+    // event
     Registry public REG;
     address[] public metaIds;
 

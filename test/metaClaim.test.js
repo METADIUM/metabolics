@@ -86,23 +86,20 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
             //abi.encodePacked(subject, topic, data) -> topic with uint256 packed 32bytes
             var topicPacked = "0000000000000000000000000000000000000000000000000000000000000001"
             var signingData = topicPacked+"1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc"
+            
             await this.identityManager.createMetaId(user1, { from: proxy1, gas: defaultGas })
 
             var metaIds = await this.identityManager.getDeployedMetaIds()
             var metaId = await MetaIdentity.at(metaIds[0])
             
             signingData = metaIds[0] + signingData
-            var signingDataForProxy = signingData
             signingData = web3.sha3(signingData, { encoding: 'hex' })
             
             var _signature = web3.eth.sign(user1, signingData)
-            
             var schmePacked = "0000000000000000000000000000000000000000000000000000000000000001"
-
-            //var managementKeySigningData = "0x" + topicPacked + schmePacked + _issuer.slice(2) + _signature.slice(2) + _data.slice(2)
             var managementKeySigningData = "0x" + topicPacked + schmePacked + _issuer.slice(2) + _signature.slice(2) + _data.slice(2)
             
-            //abi.encodePacked(string) -> byte encodeing("ab" -> 0x6162)
+            //In solidity, abi.encodePacked(string) -> byte encodeing("ab" -> 0x6162)
             managementKeySigningData += Buffer.from(_uri, 'utf8').toString('hex')
             managementKeySigningData = web3.sha3(managementKeySigningData, { encoding: 'hex' })
 
