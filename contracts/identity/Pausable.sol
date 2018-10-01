@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./KeyBase.sol";
 
 /// @title Pausable
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Base contract which allows children to implement an emergency stop mechanism
 /// @dev Inspired by https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/lifecycle/Pausable.sol
 

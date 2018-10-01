@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./ERC165.sol";
 
 /// @title ERC735
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Abstract contract for ERC735
 
 contract ERC735 is ERC165 {

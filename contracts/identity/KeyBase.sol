@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./KeyStore.sol";
 
 /// @title KeyBase
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Abstract contract for ERC725 implementation
 /// @dev Key data is stored using KeyStore library
 

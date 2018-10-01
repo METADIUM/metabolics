@@ -4,7 +4,7 @@ import "./Pausable.sol";
 import "./ERC725.sol";
 
 /// @title KeyManager
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Implement add/remove functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events
 

@@ -1,3 +1,5 @@
+const Identity = artifacts.require("./Identity.sol");
+const TestContract = artifacts.require("./TestContract.sol");
 const IdentityManager = artifacts.require('IdentityManager.sol')
 const Registry = artifacts.require('Registry.sol')
 
@@ -19,6 +21,9 @@ async function deploy(deployer) {
 
             })
         })
+    } else {
+        deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);
+        deployer.deploy(TestContract);
     }
 
 }

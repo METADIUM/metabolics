@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./KeyBase.sol";
 
 /// @title Destructible
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Base contract that can be destroyed by MANAGEMENT_KEY or the identity itself
 /// @dev Inspired by https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/lifecycle/Destructible.sol
 

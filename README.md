@@ -75,6 +75,64 @@ function getContractAddress(bytes32 _name) public constant returns(address)
 ```
 You can get the specific address of contract you want to read.
 
+### Achievement
+**Achievement Manasger**
+```
+createAchievement(uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs) payable
+```
+Create Achievement. Topics are registered to the topic registry wit descriptions. if not exists. The creator should send enough balance for rewards.
+```
+updateAchievement(uint256 achievementId, uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs)
+```
+Update Achievement
+```
+deleteAchievement(uint256 achievementId)
+```
+Delete Achievement
+```
+requestAchievement(uint256 achievementId)
+```
+User can request achievement if he or she has enough claims for achievement. Then the achievement ERC1155(ERC721) is minted and the user get the reward from the contract(staked by achievement issuer).
+
+```
+getAllAchievementList() pure public returns(uint256[])
+```
+Returns current all achievement list(doesn't matter staked reward is enough or not)
+
+```
+getActiveAchievementList() pure public returns(uint256[])
+```
+Returns current active achievement list(staked reward is enough)
+
+```
+getAchievementId(uint256[] topics) pure public returns(uint256)
+```
+Get achievement ID. Achievement Id = keccak256(abi.encodePacked(topics[0], topics[1], ...))
+
+**Achievement(ERC1155)**
+
+```
+getAllOf(address owner) pure public returns(uint256 ids, uint256[] uris)
+```
+Returns the achievements of the the specific user.
+
+```
+interface ERC1155Metadata {
+    /**
+        @notice A distinct Uniform Resource Identifier (URI) for a given asset
+        @dev URIs are defined in RFC 3986
+        @return  URI string
+    */
+    function uri(uint256 _id) external view returns (string);
+
+    /**
+        @dev Returns a human readable string that identifies a CryptoItem, similar to ERC20
+        @param _id  ID of the CryptoItem
+        @return     The name of the CryptoItem type
+     */
+    function name(uint256 _id) external view returns (string);
+}
+```
 ## TODO
 --------------------
 1. Move assets to the key owner when destruct the meta identity

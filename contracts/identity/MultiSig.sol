@@ -4,7 +4,7 @@ import "./Pausable.sol";
 import "./ERC725.sol";
 
 /// @title MultiSig
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Implement execute and multi-sig functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the getters
 

@@ -3,7 +3,7 @@ pragma solidity ^0.4.24;
 import "./KeyBase.sol";
 
 /// @title KeyGetters
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Implement getter functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library
 

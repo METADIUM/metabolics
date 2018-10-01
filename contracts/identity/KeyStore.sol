@@ -1,7 +1,7 @@
 pragma solidity ^0.4.24;
 
 /// @title KeyStorage
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Library for managing an arrray of ERC 725 keys
 
 library KeyStore {

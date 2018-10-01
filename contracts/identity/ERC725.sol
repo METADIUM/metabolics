@@ -31,7 +31,15 @@ contract ERC725 is ERC165 {
     uint256 public constant CLAIM_SIGNER_KEY = 3;
     // 4: ENCRYPTION keys, used to encrypt data e.g. hold in claims.
     uint256 public constant ENCRYPTION_KEY = 4;
-
+    // 5: ASSIST keys, used to authenticate.
+    uint256 public constant ASSIST_KEY = 5;
+    // 6: DELEGATE keys, used to encrypt data e.g. hold in claims.
+    uint256 public constant DELEGATE_KEY = 6;
+    // 7: RESTORE keys, used to encrypt data e.g. hold in claims.
+    uint256 public constant RESTORE_KEY = 7;
+    // 8: CUSTOM keys, used to encrypt data e.g. hold in claims.
+    uint256 public constant CUSTOM_KEY = 8;
+    
     // KeyType
     uint256 public constant ECDSA_TYPE = 1;
     // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51

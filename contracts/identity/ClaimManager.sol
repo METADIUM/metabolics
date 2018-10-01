@@ -7,7 +7,7 @@ import "./ERC735.sol";
 import "./ERC165Query.sol";
 
 /// @title ClaimManager
-/// @author Mircea Pasoi
+/// @author genie
 /// @notice Implement functions from ERC735 spec
 /// @dev  Key data is stored using KeyStore library. Inheriting ERC725 for the getters
 
