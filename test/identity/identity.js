@@ -1,6 +1,6 @@
 import assertRevert from 'zeppelin-solidity/test/helpers/assertRevert';
 import { setupTest, Purpose, KeyType, Topic } from './base';
-import { assertOkTx, printTestGas } from './util';
+import { assertOkTx, printTestGas } from '../util';
 
 const TestContract = artifacts.require("TestContract");
 

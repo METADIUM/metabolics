@@ -1,6 +1,6 @@
 const Identity = artifacts.require("Identity");
 import colors from 'colors';
-import { assertOkTx, getAndClearGas, measureTx, contractAddress, assertBlockGasLimit } from './util';
+import { assertOkTx, getAndClearGas, measureTx, contractAddress, assertBlockGasLimit } from '../util';
 
 // Constants
 export const Purpose = {

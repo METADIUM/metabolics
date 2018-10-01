@@ -1,6 +1,6 @@
 import assertRevert from 'zeppelin-solidity/test/helpers/assertRevert';
 import { setupTest, assertKeyCount, Purpose, KeyType } from './base';
-import { printTestGas, assertOkTx } from './util';
+import { printTestGas, assertOkTx } from '../util';
 
 contract("KeyManager", async (accounts) => {
     let identity, addr, keys;
