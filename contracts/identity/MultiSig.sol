@@ -44,8 +44,15 @@ contract MultiSig is Pausable, ERC725 {
                 threshold = managementThreshold;
             } else {
                 // Only management keys can operate on this contract
-                require(allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY));
-                threshold = managementThreshold - 1;
+                bool isMgmt = allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY);
+                if(isMgmt){
+                    threshold = managementThreshold - 1;
+                }else{
+                    //delegate도 체크
+                    //require(allKeys.find(addrToKey(msg.sender), RESTORE_KEY));
+                    //_data의 첫 4바이트 조사해서 addKey가 아니면, custom key-addkey 가능한지 체크하고 아니면 기본
+                    threshold = managementThreshold;
+                }
             }
         } else {
             require(_to != address(0));

@@ -1,4 +1,4 @@
-import assertRevert from 'zeppelin-solidity/test/helpers/assertRevert';
+import assertRevert from '../helpers/assertRevert';
 import { setupTest, Purpose, KeyType } from './base';
 import { assertOkTx, printTestGas } from '../util';
 

@@ -30,7 +30,6 @@ Each MetaID consists of following functions:
 **ERC725**
 ```
 function getKey(bytes32 _key) public constant returns(uint256 purpose, uint256 keyType, bytes32 key);
-function getKeyPurpose(bytes32 _key) public constant returns(uint256 purpose);
 function getKeysByPurpose(uint256 _purpose) public constant returns(bytes32[] keys);
 function addKey(bytes32 _key, uint256 _purpose, uint256 _keyType) public returns (bool success);
 function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId);
@@ -46,10 +45,20 @@ function getClaimIdsByType(uint256 _claimType) public constant returns(bytes32[]
 function addClaim(uint256 _claimType, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri) public returns (bytes32 claimRequestId);
 function removeClaim(bytes32 _claimId) public returns (bool success);
 function addClaimByProxy(uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri, bytes _idSignature) public returns (uint256 claimRequestId)
+function getClaimLength() public constant returns (uint256 length);
+```
+**general**
+```
+function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 nonce, bytes signature) public returns (bool)
+```
+user submit user tx to proxy identity with his/her signature. If _to have type of delegateKey storing proxy identity, execute.
+
+
+```
+function changeImplementation(address newIm)
 ```
 
-
-### Registry
+### System Registry
 ------------------------------------------
 ```
 /**
@@ -74,6 +83,26 @@ Only MetaGovernance can set domain now.
 function getContractAddress(bytes32 _name) public constant returns(address)
 ```
 You can get the specific address of contract you want to read.
+
+### Topic Registry
+```
+function registerTopic(uint256 id, address issuer, bytes32 explanation) public
+```
+Register topic
+```
+function getTopics() public returns(uint256[] topics)
+```
+Get topic list
+
+### Attestation Agency Registry
+```
+function registerAttestationAgency()
+```
+register Attestation Agency
+```
+function getAttestationAgencyList()
+```
+Get Attestation Agency List
 
 ### Achievement
 **Achievement Manasger**
