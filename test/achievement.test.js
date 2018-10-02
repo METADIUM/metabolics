@@ -22,12 +22,16 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
 
         });
 
-        it('create Meta ID and add self claim', async function () {
+        it('any user can make achievement', async function () {
       
 
         });
 
-        it.only('create Meta ID and add self claim by proxy', async function () {
+        it('user who has enough claims can get achievement', async function () {
+
+        });
+        
+        it('user who has enough claims can get achievement', async function () {
 
         });
 
