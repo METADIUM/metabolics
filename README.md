@@ -3,10 +3,21 @@
 
 This is Metadium 2.0 Smart Contract.
 
-Metadium Smart Contracts consist of followings:
-* Registry
-* Identity(Claim Holder)
+Metadium Smart Contracts consist of followings
+
+**Registry**
+* Registry(System Registry)
+* Attestation Agency Registry
+* Topic Registry
+ 
+**Identity**  
 * Identity Manager
+* Identity(Library Contract used to delegatecall)
+* UpgradableProxyIdentity
+
+**Achievement**
+* Achievement Manager
+* Achievement(ERC721)
 
 
 ### Meta ID CRUD functions
