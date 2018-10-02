@@ -7,6 +7,7 @@ contract RegistryUser is Ownable {
     
     Registry public REG;
     bytes32 public THIS_NAME;
+    
     function setRegistry(address _addr) public onlyOwner {
         REG = Registry(_addr);
     }

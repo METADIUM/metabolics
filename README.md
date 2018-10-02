@@ -128,35 +128,35 @@ function createAchievement(uint256[] topics, address[] issuers, bytes32[] topicE
 ```
 Create Achievement. Topics are registered to the topic registry wit descriptions. if not exists. The creator should send enough balance for rewards.
 ```
-function updateAchievement(uint256 achievementId, uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs) public payable returns(bool);
+function updateAchievement(bytes32 achievementId, uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs) public payable returns(bool);
 ```
 Update Achievement
 ```
-function deleteAchievement(uint256 achievementId) public returns(bool);
+function deleteAchievement(bytes32 achievementId) public returns(bool);
 ```
 Delete Achievement
 ```
-function requestAchievement(uint256 achievementId) public returns(bool);
+function requestAchievement(bytes32 achievementId) public returns(bool);
 ```
 User can request achievement if he or she has enough claims for achievement. Then the achievement ERC1155(ERC721) is minted and the user get the reward from the contract(staked by achievement issuer).
 
 ```
-function getAllAchievementList() pure public returns(uint256[])
+function getAllAchievementList() pure public returns(bytes32[])
 ```
 Returns current all achievement list(doesn't matter staked reward is enough or not)
 
 ```
-function getActiveAchievementList() pure public returns(uint256[])
+function getActiveAchievementList() pure public returns(bytes32[])
 ```
 Returns current active achievement list(staked reward is enough)
 
 ```
-function getAchievementId(uint256[] topics) pure public returns(uint256)
+function getAchievementId(address creator, uint256[] topics) pure public returns(bytes32)
 ```
 Get achievement ID. Achievement Id = keccak256(abi.encodePacked(creator, topics[0], topics[1], ...))
 
 ```
-function getAchievementInfo(uint256 achievementId) view public returns(uint256, address, uint256[], bytes32, string)
+function getAchievementInfo(bytes32 achievementId) view public returns(bytes32, address, uint256[], bytes32, string)
 ```
 **Achievement(ERC721/1155)**
 
