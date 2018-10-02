@@ -34,7 +34,7 @@ contract Registry is Ownable{
     * @param _name _name
     * @return An address of the _name
     */
-    function getContractAddress(bytes32 _name) public constant returns(address) {
+    function getContractAddress(bytes32 _name) public view returns(address) {
         require(contracts[_name] != address(0x0));
         return contracts[_name];
     }
@@ -60,9 +60,8 @@ contract Registry is Ownable{
     * @param _granted granted address
     * @return permission result
     */
-    function getPermission(bytes32 _contract, address _granted) public constant returns(bool) {
+    function getPermission(bytes32 _contract, address _granted) public view returns(bool) {
         return permissions[_contract][_granted];
     }
-    //TODO
     
 }

@@ -32,6 +32,7 @@ contract IdentityManager is Ownable {
     function setRegistry(address _addr) public onlyOwner {
         REG = Registry(_addr);
     }
+    
     modifier permissioned() {
         require(REG.getPermission("IdentityManager", msg.sender));
         _;

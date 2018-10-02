@@ -62,6 +62,7 @@ function getClaimLength() public view returns (uint256 length);
 function getAllClaims(uint256 start, uint256 end) public view returns (uint256[] topics);
 ```
 **general**
+
 Public
 ```
 function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 nonce, bytes signature) public returns (bool)
@@ -120,10 +121,10 @@ function getAttestationAgencyList() permissioned public returns(bool)
 Get Attestation Agency List
 
 ### Achievement
-**Achievement Manasger**
+**Achievement Manager**
 Public
 ```
-function createAchievement(uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs) public payable returns(bool);
+function createAchievement(uint256[] topics, address[] issuers, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string uri) public payable returns(bool);
 ```
 Create Achievement. Topics are registered to the topic registry wit descriptions. if not exists. The creator should send enough balance for rewards.
 ```
@@ -152,8 +153,11 @@ Returns current active achievement list(staked reward is enough)
 ```
 function getAchievementId(uint256[] topics) pure public returns(uint256)
 ```
-Get achievement ID. Achievement Id = keccak256(abi.encodePacked(topics[0], topics[1], ...))
+Get achievement ID. Achievement Id = keccak256(abi.encodePacked(creator, topics[0], topics[1], ...))
 
+```
+function getAchievementInfo(uint256 achievementId) view public returns(uint256, address, uint256[], bytes32, string)
+```
 **Achievement(ERC721/1155)**
 
 ```

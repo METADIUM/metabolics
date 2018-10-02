@@ -15,21 +15,18 @@ contract TopicRegistry {
     }
 
     uint256 public topicNonce;
-    mapping(uint256 => Topic) topics;
-/*
-    constructor() {
+    mapping(uint256 => Topic) public topics;
+
+    function TopicRegistry() public {
         topicNonce = 1024;
     }
-*/
-    function registerTopic(uint256 id, address issuer, bytes32 explanation) /* permissioned */public {
-        
+
+    function registerTopic(uint256 id, address issuer, bytes32 explanation) /* permissioned */public returns (bool) {
+        return true;
     }    
 
     function getTopic(uint256 id) view public returns(address, bytes32){
         return (topics[id].issuer, topics[id].explanation);
     }
 
-    function getTopics() view public returns(address[] issuers, bytes32[] explanations) {
-
-    }
 }

@@ -13,25 +13,25 @@ const MetaIdentity = artifacts.require('MetaIdentity.sol');
 
 contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2, user1, user2]) {
 
-    beforeEach(async function () {
+    beforeEach(async () => {
 
     });
 
     describe('Create MetaID', function () {
-        beforeEach(async function () {
+        beforeEach(async () => {
 
         });
 
-        it('any user can make achievement', async function () {
-      
+        it('any user can make achievement', async () => {
+
 
         });
 
-        it('user who has enough claims can get achievement', async function () {
+        it('user who has enough claims can get achievement', async () => {
 
         });
-        
-        it('user who has enough claims can get achievement', async function () {
+
+        it('user who has enough claims can get achievement', async () => {
 
         });
 
