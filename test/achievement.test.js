@@ -10,9 +10,10 @@ const Registry = artifacts.require('Registry.sol')
 const MetaIdentity = artifacts.require('MetaIdentity.sol')
 const TopicRegistry = artifacts.require('TopicRegistry.sol')
 const AchievementManager = artifacts.require('AchievementManager.sol')
+const Achievement = artifacts.require('Achievement.sol')
 
 contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user2, issuer1, issuer2, issuer3]) {
-    let registry, topicRegistry, achievementManager, metaIdentity
+    let registry, topicRegistry, achievementManager, metaIdentity, achievement
     let ether1 = 1000000000000000000
     let _topics, _issuers, _topicExplanations, _achievementExplanation, _reward, _uri
     let _scheme = 1;
@@ -22,11 +23,16 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
         registry = await Registry.new()
         topicRegistry = await TopicRegistry.new()
         achievementManager = await AchievementManager.new()
+        achievement = await Achievement.new("Achievement", "MACH")
         metaIdentity = await MetaIdentity.new(identity1, { from: identity1 })
 
         // set domain & permission
         await registry.setContractDomain("TopicRegistry", topicRegistry.address)
+        await registry.setContractDomain("Achievement", achievement.address)
+        await registry.setPermission("Achievement", achievementManager.address, "true")
+
         await achievementManager.setRegistry(registry.address)
+        await achievement.setRegistry(registry.address)
 
     });
 
@@ -49,6 +55,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             _achievementExplanation = '0x12'
             _reward = 0.1 * 10 ** 18
             _uri = '0x3be095406c14a224018c2e749ef954073b0f71f8cef30bb0458aab8662a447a0'
+
             let _signatures = [];
             let _datas = ['facebook user', 'twitter user', 'google user'];
             let _signingDatas = [];
@@ -71,10 +78,22 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
 
             // request achievement
             //let addKeyData = await identity.contract.addKey.getData(keys.action[3], Purpose.ACTION, KeyType.ECDSA);
-            let _achievementId = await achievementManager.getAchievementId(aa1, _topics)
+            let _achievementId = await achievementManager.getAchievementId(aa1, _topics, _issuers)
             let _requestData = await achievementManager.contract.requestAchievement.getData(_achievementId)
             
-            await metaIdentity.execute(achievementManager.address, 0, _requestData, { from: identity1 })
+            await metaIdentity.execute(achievementManager.address, 0, _requestData, { from: identity1})
+
+            let achiBal = await achievement.balanceOf(metaIdentity.address)
+            assert.equal(achiBal, 1)
+            /*
+            const { logs } = 
+            assert.equal(logs.length, 1);
+            assert.equal(logs[0].event, 'Transfer');
+            assert.equal(logs[0].args.from, owner);
+            assert.equal(logs[0].args.to, to);
+            assert(logs[0].args.value.eq(amount));
+            */
+            //let achievementCnt = await 
 
         });
 

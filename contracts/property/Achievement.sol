@@ -13,8 +13,14 @@ contract Achievement is ERC721Token, RegistryUser {
     event Mint(address indexed owner, uint256 indexed metaID);
     event Burn(address indexed owner, uint256 indexed metaID);
     
+    bool public transferEnabled = false;
+
+    modifier isTradable() {
+        require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender));
+        _;
+    }
     function Achievement(string name, string symbol) public ERC721Token(name, symbol){
-        THIS_NAME = "AchievementManager";
+        THIS_NAME = "Achievement";
     }
 
     /**
@@ -37,6 +43,15 @@ contract Achievement is ERC721Token, RegistryUser {
         return true;
     }
 
+    function enableTransfer() permissioned public returns (bool) {
+        transferEnabled = true;
+        return true;
+    }
+
+    function disableTransfer() permissioned public returns (bool) {
+        transferEnabled = false;
+        return true;
+    }
     /**
      * @dev Returns an URI as bytes for a given token ID
      * @dev Throws if the token ID does not exist. May return an empty string.
@@ -47,25 +62,24 @@ contract Achievement is ERC721Token, RegistryUser {
         return bytes(tokenURIs[_tokenId]);
     }
 
-    // Transfer/Approval methods are disabled
-    function transferFrom(address /*_from*/, address /*_to*/, uint256 /*_tokenId*/) public {
-        require(false);
+    function transferFrom(address _from, address _to, uint256 _tokenId) isTradable public {
+        super.transferFrom(_from, _to, _tokenId);
     }
 
-    function safeTransferFrom(address /*_from*/, address /*_to*/, uint256 /*_tokenId*/) public {
-        require(false);
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) isTradable public {
+        super.safeTransferFrom(_from, _to, _tokenId);
     }
 
-    function safeTransferFrom(address /*_from*/, address /*_to*/, uint256 /*_tokenId*/, bytes /*_data*/) public {
-        require(false);
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) isTradable public {
+        super.safeTransferFrom(_from, _to, _tokenId, _data);
     }
     
 
-    function approve(address /*_to*/, uint256 /*_tokenId*/) public{
-        require(false);
+    function approve(address _to, uint256 _tokenId) isTradable public{
+        super.approve(_to, _tokenId);
     }
 
-    function setApprovalForAll(address /*_operator*/, bool /*_approved*/) public {
-        require(false);
+    function setApprovalForAll(address _operator, bool _approved) isTradable public {
+        super.setApprovalForAll(_operator, _approved);
     }
 }

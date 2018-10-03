@@ -1,10 +1,12 @@
 pragma solidity ^0.4.24;
 
-//import "../Registry.sol";
+import "../openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../identity/ERC735.sol";
 import "../RegistryUser.sol";
 import "../registry/TopicRegistry.sol";
-import "../identity/ERC735.sol";
-import "../openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../interface/IAchievement.sol";
+
+
 /**
  * @title AchievementManager
  * @dev AchievementManager Contract used to manage achievement system in metadium
@@ -37,7 +39,7 @@ contract AchievementManager is RegistryUser {
     function createAchievement(uint256[] topics, address[] issuers, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string uri) public payable returns (bool) {
         
         //check if achievement is already registered
-        bytes32 achievementId = getAchievementId(msg.sender, topics);
+        bytes32 achievementId = getAchievementId(msg.sender, topics, issuers);
         require(achievements[achievementId].id == 0);
 
         //check staking amount used for reward
@@ -94,7 +96,7 @@ contract AchievementManager is RegistryUser {
         // check if msg.sender implemented erc735
         uint256 i;
         ERC735 identity = ERC735(msg.sender);
-        // check if sender has enough claims
+        // // check if sender has enough claims
         for(i=0;i<achievements[achievementId].claimTopics.length;i++) {
             uint256 topic;
             uint256 scheme;
@@ -111,11 +113,16 @@ contract AchievementManager is RegistryUser {
 
         }
         
-        // give reward to msg.sender(identity contract)
+        // // give reward to msg.sender(identity contract)
+        require(balance[achievementId] >= achievements[achievementId].reward);
         balance[achievementId] = balance[achievementId].sub(achievements[achievementId].reward);
         msg.sender.transfer(achievements[achievementId].reward);
 
-        // mint achievement erc721 to msg.sender;
+        // // mint achievement erc721 to msg.sender;
+        
+        IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
+        require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, achievementId))), string(abi.encodePacked(now))));
+
         return true;
     }
    
@@ -127,12 +134,17 @@ contract AchievementManager is RegistryUser {
 
     }
 
-    function getAchievementId(address creator, uint256[] topics) pure public returns(bytes32) {
+    function getAchievementId(address creator, uint256[] topics, address[] issuers) pure public returns(bytes32) {
         bytes memory idBytes;
+        
+        require(topics.length == issuers.length);
+        
         idBytes = abi.encodePacked(idBytes, creator);
+
         for(uint i=0;i<topics.length;i++){
-            idBytes = abi.encodePacked(idBytes, topics[i]);
+            idBytes = abi.encodePacked(idBytes, topics[i], issuers[i]);
         }
         return keccak256(idBytes);
     }
+
 }
