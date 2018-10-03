@@ -153,7 +153,7 @@ Returns current active achievement list(staked reward is enough)
 ```
 function getAchievementId(address creator, uint256[] topics) pure public returns(bytes32)
 ```
-Get achievement ID. Achievement Id = keccak256(abi.encodePacked(creator, topics[0], topics[1], ...))
+Get achievement ID. Achievement Id = keccak256(abi.encodePacked(creator, topics[0], issuer[0], topics[1], issuer[1], ...))
 
 ```
 function getAchievementInfo(bytes32 achievementId) view public returns(bytes32, address, uint256[], bytes32, string)
