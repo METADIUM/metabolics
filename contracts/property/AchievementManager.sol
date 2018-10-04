@@ -5,6 +5,7 @@ import "../identity/ERC735.sol";
 import "../RegistryUser.sol";
 import "../registry/TopicRegistry.sol";
 import "../interface/IAchievement.sol";
+import "../interface/IIdentityManager.sol";
 
 
 /**
@@ -94,21 +95,17 @@ contract AchievementManager is RegistryUser {
    
     function requestAchievement(bytes32 achievementId) public returns (bool) {
         // check whether msg.sender is deployed using IdentityManager
+        IIdentityManager im = IIdentityManager(REG.getContractAddress("IdentityManager"));
+        require(im.isMetaId(msg.sender), 'msg.sender is not identity created by IdentityManager');
         
         uint256 i;
         ERC735 identity = ERC735(msg.sender);
         // // check if sender has enough claims
         for(i=0;i<achievements[achievementId].claimTopics.length;i++) {
-            uint256 topic;
-            uint256 scheme;
             address issuer;
-            bytes memory signature;
-            bytes memory data;
-            string memory uri;
-            
             // claimId is made by topic and issuer.
             bytes32 claimId = keccak256(abi.encodePacked(achievements[achievementId].issuers[i], achievements[achievementId].claimTopics[i]));
-            (topic, scheme, issuer, signature, data, uri) = identity.getClaim(claimId);
+            (, , issuer, , , ) = identity.getClaim(claimId); // getClaim returns (topic, scheme, issuer, signature, data, uri)
 
             require(issuer != address(0));
 
