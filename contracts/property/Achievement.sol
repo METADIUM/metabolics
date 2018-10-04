@@ -24,7 +24,7 @@ contract Achievement is ERC721Token, RegistryUser {
     }
 
     /**
-     * @dev Function to register New Meta ID as ERC721 Token.
+     * @dev Function to mint ERC721 Token.
      * @param _to The address that will receive the minted tokens.
      * @param _tokenId the token index of newly minted token.
      * @param _uri the metaID that the newly minted token would get.
@@ -37,6 +37,11 @@ contract Achievement is ERC721Token, RegistryUser {
         return true;
     }
 
+    /**
+     * @dev Function to burn ERC721 Token.
+     * @param _tokenId the token index of burning token.
+     * @return A boolean that indicates if the operation was successful.
+     */
     function burn(uint256 _tokenId) permissioned public returns (bool){
         super._burn(ownerOf(_tokenId), _tokenId);
         emit Burn(ownerOf(_tokenId), _tokenId);

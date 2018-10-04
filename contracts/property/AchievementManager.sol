@@ -93,7 +93,8 @@ contract AchievementManager is RegistryUser {
     }
    
     function requestAchievement(bytes32 achievementId) public returns (bool) {
-        // check if msg.sender implemented erc735
+        // check whether msg.sender is deployed using IdentityManager
+        
         uint256 i;
         ERC735 identity = ERC735(msg.sender);
         // // check if sender has enough claims

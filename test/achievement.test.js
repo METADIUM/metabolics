@@ -11,9 +11,10 @@ const MetaIdentity = artifacts.require('MetaIdentity.sol')
 const TopicRegistry = artifacts.require('TopicRegistry.sol')
 const AchievementManager = artifacts.require('AchievementManager.sol')
 const Achievement = artifacts.require('Achievement.sol')
+const IdentityManager = artifacts.require('IdentityManager.sol')
 
-contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user2, issuer1, issuer2, issuer3]) {
-    let registry, topicRegistry, achievementManager, metaIdentity, achievement
+contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user2, issuer1, issuer2, issuer3, proxy1]) {
+    let registry, topicRegistry, identityManager, achievementManager, metaIdentity, achievement
     let ether1 = 1000000000000000000
     let _topics, _issuers, _topicExplanations, _achievementExplanation, _reward, _uri
     let _scheme = 1;
@@ -23,16 +24,28 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
         registry = await Registry.new()
         topicRegistry = await TopicRegistry.new()
         achievementManager = await AchievementManager.new()
+        identityManager = await IdentityManager.new()
         achievement = await Achievement.new("Achievement", "MACH")
-        metaIdentity = await MetaIdentity.new(identity1, { from: identity1 })
+        // metaIdentity = await MetaIdentity.new(identity1, { from: identity1 })
 
         // set domain & permission
         await registry.setContractDomain("TopicRegistry", topicRegistry.address)
         await registry.setContractDomain("Achievement", achievement.address)
+        await registry.setContractDomain("IdentityManager", identityManager.address);
+        
         await registry.setPermission("Achievement", achievementManager.address, "true")
+        await registry.setPermission("IdentityManager", proxy1, "true");
+
+        await identityManager.setRegistry(registry.address);
+        
 
         await achievementManager.setRegistry(registry.address)
         await achievement.setRegistry(registry.address)
+
+        await identityManager.createMetaId(identity1, { from: proxy1})
+
+        let metaIds = await identityManager.getDeployedMetaIds()
+        metaIdentity = await MetaIdentity.at(metaIds[0])
 
     });
 
@@ -85,6 +98,10 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
 
             let achiBal = await achievement.balanceOf(metaIdentity.address)
             assert.equal(achiBal, 1)
+
+            let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
+            assert.equal(IdentityBal, _reward)
+
             /*
             const { logs } = 
             assert.equal(logs.length, 1);
