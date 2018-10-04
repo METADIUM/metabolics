@@ -111,13 +111,12 @@ contract AchievementManager is RegistryUser {
 
         }
         
-        // // give reward to msg.sender(identity contract)
+        // give reward to msg.sender(identity contract)
         require(balance[achievementId] >= achievements[achievementId].reward);
         balance[achievementId] = balance[achievementId].sub(achievements[achievementId].reward);
         msg.sender.transfer(achievements[achievementId].reward);
 
-        // // mint achievement erc721 to msg.sender;
-        
+        // mint achievement erc721 to msg.sender;
         IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
         require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, achievementId))), string(abi.encodePacked(now))));
 
