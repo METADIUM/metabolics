@@ -38,7 +38,6 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
 
         await identityManager.setRegistry(registry.address);
         
-
         await achievementManager.setRegistry(registry.address)
         await achievement.setRegistry(registry.address)
 

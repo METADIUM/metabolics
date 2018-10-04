@@ -17,6 +17,6 @@ contract RegistryUser is Ownable {
         _;
     }
     function isPermitted() public returns(bool) {
-        return REG.getPermission("Achievement", msg.sender);
+        return REG.getPermission(THIS_NAME, msg.sender);
     }
 }

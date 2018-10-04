@@ -2,15 +2,17 @@ pragma solidity ^0.4.24;
 
 import "./openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./identity/MetaIdentity.sol";
-import "./Registry.sol";
+import "./RegistryUser.sol";
 
-contract IdentityManager is Ownable {
+contract IdentityManager is RegistryUser {
     //Hold the list of MetaIds
     //CreateMetaId
     // event
-    Registry public REG;
     address[] public metaIds;
 
+    function IdentityManager() public {
+        THIS_NAME = "IdentityManager";
+    }
     function createMetaId(address _managementKey) permissioned public returns (bool){
         address newMetaId = new MetaIdentity(_managementKey);
         metaIds.push(newMetaId);
@@ -27,14 +29,5 @@ contract IdentityManager is Ownable {
 
     function getLengthOfMetaIds() public view returns(uint256){
         return metaIds.length;
-    }
-
-    function setRegistry(address _addr) public onlyOwner {
-        REG = Registry(_addr);
-    }
-    
-    modifier permissioned() {
-        require(REG.getPermission("IdentityManager", msg.sender));
-        _;
     }
 }
