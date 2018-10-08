@@ -185,3 +185,4 @@ interface ERC1155Metadata {
 ## TODO
 --------------------
 1. Move assets to the key owner when destruct the meta identity
+2. dev
