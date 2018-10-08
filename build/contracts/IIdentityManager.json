@@ -1,0 +1,285 @@
+{
+  "contractName": "IIdentityManager",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_addr",
+          "type": "address"
+        }
+      ],
+      "name": "isMetaId",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.4.24;\n\ncontract IIdentityManager {\n    function isMetaId(address _addr) public view returns(bool);\n}",
+  "sourcePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/interface/IIdentityManager.sol",
+  "ast": {
+    "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/interface/IIdentityManager.sol",
+    "exportedSymbols": {
+      "IIdentityManager": [
+        3461
+      ]
+    },
+    "id": 3462,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3453,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:19"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 3461,
+        "linearizedBaseContracts": [
+          3461
+        ],
+        "name": "IIdentityManager",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 3460,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isMetaId",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3455,
+                  "name": "_addr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3460,
+                  "src": "76:13:19",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3454,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "76:7:19",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "75:15:19"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 3459,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3458,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3460,
+                  "src": "111:4:19",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3457,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "111:4:19",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "110:6:19"
+            },
+            "scope": 3461,
+            "src": "58:59:19",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3462,
+        "src": "26:93:19"
+      }
+    ],
+    "src": "0:119:19"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/interface/IIdentityManager.sol",
+    "exportedSymbols": {
+      "IIdentityManager": [
+        3461
+      ]
+    },
+    "id": 3462,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 3453,
+        "literals": [
+          "solidity",
+          "^",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:19"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 3461,
+        "linearizedBaseContracts": [
+          3461
+        ],
+        "name": "IIdentityManager",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "id": 3460,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "isMetaId",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3455,
+                  "name": "_addr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3460,
+                  "src": "76:13:19",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3454,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "76:7:19",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "75:15:19"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 3459,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3458,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3460,
+                  "src": "111:4:19",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3457,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "111:4:19",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "110:6:19"
+            },
+            "scope": 3461,
+            "src": "58:59:19",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3462,
+        "src": "26:93:19"
+      }
+    ],
+    "src": "0:119:19"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-10-04T05:10:01.698Z"
+}

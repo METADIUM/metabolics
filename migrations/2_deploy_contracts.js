@@ -15,9 +15,9 @@ const Achievement = artifacts.require('Achievement.sol')
 
 async function deploy(deployer) {
     const args = process.argv.slice()
-    _nonce = 23; // this shuld be current nonce + 2 because of the migration tx
-    _gas = 6000000
-    _gasPrice = 1 * 10 ** 11
+    let _nonce = 23; // this shuld be current nonce + 2 because of the migration tx
+    let _gas = 6000000
+    let _gasPrice = 1 * 10 ** 11
 
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
