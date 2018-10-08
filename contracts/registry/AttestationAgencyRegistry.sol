@@ -11,6 +11,9 @@ contract AttestationAgencyRegistry is RegistryUser {
     struct AttestationAgency {
         address addr;
         bytes32 description;
+        // code for 
+        // bool type isEnterprise;
+         bytes32 title;
     }
 
     mapping(uint256=>AttestationAgency) public attestationAgencies;
