@@ -2,15 +2,17 @@ pragma solidity ^0.4.24;
 
 import "./Pausable.sol";
 import "./ERC725.sol";
+import "../openzeppelin-solidity/contracts/ECRecovery.sol";
+import "./SignatureVerifier.sol";
 
 /// @title MultiSig
 /// @author genie
 /// @notice Implement execute and multi-sig functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the getters
 
-contract MultiSig is Pausable, ERC725 {
-    // To prevent replay attacks
-    //uint256 private nonce = 1;
+contract MultiSig is Pausable, ERC725, SignatureVerifier {
+    using ECRecovery for bytes32;
+
     uint256 public nonce = 1;
 
     struct Execution {
@@ -44,14 +46,13 @@ contract MultiSig is Pausable, ERC725 {
                 threshold = managementThreshold;
             } else {
                 // Only management keys can operate on this contract
-                bool isMgmt = allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY);
-                if(isMgmt){
+                if(allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY)) {
                     threshold = managementThreshold - 1;
-                }else{
-                    //delegate도 체크
-                    //require(allKeys.find(addrToKey(msg.sender), RESTORE_KEY));
-                    //_data의 첫 4바이트 조사해서 addKey가 아니면, custom key-addkey 가능한지 체크하고 아니면 기본
-                    threshold = managementThreshold;
+                }else if(allKeys.find(addrToKey(msg.sender), RESTORE_KEY) && getFunctionSignature(_data) == bytes4(0x1d381240)) {
+                    //addKey function Signautre == 0x1d381240
+                    threshold = managementThreshold - 1;
+                }else {
+                    revert();
                 }
             }
         } else {
@@ -61,8 +62,15 @@ contract MultiSig is Pausable, ERC725 {
                 threshold = actionThreshold;
             } else {
                 // Action keys can operate on other addresses
-                require(allKeys.find(addrToKey(msg.sender), ACTION_KEY));
-                threshold = actionThreshold - 1;
+                if(allKeys.find(addrToKey(msg.sender), ACTION_KEY)){
+                    threshold = actionThreshold - 1;
+                }else if(allKeys.find(addrToKey(msg.sender), DELEGATE_KEY)){
+                    threshold = actionThreshold - 1;
+                }else if(allKeys.find(addrToKey(msg.sender), CUSTOM_KEY) && allKeys.keyData[addrToKey(msg.sender)].func[_to][getFunctionSignature(_data)]){
+                    threshold = actionThreshold - 1;
+                }else{
+                    revert();
+                }
             }
         }
 
@@ -83,6 +91,15 @@ contract MultiSig is Pausable, ERC725 {
         return executionId;
     }
 
+    function preExecute(address _sender, address _to, uint256 _value, bytes _date) {
+
+    }
+    function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig) public  whenNotPaused returns (uint256 executionId) {
+        // sinature verify
+        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_to, _value, _data, _nonce)), _sig);
+
+
+    }
     /// @dev Approves an execution. If the execution is being approved multiple times,
     ///  it will throw an error. Disapproving multiple times will work i.e. not do anything.
     ///  The approval could potentially trigger an execution (if the threshold is met).
@@ -104,9 +121,24 @@ contract MultiSig is Pausable, ERC725 {
 
         // Must be approved with the right key
         if (e.to == address(this)) {
-            require(allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY));
+            if(allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY)){
+
+            }else if(allKeys.find(addrToKey(msg.sender), RESTORE_KEY) && getFunctionSignature(e.data) == bytes4(0x1d381240)){
+
+            }else{
+                revert();
+            }
         } else {
-            require(allKeys.find(addrToKey(msg.sender), ACTION_KEY));
+            //require(allKeys.find(addrToKey(msg.sender), ACTION_KEY));
+            if(allKeys.find(addrToKey(msg.sender), ACTION_KEY)){
+
+            }else if(allKeys.find(addrToKey(msg.sender), DELEGATE_KEY)){
+
+            }else if(allKeys.find(addrToKey(msg.sender), CUSTOM_KEY) && allKeys.keyData[addrToKey(msg.sender)].func[e.to][getFunctionSignature(e.data)]){
+                
+            }else{
+                revert();
+            }
         }
 
         emit Approved(_id, _approve);
@@ -223,5 +255,16 @@ contract MultiSig is Pausable, ERC725 {
         delete execution[_id];
         delete approved[_id];
         return true;
+    }
+    function getTransactionCount() public view returns(uint256) {
+        return nonce;
+    }
+    function getFunctionSignature(bytes b) public pure returns(bytes4) {
+        bytes4 out;
+
+        for (uint i = 0; i < 4; i++) {
+            out |= bytes4(b[i] & 0xFF) >> (i * 8);
+        }
+        return out;
     }
 }

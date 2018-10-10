@@ -49,6 +49,14 @@ contract KeyGetters is KeyBase {
     {
         return allKeys.keysByPurpose[_purpose];
     }
-
-    //function keyCanExcute(bytes32)
+    
+    function keyCanExecute(bytes32 _key, address _to, bytes4 _func)
+        public
+        view
+        returns(bool executable)
+    {
+        //KeyStore.Key storage k = allKeys.keyData[_key];
+        //return k.func[_to][_func];
+        return allKeys.keyData[_key].func[_to][_func];
+    }
 }

@@ -34,7 +34,7 @@ contract("KeyGetters", async (accounts) => {
         });
 
         it("should return multiple purposes", async () => {
-            await assertOkTx(identity.addKey(keys.action[0], Purpose.MANAGEMENT, KeyType.ECDSA, {from: addr.manager[0]}));
+            await assertOkTx(identity.addKey(keys.action[0], Purpose.MANAGEMENT, KeyType.ECDSA, { from: addr.manager[0] }));
             let [purposes, keyType, key] = await identity.getKey(keys.action[0]);
             keyType.should.be.bignumber.equal(KeyType.ECDSA);
             key.should.be.bignumber.equal(keys.action[0]);
@@ -70,5 +70,19 @@ contract("KeyGetters", async (accounts) => {
             let k = await identity.getKeysByPurpose(Purpose.CLAIM);
             assert.equal(k.length, 0);
         });
+    });
+
+    describe("keyCanExcute", async () => {
+        it("should return false when function is not registerd for the key", async () => {
+            let k = await identity.keyCanExecute(keys.action[0], addr.manager[0], '0xabcd1234');
+            assert.equal(k, false);
+        });
+
+        it("should return true when function is registered for the key", async () => {
+            await assertOkTx(identity.setFunc(keys.action[0], addr.manager[0], '0xabcd1234', 'true', {from: addr.manager[0]}));
+            let k = await identity.keyCanExecute(keys.action[0], addr.manager[0], '0xabcd1234');
+            assert.equal(k, true);
+        });
+
     });
 });

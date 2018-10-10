@@ -132,7 +132,7 @@ contract("KeyManager", async (accounts) => {
         });
     });
 
-    describe.only("setFunc", async () => {
+    describe("setFunc", async () => {
         it("should not add func only if key doesn't exist", async () => {
             // Start with 2
             await assertKeyCount(identity, Purpose.ACTION, 2);
@@ -147,5 +147,5 @@ contract("KeyManager", async (accounts) => {
 
         });
     });
-    // TODO: test KeyAdded, KeyRemoved
+    
 });

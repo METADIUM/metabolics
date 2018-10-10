@@ -7,7 +7,11 @@ export const Purpose = {
     MANAGEMENT: 1,
     ACTION: 2,
     CLAIM: 3,
-    ENCRYPT: 4
+    ENCRYPT: 4,
+    ASSIST: 5,
+    DELEGATE: 6,
+    RESTORE: 7,
+    CUSTOM: 8
 };
 
 export const KeyType = {
@@ -46,6 +50,7 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     assertBlockGasLimit(blockGasLimit);
 
     // Use deployed identity for other identity
+    //TODO deploy other identity here
     let otherIdentity = await Identity.deployed();
     addr.other = accounts[0];
     keys.other = await otherIdentity.addrToKey(accounts[0]);
@@ -58,8 +63,14 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     }
     // Sort by keys (useful for identity constructor)
     accountTuples.sort((a, b) => a[1].localeCompare(b[1]));
+    //ßconsole.log(`account Tuples : ${accountTuples}`)
     // Put keys in maps
+    //({ identity, addr, keys } = await setupTest(accounts, [3, 3, 0, 0], [4, 4, 1, 0]));
     const idxToPurpose = ['manager', 'action', 'claim', 'encrypt'];
+    // 0 0~3
+    // 1 4~7
+    // 2 8
+    // 3 9
     for (let i = 0, j = 0; i < total.length; i++) {
         // Slice total[i] accounts
         let slice = accountTuples.slice(j, j + total[i]);
@@ -123,7 +134,7 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
         claims.map(c => c.uri).join(''),
         sizes,
         // Use max gas for deploys
-        {from: addr.manager[0], gas: blockGasLimit}
+        { from: addr.manager[0], gas: blockGasLimit }
     );
     // Make sure it matches address used for signatures
     assert.equal(identity.address, willDeployAt);
