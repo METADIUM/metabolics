@@ -603,22 +603,53 @@
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_key",
+          "type": "bytes32"
+        },
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_func",
+          "type": "bytes4"
+        },
+        {
+          "name": "_executable",
+          "type": "bool"
+        }
+      ],
+      "name": "setFunc",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
     }
   ],
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\n\nimport \"./Pausable.sol\";\nimport \"./ERC725.sol\";\n\n/// @title KeyManager\n/// @author genie\n/// @notice Implement add/remove functions from ERC725 spec\n/// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events\n\ncontract KeyManager is Pausable, ERC725 {\n    /// @dev Add key data to the identity if key + purpose tuple doesn't already exist\n    /// @param _key Key bytes to add\n    /// @param _purpose Purpose to add\n    /// @param _keyType Key type to add\n    /// @return `true` if key was added, `false` if it already exists\n    function addKey(\n        bytes32 _key,\n        uint256 _purpose,\n        uint256 _keyType\n    )\n        public\n        onlyManagementOrSelf\n        whenNotPaused\n        returns (bool success)\n    {\n        if (allKeys.find(_key, _purpose)) {\n            return false;\n        }\n        _addKey(_key, _purpose, _keyType);\n        return true;\n    }\n\n    /// @dev Remove key data from the identity\n    /// @param _key Key bytes to remove\n    /// @param _purpose Purpose to remove\n    /// @return `true` if key was found and removed, `false` if it wasn't found\n    function removeKey(\n        bytes32 _key,\n        uint256 _purpose\n    )\n        public\n        onlyManagementOrSelf\n        whenNotPaused\n        returns (bool success)\n    {\n        if (!allKeys.find(_key, _purpose)) {\n            return false;\n        }\n        uint256 keyType = allKeys.remove(_key, _purpose);\n        emit KeyRemoved(_key, _purpose, keyType);\n        return true;\n    }\n\n    /// @dev Add key data to the identity without checking if it already exists\n    /// @param _key Key bytes to add\n    /// @param _purpose Purpose to add\n    /// @param _keyType Key type to add\n    function _addKey(\n        bytes32 _key,\n        uint256 _purpose,\n        uint256 _keyType\n    )\n        internal\n    {\n        allKeys.add(_key, _purpose, _keyType);\n        emit KeyAdded(_key, _purpose, _keyType);\n    }\n}",
+  "source": "pragma solidity ^0.4.24;\n\nimport \"./Pausable.sol\";\nimport \"./ERC725.sol\";\n\n/// @title KeyManager\n/// @author genie\n/// @notice Implement add/remove functions from ERC725 spec\n/// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events\n\ncontract KeyManager is Pausable, ERC725 {\n    /// @dev Add key data to the identity if key + purpose tuple doesn't already exist\n    /// @param _key Key bytes to add\n    /// @param _purpose Purpose to add\n    /// @param _keyType Key type to add\n    /// @return `true` if key was added, `false` if it already exists\n    function addKey(\n        bytes32 _key,\n        uint256 _purpose,\n        uint256 _keyType\n    )\n        public\n        onlyManagementOrSelf\n        whenNotPaused\n        returns (bool success)\n    {\n        if (allKeys.find(_key, _purpose)) {\n            return false;\n        }\n        _addKey(_key, _purpose, _keyType);\n        return true;\n    }\n\n    /// @dev Remove key data from the identity\n    /// @param _key Key bytes to remove\n    /// @param _purpose Purpose to remove\n    /// @return `true` if key was found and removed, `false` if it wasn't found\n    function removeKey(\n        bytes32 _key,\n        uint256 _purpose\n    )\n        public\n        onlyManagementOrSelf\n        whenNotPaused\n        returns (bool success)\n    {\n        if (!allKeys.find(_key, _purpose)) {\n            return false;\n        }\n        uint256 keyType = allKeys.remove(_key, _purpose);\n        emit KeyRemoved(_key, _purpose, keyType);\n        return true;\n    }\n\n    /// @dev Add key data to the identity without checking if it already exists\n    /// @param _key Key bytes to add\n    /// @param _purpose Purpose to add\n    /// @param _keyType Key type to add\n    function _addKey(\n        bytes32 _key,\n        uint256 _purpose,\n        uint256 _keyType\n    )\n        internal\n    {\n        allKeys.add(_key, _purpose, _keyType);\n        emit KeyAdded(_key, _purpose, _keyType);\n    }\n\n    /// @dev Add key data to the identity if key + purpose tuple doesn't already exist\n    /// @param _key Key to use\n    /// @param _to smart contract address at which this key can be used\n    /// @param _func function to use\n    /// @param _executable is executable\n    /// @return `true` if key func was set, `false`, if cannot be set\n    function setFunc(\n        bytes32 _key,\n        address _to,\n        bytes4 _func,\n        bool _executable\n    )\n        public\n        onlyManagementOrSelf\n        whenNotPaused\n        returns (bool success)\n    {\n        require(allKeys.isExist(_key));\n        allKeys.setFunc(_key, _to, _func, _executable);\n        \n        return true;\n    }\n\n}",
   "sourcePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyManager.sol",
   "ast": {
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyManager.sol",
     "exportedSymbols": {
       "KeyManager": [
-        2393
+        2429
       ]
     },
-    "id": 2394,
+    "id": 2430,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -637,8 +668,8 @@
         "file": "./Pausable.sol",
         "id": 2290,
         "nodeType": "ImportDirective",
-        "scope": 2394,
-        "sourceUnit": 3358,
+        "scope": 2430,
+        "sourceUnit": 3456,
         "src": "26:24:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -648,7 +679,7 @@
         "file": "./ERC725.sol",
         "id": 2291,
         "nodeType": "ImportDirective",
-        "scope": 2394,
+        "scope": 2430,
         "sourceUnit": 1432,
         "src": "51:22:12",
         "symbolAliases": [],
@@ -663,10 +694,10 @@
               "id": 2292,
               "name": "Pausable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3357,
+              "referencedDeclaration": 3455,
               "src": "284:8:12",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Pausable_$3357",
+                "typeIdentifier": "t_contract$_Pausable_$3455",
                 "typeString": "contract Pausable"
               }
             },
@@ -697,17 +728,17 @@
           1118,
           1431,
           2214,
-          3357
+          3455
         ],
         "contractKind": "contract",
         "documentation": "@title KeyManager\n @author genie\n @notice Implement add/remove functions from ERC725 spec\n @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events",
         "fullyImplemented": false,
-        "id": 2393,
+        "id": 2429,
         "linearizedBaseContracts": [
-          2393,
+          2429,
           1431,
           1118,
-          3357,
+          3455,
           2214
         ],
         "name": "KeyManager",
@@ -770,7 +801,7 @@
                         "referencedDeclaration": 2152,
                         "src": "791:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -781,10 +812,10 @@
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2469,
+                      "referencedDeclaration": 2511,
                       "src": "791:12:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
@@ -986,7 +1017,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3318,
+                  "referencedDeclaration": 3416,
                   "src": "728:13:12",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1118,7 +1149,7 @@
               ],
               "src": "758:14:12"
             },
-            "scope": 2393,
+            "scope": 2429,
             "src": "580:348:12",
             "stateMutability": "nonpayable",
             "superFunction": 1401,
@@ -1192,7 +1223,7 @@
                           "referencedDeclaration": 2152,
                           "src": "1332:7:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                            "typeIdentifier": "t_struct$_Keys_$2457_storage",
                             "typeString": "struct KeyStore.Keys storage ref"
                           }
                         },
@@ -1203,10 +1234,10 @@
                         "lValueRequested": false,
                         "memberName": "find",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2469,
+                        "referencedDeclaration": 2511,
                         "src": "1332:12:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                          "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                           "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                         }
                       },
@@ -1348,7 +1379,7 @@
                         "referencedDeclaration": 2152,
                         "src": "1426:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -1359,10 +1390,10 @@
                       "lValueRequested": false,
                       "memberName": "remove",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2673,
+                      "referencedDeclaration": 2738,
                       "src": "1426:14:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) returns (uint256)"
                       }
                     },
@@ -1531,7 +1562,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3318,
+                  "referencedDeclaration": 3416,
                   "src": "1268:13:12",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1637,7 +1668,7 @@
               ],
               "src": "1298:14:12"
             },
-            "scope": 2393,
+            "scope": 2429,
             "src": "1143:391:12",
             "stateMutability": "nonpayable",
             "superFunction": 1430,
@@ -1717,7 +1748,7 @@
                         "referencedDeclaration": 2152,
                         "src": "1864:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -1728,10 +1759,10 @@
                       "lValueRequested": false,
                       "memberName": "add",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2528,
+                      "referencedDeclaration": 2593,
                       "src": "1864:11:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$_t_uint256_$returns$__$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$_t_uint256_$returns$__$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256,uint256)"
                       }
                     },
@@ -1943,27 +1974,487 @@
               "parameters": [],
               "src": "1854:0:12"
             },
-            "scope": 2393,
+            "scope": 2429,
             "src": "1736:221:12",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 2427,
+              "nodeType": "Block",
+              "src": "2516:133:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 2412,
+                            "name": "_key",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 2394,
+                            "src": "2550:4:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 2410,
+                            "name": "allKeys",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 2152,
+                            "src": "2534:7:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_Keys_$2457_storage",
+                              "typeString": "struct KeyStore.Keys storage ref"
+                            }
+                          },
+                          "id": 2411,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "isExist",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 2534,
+                          "src": "2534:15:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
+                            "typeString": "function (struct KeyStore.Keys storage pointer,bytes32) view returns (bool)"
+                          }
+                        },
+                        "id": 2413,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2534:21:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 2409,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4385,
+                        4386
+                      ],
+                      "referencedDeclaration": 4385,
+                      "src": "2526:7:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 2414,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2526:30:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2415,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2526:30:12"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 2419,
+                        "name": "_key",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2394,
+                        "src": "2582:4:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 2420,
+                        "name": "_to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2396,
+                        "src": "2588:3:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 2421,
+                        "name": "_func",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2398,
+                        "src": "2593:5:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes4",
+                          "typeString": "bytes4"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 2422,
+                        "name": "_executable",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2400,
+                        "src": "2600:11:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_bytes4",
+                          "typeString": "bytes4"
+                        },
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 2416,
+                        "name": "allKeys",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2152,
+                        "src": "2566:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
+                          "typeString": "struct KeyStore.Keys storage ref"
+                        }
+                      },
+                      "id": 2418,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "setFunc",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2771,
+                      "src": "2566:15:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_address_$_t_bytes4_$_t_bool_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
+                        "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,address,bytes4,bool) returns (bool)"
+                      }
+                    },
+                    "id": 2423,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2566:46:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 2424,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2566:46:12"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "hexValue": "74727565",
+                    "id": 2425,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "bool",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "2638:4:12",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "value": "true"
+                  },
+                  "functionReturnParameters": 2408,
+                  "id": 2426,
+                  "nodeType": "Return",
+                  "src": "2631:11:12"
+                }
+              ]
+            },
+            "documentation": "@dev Add key data to the identity if key + purpose tuple doesn't already exist\n @param _key Key to use\n @param _to smart contract address at which this key can be used\n @param _func function to use\n @param _executable is executable\n @return `true` if key func was set, `false`, if cannot be set",
+            "id": 2428,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 2403,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 2402,
+                  "name": "onlyManagementOrSelf",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 2213,
+                  "src": "2438:20:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2438:20:12"
+              },
+              {
+                "arguments": null,
+                "id": 2405,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 2404,
+                  "name": "whenNotPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 3416,
+                  "src": "2467:13:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2467:13:12"
+              }
+            ],
+            "name": "setFunc",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2401,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2394,
+                  "name": "_key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2327:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2393,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2327:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2396,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2349:11:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2395,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2349:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2398,
+                  "name": "_func",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2370:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
+                  },
+                  "typeName": {
+                    "id": 2397,
+                    "name": "bytes4",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2370:6:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2400,
+                  "name": "_executable",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2392:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2399,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2392:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2317:97:12"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2408,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2407,
+                  "name": "success",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2498:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2406,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2498:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2497:14:12"
+            },
+            "scope": 2429,
+            "src": "2301:348:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
           }
         ],
-        "scope": 2394,
-        "src": "261:1698:12"
+        "scope": 2430,
+        "src": "261:2391:12"
       }
     ],
-    "src": "0:1959:12"
+    "src": "0:2652:12"
   },
   "legacyAST": {
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyManager.sol",
     "exportedSymbols": {
       "KeyManager": [
-        2393
+        2429
       ]
     },
-    "id": 2394,
+    "id": 2430,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -1982,8 +2473,8 @@
         "file": "./Pausable.sol",
         "id": 2290,
         "nodeType": "ImportDirective",
-        "scope": 2394,
-        "sourceUnit": 3358,
+        "scope": 2430,
+        "sourceUnit": 3456,
         "src": "26:24:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1993,7 +2484,7 @@
         "file": "./ERC725.sol",
         "id": 2291,
         "nodeType": "ImportDirective",
-        "scope": 2394,
+        "scope": 2430,
         "sourceUnit": 1432,
         "src": "51:22:12",
         "symbolAliases": [],
@@ -2008,10 +2499,10 @@
               "id": 2292,
               "name": "Pausable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3357,
+              "referencedDeclaration": 3455,
               "src": "284:8:12",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Pausable_$3357",
+                "typeIdentifier": "t_contract$_Pausable_$3455",
                 "typeString": "contract Pausable"
               }
             },
@@ -2042,17 +2533,17 @@
           1118,
           1431,
           2214,
-          3357
+          3455
         ],
         "contractKind": "contract",
         "documentation": "@title KeyManager\n @author genie\n @notice Implement add/remove functions from ERC725 spec\n @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events",
         "fullyImplemented": false,
-        "id": 2393,
+        "id": 2429,
         "linearizedBaseContracts": [
-          2393,
+          2429,
           1431,
           1118,
-          3357,
+          3455,
           2214
         ],
         "name": "KeyManager",
@@ -2115,7 +2606,7 @@
                         "referencedDeclaration": 2152,
                         "src": "791:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -2126,10 +2617,10 @@
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2469,
+                      "referencedDeclaration": 2511,
                       "src": "791:12:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
@@ -2331,7 +2822,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3318,
+                  "referencedDeclaration": 3416,
                   "src": "728:13:12",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -2463,7 +2954,7 @@
               ],
               "src": "758:14:12"
             },
-            "scope": 2393,
+            "scope": 2429,
             "src": "580:348:12",
             "stateMutability": "nonpayable",
             "superFunction": 1401,
@@ -2537,7 +3028,7 @@
                           "referencedDeclaration": 2152,
                           "src": "1332:7:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                            "typeIdentifier": "t_struct$_Keys_$2457_storage",
                             "typeString": "struct KeyStore.Keys storage ref"
                           }
                         },
@@ -2548,10 +3039,10 @@
                         "lValueRequested": false,
                         "memberName": "find",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2469,
+                        "referencedDeclaration": 2511,
                         "src": "1332:12:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                          "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                           "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                         }
                       },
@@ -2693,7 +3184,7 @@
                         "referencedDeclaration": 2152,
                         "src": "1426:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -2704,10 +3195,10 @@
                       "lValueRequested": false,
                       "memberName": "remove",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2673,
+                      "referencedDeclaration": 2738,
                       "src": "1426:14:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_uint256_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) returns (uint256)"
                       }
                     },
@@ -2876,7 +3367,7 @@
                   "name": "whenNotPaused",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 3318,
+                  "referencedDeclaration": 3416,
                   "src": "1268:13:12",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -2982,7 +3473,7 @@
               ],
               "src": "1298:14:12"
             },
-            "scope": 2393,
+            "scope": 2429,
             "src": "1143:391:12",
             "stateMutability": "nonpayable",
             "superFunction": 1430,
@@ -3062,7 +3553,7 @@
                         "referencedDeclaration": 2152,
                         "src": "1864:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -3073,10 +3564,10 @@
                       "lValueRequested": false,
                       "memberName": "add",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2528,
+                      "referencedDeclaration": 2593,
                       "src": "1864:11:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$_t_uint256_$returns$__$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$_t_uint256_$returns$__$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256,uint256)"
                       }
                     },
@@ -3288,18 +3779,478 @@
               "parameters": [],
               "src": "1854:0:12"
             },
-            "scope": 2393,
+            "scope": 2429,
             "src": "1736:221:12",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 2427,
+              "nodeType": "Block",
+              "src": "2516:133:12",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "id": 2412,
+                            "name": "_key",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 2394,
+                            "src": "2550:4:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_bytes32",
+                              "typeString": "bytes32"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "id": 2410,
+                            "name": "allKeys",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 2152,
+                            "src": "2534:7:12",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_struct$_Keys_$2457_storage",
+                              "typeString": "struct KeyStore.Keys storage ref"
+                            }
+                          },
+                          "id": 2411,
+                          "isConstant": false,
+                          "isLValue": true,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "isExist",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": 2534,
+                          "src": "2534:15:12",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
+                            "typeString": "function (struct KeyStore.Keys storage pointer,bytes32) view returns (bool)"
+                          }
+                        },
+                        "id": 2413,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "2534:21:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "id": 2409,
+                      "name": "require",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [
+                        4385,
+                        4386
+                      ],
+                      "referencedDeclaration": 4385,
+                      "src": "2526:7:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
+                        "typeString": "function (bool) pure"
+                      }
+                    },
+                    "id": 2414,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2526:30:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2415,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2526:30:12"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 2419,
+                        "name": "_key",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2394,
+                        "src": "2582:4:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 2420,
+                        "name": "_to",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2396,
+                        "src": "2588:3:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 2421,
+                        "name": "_func",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2398,
+                        "src": "2593:5:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bytes4",
+                          "typeString": "bytes4"
+                        }
+                      },
+                      {
+                        "argumentTypes": null,
+                        "id": 2422,
+                        "name": "_executable",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2400,
+                        "src": "2600:11:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_bytes32",
+                          "typeString": "bytes32"
+                        },
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        },
+                        {
+                          "typeIdentifier": "t_bytes4",
+                          "typeString": "bytes4"
+                        },
+                        {
+                          "typeIdentifier": "t_bool",
+                          "typeString": "bool"
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": null,
+                        "id": 2416,
+                        "name": "allKeys",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2152,
+                        "src": "2566:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
+                          "typeString": "struct KeyStore.Keys storage ref"
+                        }
+                      },
+                      "id": 2418,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "setFunc",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 2771,
+                      "src": "2566:15:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_address_$_t_bytes4_$_t_bool_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
+                        "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,address,bytes4,bool) returns (bool)"
+                      }
+                    },
+                    "id": 2423,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "2566:46:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 2424,
+                  "nodeType": "ExpressionStatement",
+                  "src": "2566:46:12"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "hexValue": "74727565",
+                    "id": 2425,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "bool",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "2638:4:12",
+                    "subdenomination": null,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    },
+                    "value": "true"
+                  },
+                  "functionReturnParameters": 2408,
+                  "id": 2426,
+                  "nodeType": "Return",
+                  "src": "2631:11:12"
+                }
+              ]
+            },
+            "documentation": "@dev Add key data to the identity if key + purpose tuple doesn't already exist\n @param _key Key to use\n @param _to smart contract address at which this key can be used\n @param _func function to use\n @param _executable is executable\n @return `true` if key func was set, `false`, if cannot be set",
+            "id": 2428,
+            "implemented": true,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": null,
+                "id": 2403,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 2402,
+                  "name": "onlyManagementOrSelf",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 2213,
+                  "src": "2438:20:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2438:20:12"
+              },
+              {
+                "arguments": null,
+                "id": 2405,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 2404,
+                  "name": "whenNotPaused",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 3416,
+                  "src": "2467:13:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_modifier$__$",
+                    "typeString": "modifier ()"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "2467:13:12"
+              }
+            ],
+            "name": "setFunc",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2401,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2394,
+                  "name": "_key",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2327:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2393,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2327:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2396,
+                  "name": "_to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2349:11:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2395,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2349:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2398,
+                  "name": "_func",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2370:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
+                  },
+                  "typeName": {
+                    "id": 2397,
+                    "name": "bytes4",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2370:6:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2400,
+                  "name": "_executable",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2392:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2399,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2392:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2317:97:12"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 2408,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2407,
+                  "name": "success",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2428,
+                  "src": "2498:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2406,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2498:4:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2497:14:12"
+            },
+            "scope": 2429,
+            "src": "2301:348:12",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
           }
         ],
-        "scope": 2394,
-        "src": "261:1698:12"
+        "scope": 2430,
+        "src": "261:2391:12"
       }
     ],
-    "src": "0:1959:12"
+    "src": "0:2652:12"
   },
   "compiler": {
     "name": "solc",
@@ -3307,5 +4258,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-10-08T08:14:57.216Z"
+  "updatedAt": "2018-10-10T02:06:05.548Z"
 }

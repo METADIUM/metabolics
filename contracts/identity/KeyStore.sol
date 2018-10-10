@@ -9,6 +9,7 @@ library KeyStore {
         uint256[] purposes; //e.g., MANAGEMENT_KEY = 1, ACTION_KEY = 2, etc.
         uint256 keyType; // e.g. 1 = ECDSA, 2 = RSA, etc.
         bytes32 key; // for non-hex and long keys, its the Keccak256 hash of the key
+        mapping(address=>mapping(bytes4=>bool)) func;
     }
 
     struct Keys {
@@ -36,6 +37,15 @@ library KeyStore {
                 return;
             }
         }
+    }
+
+    function isExist(Keys storage self, bytes32 key)
+        internal
+        view
+        returns (bool found)
+    {
+        Key memory k = self.keyData[key];
+        return (k.key != 0);
     }
 
     /// @dev Add a Key
@@ -90,5 +100,17 @@ library KeyStore {
                 k.length--;
             }
         }
+    }
+
+    /// @dev Set function that the specific key can excute
+    /// @param key Key to use
+    /// @param to smart contract address at which this key can be used
+    /// @param func function to use
+    /// @param executable is executable
+    function setFunc(Keys storage self, bytes32 key, address to, bytes4 func, bool executable)
+        internal returns (bool set)
+    {
+        Key storage k = self.keyData[key];
+        k.func[to][func] = executable;
     }
 }

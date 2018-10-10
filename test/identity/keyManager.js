@@ -132,5 +132,20 @@ contract("KeyManager", async (accounts) => {
         });
     });
 
+    describe.only("setFunc", async () => {
+        it("should not add func only if key doesn't exist", async () => {
+            // Start with 2
+            await assertKeyCount(identity, Purpose.ACTION, 2);
+            await assertRevert(identity.setFunc(keys.action[2], addr.manager[0], '0xabcd1234', 'true', {from: addr.manager[0]}));
+
+        });
+
+        it ("should add func only when key exist", async () => {
+            // Start with 2
+            await assertKeyCount(identity, Purpose.ACTION, 2);
+            await assertOkTx(identity.setFunc(keys.action[1], addr.manager[0], '0xabcd1234', 'true', {from: addr.manager[0]}));
+
+        });
+    });
     // TODO: test KeyAdded, KeyRemoved
 });

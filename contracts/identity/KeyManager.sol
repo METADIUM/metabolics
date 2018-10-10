@@ -66,4 +66,28 @@ contract KeyManager is Pausable, ERC725 {
         allKeys.add(_key, _purpose, _keyType);
         emit KeyAdded(_key, _purpose, _keyType);
     }
+
+    /// @dev Add key data to the identity if key + purpose tuple doesn't already exist
+    /// @param _key Key to use
+    /// @param _to smart contract address at which this key can be used
+    /// @param _func function to use
+    /// @param _executable is executable
+    /// @return `true` if key func was set, `false`, if cannot be set
+    function setFunc(
+        bytes32 _key,
+        address _to,
+        bytes4 _func,
+        bool _executable
+    )
+        public
+        onlyManagementOrSelf
+        whenNotPaused
+        returns (bool success)
+    {
+        require(allKeys.isExist(_key));
+        allKeys.setFunc(_key, _to, _func, _executable);
+        
+        return true;
+    }
+
 }

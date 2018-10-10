@@ -49,4 +49,6 @@ contract KeyGetters is KeyBase {
     {
         return allKeys.keysByPurpose[_purpose];
     }
+
+    //function keyCanExcute(bytes32)
 }

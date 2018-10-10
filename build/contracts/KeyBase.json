@@ -77,8 +77,8 @@
       "type": "function"
     }
   ],
-  "bytecode": "0x608060405260016000556001805534801561001957600080fd5b50610161806100296000396000f30060806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a723058205af80edd9604811ddd7bb901ed420a10c1fab8ede32c0390f6cba0c0201644fa0029",
-  "deployedBytecode": "0x60806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a723058205af80edd9604811ddd7bb901ed420a10c1fab8ede32c0390f6cba0c0201644fa0029",
+  "bytecode": "0x608060405260016000556001805534801561001957600080fd5b50610161806100296000396000f30060806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a72305820f0f0e5b24c37590898910dbfe89ef92cbe74a20f294fb51505f710ff872e877c0029",
+  "deployedBytecode": "0x60806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a72305820f0f0e5b24c37590898910dbfe89ef92cbe74a20f294fb51505f710ff872e877c0029",
   "sourceMap": "197:1609:10:-;;;327:1;290:38;;367:1;334:34;;197:1609;8:9:-1;5:2;;;30:1;27;20:12;5:2;197:1609:10;;;;;;;",
   "deployedSourceMap": "197:1609:10:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;220:42;;8:9:-1;5:2;;;30:1;27;20:12;5:2;220:42:10;;;;;;;;;;;;;;;;;;;;334:34;;8:9:-1;5:2;;;30:1;27;20:12;5:2;334:34:10;;;;848:128;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;848:128:10;;;;;;;290:38;;8:9:-1;5:2;;;30:1;27;20:12;5:2;290:38:10;;;;569:115;;8:9:-1;5:2;;;30:1;27;20:12;5:2;569:115:10;;;;220:42;261:1;220:42;:::o;334:34::-;;;;:::o;848:128::-;956:13;;;848:128::o;290:38::-;;;;:::o;569:115::-;662:15;;569:115;:::o",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./KeyStore.sol\";\n\n/// @title KeyBase\n/// @author genie\n/// @notice Abstract contract for ERC725 implementation\n/// @dev Key data is stored using KeyStore library\n\ncontract KeyBase {\n    uint256 public constant MANAGEMENT_KEY = 1;\n\n    // For multi-sig\n    uint256 public managementThreshold = 1;\n    uint256 public actionThreshold = 1;\n\n    // Key storage\n    using KeyStore for KeyStore.Keys;\n    KeyStore.Keys internal allKeys;\n\n    /// @dev Number of keys managed by the contract\n    /// @return Unsigned integer number of keys\n    function numKeys()\n        external\n        view\n        returns (uint)\n    {\n        return allKeys.numKeys;\n    }\n\n    /// @dev Convert an Ethereum address (20 bytes) to an ERC725 key (32 bytes)\n    /// @dev It's just a simple typecast, but it's especially useful in tests\n    function addrToKey(address addr)\n        public\n        pure\n        returns (bytes32)\n    {\n        return bytes32(addr);\n    }\n\n    /// @dev Checks if sender is either the identity contract or a MANAGEMENT_KEY\n    /// @dev If the multi-sig threshold for MANAGEMENT_KEY if >1, it will throw an error\n    /// @return `true` if sender is either identity contract or a MANAGEMENT_KEY\n    function _managementOrSelf()\n        internal\n        view\n        returns (bool found)\n    {\n        if (msg.sender == address(this)) {\n            // Identity contract itself\n            return true;\n        }\n        // Only works with 1 key threshold, otherwise need multi-sig\n        require(managementThreshold == 1);\n        return allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY);\n    }\n\n    /// @dev Modifier that only allows keys of purpose 1, or the identity itself\n    modifier onlyManagementOrSelf {\n        require(_managementOrSelf());\n        _;\n    }\n}\n",
@@ -110,7 +110,7 @@
         "id": 2138,
         "nodeType": "ImportDirective",
         "scope": 2215,
-        "sourceUnit": 2675,
+        "sourceUnit": 2773,
         "src": "26:24:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -264,10 +264,10 @@
               "id": 2148,
               "name": "KeyStore",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2674,
+              "referencedDeclaration": 2772,
               "src": "400:8:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_KeyStore_$2674",
+                "typeIdentifier": "t_contract$_KeyStore_$2772",
                 "typeString": "library KeyStore"
               }
             },
@@ -278,10 +278,10 @@
               "id": 2149,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2415,
+              "referencedDeclaration": 2457,
               "src": "413:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2415_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2457_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             }
@@ -296,7 +296,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_Keys_$2415_storage",
+              "typeIdentifier": "t_struct$_Keys_$2457_storage",
               "typeString": "struct KeyStore.Keys"
             },
             "typeName": {
@@ -304,10 +304,10 @@
               "id": 2151,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2415,
+              "referencedDeclaration": 2457,
               "src": "432:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2415_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2457_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             },
@@ -332,7 +332,7 @@
                       "referencedDeclaration": 2152,
                       "src": "662:7:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                        "typeIdentifier": "t_struct$_Keys_$2457_storage",
                         "typeString": "struct KeyStore.Keys storage ref"
                       }
                     },
@@ -343,7 +343,7 @@
                     "lValueRequested": false,
                     "memberName": "numKeys",
                     "nodeType": "MemberAccess",
-                    "referencedDeclaration": 2414,
+                    "referencedDeclaration": 2456,
                     "src": "662:15:10",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
@@ -583,7 +583,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4423,
+                        "referencedDeclaration": 4382,
                         "src": "1340:3:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -615,7 +615,7 @@
                           "name": "this",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4440,
+                          "referencedDeclaration": 4399,
                           "src": "1362:4:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_contract$_KeyBase_$2214",
@@ -765,10 +765,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4426,
-                        4427
+                        4385,
+                        4386
                       ],
-                      "referencedDeclaration": 4426,
+                      "referencedDeclaration": 4385,
                       "src": "1523:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -808,7 +808,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4423,
+                              "referencedDeclaration": 4382,
                               "src": "1596:3:10",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -896,7 +896,7 @@
                         "referencedDeclaration": 2152,
                         "src": "1573:7:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -907,10 +907,10 @@
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2469,
+                      "referencedDeclaration": 2511,
                       "src": "1573:12:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
@@ -1041,10 +1041,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4426,
-                        4427
+                        4385,
+                        4386
                       ],
-                      "referencedDeclaration": 4426,
+                      "referencedDeclaration": 4385,
                       "src": "1758:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1123,7 +1123,7 @@
         "id": 2138,
         "nodeType": "ImportDirective",
         "scope": 2215,
-        "sourceUnit": 2675,
+        "sourceUnit": 2773,
         "src": "26:24:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1277,10 +1277,10 @@
               "id": 2148,
               "name": "KeyStore",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2674,
+              "referencedDeclaration": 2772,
               "src": "400:8:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_KeyStore_$2674",
+                "typeIdentifier": "t_contract$_KeyStore_$2772",
                 "typeString": "library KeyStore"
               }
             },
@@ -1291,10 +1291,10 @@
               "id": 2149,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2415,
+              "referencedDeclaration": 2457,
               "src": "413:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2415_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2457_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             }
@@ -1309,7 +1309,7 @@
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_Keys_$2415_storage",
+              "typeIdentifier": "t_struct$_Keys_$2457_storage",
               "typeString": "struct KeyStore.Keys"
             },
             "typeName": {
@@ -1317,10 +1317,10 @@
               "id": 2151,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2415,
+              "referencedDeclaration": 2457,
               "src": "432:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2415_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2457_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             },
@@ -1345,7 +1345,7 @@
                       "referencedDeclaration": 2152,
                       "src": "662:7:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                        "typeIdentifier": "t_struct$_Keys_$2457_storage",
                         "typeString": "struct KeyStore.Keys storage ref"
                       }
                     },
@@ -1356,7 +1356,7 @@
                     "lValueRequested": false,
                     "memberName": "numKeys",
                     "nodeType": "MemberAccess",
-                    "referencedDeclaration": 2414,
+                    "referencedDeclaration": 2456,
                     "src": "662:15:10",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
@@ -1596,7 +1596,7 @@
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4423,
+                        "referencedDeclaration": 4382,
                         "src": "1340:3:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
@@ -1628,7 +1628,7 @@
                           "name": "this",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4440,
+                          "referencedDeclaration": 4399,
                           "src": "1362:4:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_contract$_KeyBase_$2214",
@@ -1778,10 +1778,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4426,
-                        4427
+                        4385,
+                        4386
                       ],
-                      "referencedDeclaration": 4426,
+                      "referencedDeclaration": 4385,
                       "src": "1523:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -1821,7 +1821,7 @@
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4423,
+                              "referencedDeclaration": 4382,
                               "src": "1596:3:10",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
@@ -1909,7 +1909,7 @@
                         "referencedDeclaration": 2152,
                         "src": "1573:7:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2415_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2457_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
@@ -1920,10 +1920,10 @@
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2469,
+                      "referencedDeclaration": 2511,
                       "src": "1573:12:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2415_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2415_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2457_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2457_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
@@ -2054,10 +2054,10 @@
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4426,
-                        4427
+                        4385,
+                        4386
                       ],
-                      "referencedDeclaration": 4426,
+                      "referencedDeclaration": 4385,
                       "src": "1758:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
@@ -2115,5 +2115,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-10-08T08:14:57.214Z"
+  "updatedAt": "2018-10-10T02:06:05.544Z"
 }
