@@ -37,6 +37,16 @@ contract AchievementManager is RegistryUser {
         THIS_NAME = "AchievementManager";
     }
 
+    /**
+     * @dev Create Achievement. If topic is not exist, register it to the topic registry.
+     * @param topics topics need to get the achievement.
+     * @param issuers issuers for each topic
+     * @param topicExplanations explanations of each topics
+     * @param achievementExplanation achievement explanation
+     * @param reward reward in meta when user request acievement
+     * @param uri basically used for ipfs id
+     * @return A boolean that indicates if the operation was successful.
+     */
     function createAchievement(uint256[] topics, address[] issuers, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string uri) public payable returns (bool) {
         
         //check if achievement is already registered
@@ -85,14 +95,18 @@ contract AchievementManager is RegistryUser {
 
         return true;
     }
-   
+    
     function updateAchievement(bytes32 achievementId, uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs) public payable returns (bool) {
     }
    
     function deleteAchievement(bytes32 achievementId) public returns (bool) {
 
     }
-   
+    /**
+     * @dev Request achievement. If user have proper claims, user get acievement(ERC721) token and meta reward
+     * @param achievementId achievementId user want to request
+     * @return A boolean that indicates if the operation was successful.
+     */
     function requestAchievement(bytes32 achievementId) public returns (bool) {
         // check whether msg.sender is deployed using IdentityManager
         IIdentityManager im = IIdentityManager(REG.getContractAddress("IdentityManager"));
@@ -131,6 +145,14 @@ contract AchievementManager is RegistryUser {
 
     }
 
+    /**
+     * @dev Get achievement id. an achievement ID is unique with given params.
+     * achievementId = keccak256(abi.encodePacked(creator, topic1, issuer1, topic2, issuer2, ...))
+     * @param creator achievement creator
+     * @param topics topics achievement requirements
+     * @param issuers issuers achievement requirements
+     * @return A boolean that indicates if the operation was successful.
+     */
     function getAchievementId(address creator, uint256[] topics, address[] issuers) pure public returns(bytes32) {
         bytes memory idBytes;
         

@@ -15,7 +15,8 @@ const Achievement = artifacts.require('Achievement.sol')
 
 async function deploy(deployer) {
     const args = process.argv.slice()
-    let _nonce = 23; // this shuld be current nonce + 2 because of the migration tx
+    let _nonce = 67; // this shuld be current nonce + 2 because of the migration tx
+
     let _gas = 6000000
     let _gasPrice = 1 * 10 ** 11
 

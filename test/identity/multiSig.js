@@ -209,7 +209,7 @@ contract("MultiSig", async (accounts) => {
 
     });
 
-    describe("delegate key", async () => {
+    describe("delegate execute", async () => {
         // delegatedExecute can execute with signature of (to, value, data, nonce) using registered key
 
         // delegatedExecute cannot execute with wrong signature
