@@ -16,7 +16,7 @@ const Achievement = artifacts.require('Achievement.sol')
 
 async function deploy(deployer) {
     const args = process.argv.slice()
-    let _nonce = 67; // this shuld be current nonce + 2 because of the migration tx
+    let _nonce = 0x54; // this shuld be current nonce + 2 because of the migration tx
 
     let _gas = 6000000
     let _gasPrice = 1 * 10 ** 11
@@ -40,11 +40,35 @@ async function deploy(deployer) {
                                 await reg.setContractDomain("AttestationAgencyRegistry", ar.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 10})
 
                                 await reg.setPermission("IdentityManager", proxy1, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 11 })
-                                await reg.setPermission("Achievement", am.address, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 12 })
+                                await reg.setPermission("AttestationAgencyRegistry", proxy1, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 12 })
+                                await reg.setPermission("Achievement", am.address, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 13 })
 
-                                await mim.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 13 })
-                                await am.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 14 })
-                                await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 15 })
+                                await mim.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 14 })
+                                await am.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 15 })
+                                await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 16 })
+                                await ar.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 17 })
+                                await tr.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 18 })
+
+                                
+                                // register creator as default aa
+                                await reg.setPermission("AttestationAgencyRegistry", deployer, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 19 })
+                                await aaRegistry.registerAttestationAgency(deployer, 'metadiumAA', 'metadiumAADes', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 20})
+
+                                // register topics 
+                                await topicRegistry.registerTopic(deployer, 'name', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 21})
+                                await topicRegistry.registerTopic(deployer, 'nickname', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 22})
+                                await topicRegistry.registerTopic(deployer, 'email', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 23})
+
+                                let _topics = [1025, 1026, 1027]
+                                let _issuers = [issuer1, issuer2, issuer3]
+                                let _achievementExplanation = 'Metadium'
+                                let _reward = 0.01 * 10 ** 18
+                                let _uri = '0x3be095406c14a224018c2e749ef954073b0f71f8cef30bb0458aab8662a447a0'
+
+                                // register achievement
+                                await achievementManager.createAchievement(_topics, _issuers, _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 24, value: ether1 })
+                                
+                                // write contract addresses to json file to share
 
                             })
                         })

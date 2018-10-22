@@ -1,6 +1,7 @@
 pragma solidity ^0.4.24;
 
 import "../RegistryUser.sol";
+import "../interface/IAttestationAgencyRegistry.sol";
 
 /// @title TopicRegistry
 /// @author genie
@@ -14,29 +15,79 @@ contract TopicRegistry is RegistryUser {
         bytes32 explanation;
     }
 
-    uint256 public topicNonce;
+    uint256 public total;
+    uint256 public constant RESERVED_TOPICS = 1024;
+    
     mapping(uint256 => Topic) public topics;
+    mapping(uint256 => bool) isTopicRegistered;
 
-    function TopicRegistry() public {
-        topicNonce = 1024;
+    event RegisterTopic(uint256 indexed id, address indexed issuer, bytes32 explanation);
+    event UpdateTopic(uint256 indexed id, address indexed issuer, bytes32 explanation);
+
+    constructor() public {
+
+        total = RESERVED_TOPICS + 1;
+
     }
 
-    function registerTopic(uint256 id, address issuer, bytes32 explanation) /* permissioned */public returns (bool) {
-        
+    function registerTopicBySystem(uint256 _id, address _issuer, bytes32 _explanation) permissioned public returns (uint256) {
+
         // check topic doen't exist
-        require(topics[id].id == 0);
+        require(topics[_id].id == 0 && _id < RESERVED_TOPICS);
 
         Topic memory t;
-        t.id = id;
-        t.issuer = issuer;
-        t.explanation = explanation;
-        topics[id] = t;
+        t.id = _id;
+        t.issuer = _issuer;
+        t.explanation = _explanation;
+        topics[_id] = t;
+
+        isTopicRegistered[_id] = true;
+
+        emit RegisterTopic(_id, _issuer, _explanation);
         
-        return true;
+        return _id;
+    }   
+
+    function registerTopic(address _issuer, bytes32 _explanation) public returns (uint256) {
+        IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
+        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender)); //Only Attestation Agency or permissioned can register topic
+
+        Topic memory t;
+        t.id = total;
+        t.issuer = _issuer;
+        t.explanation = _explanation;
+        topics[total] = t;
+        
+        isTopicRegistered[total] = true;
+
+        emit RegisterTopic(total, _issuer, _explanation);
+
+        total++;
+
+        return total-1; // return new topic id
     }    
     
+    function updateTopic(uint256 _id, bytes32 _explanation) public returns (bool) {
+        
+        require(topics[_id].issuer == msg.sender);
+
+        topics[_id].explanation = _explanation;
+
+        emit UpdateTopic(_id, msg.sender , _explanation);
+
+    }
+
+    function isRegistered(uint256 _id) view public returns (bool) {
+        return isTopicRegistered[_id];
+    }
+
+    function getTotal() view public returns (uint256) {
+        return total;
+    }
     function getTopic(uint256 id) view public returns(address, bytes32){
+        
         return (topics[id].issuer, topics[id].explanation);
+
     }
 
 }

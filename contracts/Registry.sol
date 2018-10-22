@@ -14,6 +14,10 @@ contract Registry is Ownable{
     mapping(bytes32=>address) public contracts;
     mapping(bytes32=>mapping(address=>bool)) public permissions;
 
+    event SetContractDomain(address setter, bytes32 indexed name, address indexed addr);
+    event SetPermission(bytes32 indexed _contract, address indexed granted, bool status);
+
+
     /**
     * @dev Function to set contract(can be general address) domain
     * Only owner can use this function
@@ -21,9 +25,13 @@ contract Registry is Ownable{
     * @param _addr address
     * @return A boolean that indicates if the operation was successful.
     */
-    function setContractDomain(bytes32 _name, address _addr) onlyOwner public {
+    function setContractDomain(bytes32 _name, address _addr) onlyOwner public returns (bool){
         require(_addr != address(0x0));
         contracts[_name] = _addr;
+
+        emit SetContractDomain(msg.sender, _name, _addr);
+
+        return true;
         //TODO should decide whether to set 0x00 to destoryed contract or not
         
 
@@ -50,6 +58,9 @@ contract Registry is Ownable{
     function setPermission(bytes32 _contract, address _granted, bool _status) onlyOwner public returns(bool) {
         require(_granted != address(0x0));
         permissions[_contract][_granted] = _status;
+
+        emit SetPermission(_contract, _granted, _status);
+        
         return true;
     }
 

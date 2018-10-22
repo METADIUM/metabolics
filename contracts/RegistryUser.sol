@@ -13,10 +13,10 @@ contract RegistryUser is Ownable {
     }
     
     modifier permissioned() {
-        require(isPermitted());
+        require(isPermitted(msg.sender));
         _;
     }
-    function isPermitted() public returns(bool) {
-        return REG.getPermission(THIS_NAME, msg.sender);
+    function isPermitted(address _addr) public returns(bool) {
+        return REG.getPermission(THIS_NAME, _addr);
     }
 }

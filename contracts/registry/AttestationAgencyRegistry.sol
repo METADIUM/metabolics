@@ -18,47 +18,53 @@ contract AttestationAgencyRegistry is RegistryUser {
     }
 
     mapping(uint256=>AttestationAgency) public attestationAgencies;
-    
-    mapping(address=>uint256) public isAARegisterd;
+    mapping(address=>uint256) public isAAregistered;
 
     uint256 attestationAgencyNum;
+    
+    event RegisterAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 description);
+    event UpdateAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 description);
 
     function AttestationAgencyRegistry() public {
         THIS_NAME = "AttestationAgencyRegistry";
         attestationAgencyNum = 1;
 
-        attestationAgencies[0].addr = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
+        attestationAgencies[0].addr = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
         attestationAgencies[0].title = 'MetadiumDefault';
         attestationAgencies[0].description = 'MetadiumDefault';
     }
 
     function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
-        require(isAARegisterd[_addr] == 0);
+        require(isAAregistered[_addr] == 0);
         
         attestationAgencies[attestationAgencyNum].addr = _addr;
         attestationAgencies[attestationAgencyNum].title = _title;
         attestationAgencies[attestationAgencyNum].description = _description;
 
-        isAARegisterd[_addr] = attestationAgencyNum;
+        isAAregistered[_addr] = attestationAgencyNum;
 
         attestationAgencyNum++;
+
+        emit RegisterAttestationAgency(_addr, _title, _description);
 
         return true;
     }   
 
-    function updateAttestationAgency(uint256 _num, bytes32 _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
+    function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
         
-        require(isAARegisterd[_addr] == _num);
+        require(isAAregistered[_addr] == _num);
 
         attestationAgencies[attestationAgencyNum].addr = _addr;
         attestationAgencies[attestationAgencyNum].title = _title;
         attestationAgencies[attestationAgencyNum].description = _description;
 
+        emit UpdateAttestationAgency(_addr, _title, _description);
+
         return true;
 
     }
-    function isRegisterd(address _addr) view public returns(uint256){
-        return isAARegisterd[_addr];
+    function isRegistered(address _addr) view public returns(uint256){
+        return isAAregistered[_addr];
     }
 
     function getAttestationAgencySingle(uint256 _num) view public returns(address, bytes32, bytes32) {
