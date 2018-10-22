@@ -37,13 +37,14 @@ async function deploy(deployer) {
                                 await reg.setContractDomain("Achievement", achiv.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 7 })
                                 await reg.setContractDomain("AchievementManager", am.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 8 })
                                 await reg.setContractDomain("TopicRegistry", tr.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 9})
+                                await reg.setContractDomain("AttestationAgencyRegistry", ar.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 10})
 
-                                await reg.setPermission("IdentityManager", proxy1, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 10 })
-                                await reg.setPermission("Achievement", am.address, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 11 })
+                                await reg.setPermission("IdentityManager", proxy1, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 11 })
+                                await reg.setPermission("Achievement", am.address, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 12 })
 
-                                await mim.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 12 })
-                                await am.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 13 })
-                                await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 14 })
+                                await mim.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 13 })
+                                await am.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 14 })
+                                await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 15 })
 
                             })
                         })
