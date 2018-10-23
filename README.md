@@ -112,9 +112,9 @@ Get topic list
 
 ### Attestation Agency Registry
 ```
-function registerAttestationAgency() permissioned public returns(bool)
+function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool)
 ```
-register Attestation Agency
+register Attestation Agency, only permissioned user can register AA.
 ```
 function getAttestationAgencyList() permissioned public returns(bool)
 ```
@@ -124,17 +124,17 @@ Get Attestation Agency List
 **Achievement Manager**
 Public
 ```
-function createAchievement(uint256[] topics, address[] issuers, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string uri) public payable returns(bool);
+function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool);
 ```
-Create Achievement. Topics are registered to the topic registry wit descriptions. if not exists. The creator should send enough balance for rewards.
+Create Achievement. Topics are registered before to the topic registry with descriptions. The creator should send enough balance for rewards.
 ```
-function updateAchievement(bytes32 achievementId, uint256[] topics, bytes32[] topicExplanations, bytes32 achievementExplanation, uint256 reward, string ipfs) public payable returns(bool);
+function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool);
 ```
-Update Achievement
+Update Achievement can charge fund, and can change reward
 ```
 function deleteAchievement(bytes32 achievementId) public returns(bool);
 ```
-Delete Achievement
+Delete Achievement and refund balance.
 ```
 function requestAchievement(bytes32 achievementId) public returns(bool);
 ```
