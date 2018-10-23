@@ -23,7 +23,7 @@ contract AchievementManager is RegistryUser {
 
     bytes32[] public allAchievements;
 
-    event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri);
+    event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri, uint256 timestamp);
     event UpdateAchievement(bytes32 indexed achievementId, uint256 reward, uint256 charge);
     event DeleteAchievement(bytes32 indexed achievementId, uint256 refund);
     event RequestAchievement(bytes32 indexed achievementId, address indexed receiver, uint256 reward);
@@ -36,6 +36,7 @@ contract AchievementManager is RegistryUser {
         bytes32 explanation;
         uint256 reward;
         string uri;
+        uint256 createdAt;
     }
 
     function isAAttestationAgency(address _addr) public returns(bool) {
@@ -88,12 +89,13 @@ contract AchievementManager is RegistryUser {
         newAc.explanation = _achievementExplanation;
         newAc.uri = _uri;
         newAc.reward = _reward;
+        newAc.createdAt = now;
 
         achievements[newAc.id] = newAc;
         allAchievements.push(achievementId);
         balance[achievementId] = msg.value;
 
-        emit CreateAchievement(achievementId, _topics, _issuers, msg.value, _uri);
+        emit CreateAchievement(achievementId, _topics, _issuers, msg.value, _uri, now);
 
         return true;
     }
@@ -185,10 +187,10 @@ contract AchievementManager is RegistryUser {
     }
     /**
      * @dev Request achievement. If user have proper claims, user get acievement(ERC721) token and meta reward
-     * @param achievementId achievementId user want to request
+     * @param _achievementId _achievementId user want to request
      * @return A boolean that indicates if the operation was successful.
      */
-    function requestAchievement(bytes32 achievementId) public returns (bool) {
+    function requestAchievement(bytes32 _achievementId) public returns (bool) {
         // check whether msg.sender is deployed using IdentityManager
         IIdentityManager im = IIdentityManager(REG.getContractAddress("IdentityManager"));
         require(im.isMetaId(msg.sender), 'msg.sender is not identity created by IdentityManager');
@@ -196,10 +198,10 @@ contract AchievementManager is RegistryUser {
         uint256 i;
         ERC735 identity = ERC735(msg.sender);
         // // check if sender has enough claims
-        for(i=0;i<achievements[achievementId].claimTopics.length;i++) {
+        for(i=0;i<achievements[_achievementId].claimTopics.length;i++) {
             address issuer;
             // claimId is made by topic and issuer.
-            bytes32 claimId = keccak256(abi.encodePacked(achievements[achievementId].issuers[i], achievements[achievementId].claimTopics[i]));
+            bytes32 claimId = keccak256(abi.encodePacked(achievements[_achievementId].issuers[i], achievements[_achievementId].claimTopics[i]));
             (, , issuer, , , ) = identity.getClaim(claimId); // getClaim returns (topic, scheme, issuer, signature, data, uri)
 
             require(issuer != address(0));
@@ -207,15 +209,15 @@ contract AchievementManager is RegistryUser {
         }
         
         // give reward to msg.sender(identity contract)
-        require(balance[achievementId] >= achievements[achievementId].reward);
-        balance[achievementId] = balance[achievementId].sub(achievements[achievementId].reward);
-        msg.sender.transfer(achievements[achievementId].reward);
+        require(balance[_achievementId] >= achievements[_achievementId].reward);
+        balance[_achievementId] = balance[_achievementId].sub(achievements[_achievementId].reward);
+        msg.sender.transfer(achievements[_achievementId].reward);
 
         // mint achievement erc721 to msg.sender;
         IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
-        require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, achievementId))), string(abi.encodePacked(now,achievements[achievementId].uri))));
+        require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, _achievementId))), string(abi.encodePacked(now,achievements[_achievementId].uri))));
         
-        emit RequestAchievement(achievementId, msg.sender, achievements[achievementId].reward);
+        emit RequestAchievement(_achievementId, msg.sender, achievements[_achievementId].reward);
 
         return true;
     }
@@ -232,20 +234,21 @@ contract AchievementManager is RegistryUser {
         return allAchievements.length;
     }
 
-    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri) {
+    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
+        Achievement memory ac = achievements[_achievementId];
         return (
-            achievements[_achievementId].id, 
-            achievements[_achievementId].creator, 
-            achievements[_achievementId].issuers, 
-            achievements[_achievementId].claimTopics, 
-            achievements[_achievementId].explanation, 
-            achievements[_achievementId].reward, 
-            achievements[_achievementId].uri
+            ac.id, 
+            ac.creator, 
+            ac.issuers, 
+            ac.claimTopics, 
+            ac.explanation, 
+            ac.reward, 
+            ac.uri,
+            ac.createdAt
             );
-
     }
 
-    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri) {
+    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
         bytes32 _achievementId = allAchievements[_index];
         return (
             achievements[_achievementId].id, 
@@ -254,7 +257,8 @@ contract AchievementManager is RegistryUser {
             achievements[_achievementId].claimTopics, 
             achievements[_achievementId].explanation, 
             achievements[_achievementId].reward, 
-            achievements[_achievementId].uri
+            achievements[_achievementId].uri,
+            achievements[_achievementId].createdAt
             );
 
     }
