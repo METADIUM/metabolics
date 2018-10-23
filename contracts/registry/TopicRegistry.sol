@@ -30,6 +30,13 @@ contract TopicRegistry is RegistryUser {
 
     }
 
+    /**
+     * @dev Register new topic by system. this topic numbers should be 0~1024.
+     * @param _id basic managementKey to use
+     * @param _issuer creator of this topic
+     * @param _explanation explanation
+     * @return A boolean that indicates if the operation was successful.
+     */
     function registerTopicBySystem(uint256 _id, address _issuer, bytes32 _explanation) permissioned public returns (uint256) {
 
         // check topic doen't exist
@@ -46,8 +53,14 @@ contract TopicRegistry is RegistryUser {
         emit RegisterTopic(_id, _issuer, _explanation);
         
         return _id;
-    }   
+    }  
 
+    /**
+     * @dev Register topic by general user(usually aa). this topic numbers are incrementally set.
+     * @param _issuer creator of this topic
+     * @param _explanation explanation
+     * @return A boolean that indicates if the operation was successful.
+     */
     function registerTopic(address _issuer, bytes32 _explanation) public returns (uint256) {
         IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
         require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender)); //Only Attestation Agency or permissioned can register topic
@@ -67,6 +80,12 @@ contract TopicRegistry is RegistryUser {
         return total-1; // return new topic id
     }    
     
+    /**
+     * @dev Update topic by creator.
+     * @param _id topic to update
+     * @param _explanation explanation
+     * @return A boolean that indicates if the operation was successful.
+     */
     function updateTopic(uint256 _id, bytes32 _explanation) public returns (bool) {
         
         require(topics[_id].issuer == msg.sender);
@@ -89,6 +108,12 @@ contract TopicRegistry is RegistryUser {
         return (topics[_id].issuer, topics[_id].explanation);
     }
 
+    /**
+     * @dev Batch Read functino for topic
+     * @param _from from
+     * @param _to to
+     * @return A boolean that indicates if the operation was successful.
+     */
     function getTopicFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[]){
         require(_to>_from);
         address[] memory saddrs = new address[](_to-_from+1);

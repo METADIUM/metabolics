@@ -57,7 +57,7 @@ contract AchievementManager is RegistryUser {
     }
 
     /**
-     * @dev Create Achievement. If topic is not exist, register it to the topic registry.
+     * @dev Create Achievement. Topics should be registered first.
      * @param _topics registered topics
      * @param _issuers issuers for each topic
      * @param _achievementExplanation achievement explanation

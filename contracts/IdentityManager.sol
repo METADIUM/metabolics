@@ -4,6 +4,12 @@ import "./openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./identity/MetaIdentity.sol";
 import "./RegistryUser.sol";
 
+
+/**
+ * @title IdentityManager
+ * @dev IdentityManager is factory contract to make identity
+ * permissoined sender can create metadium identity through this contract
+ */
 contract IdentityManager is RegistryUser {
     //Hold the list of MetaIds
     //CreateMetaId
@@ -17,6 +23,12 @@ contract IdentityManager is RegistryUser {
         THIS_NAME = "IdentityManager";
     }
 
+
+    /**
+     * @dev Create Metadium Identity which is based upon erc725-735 
+     * @param _managementKey basic managementKey to use
+     * @return A boolean that indicates if the operation was successful.
+     */
     function createMetaId(address _managementKey) permissioned public returns (bool) {
         require(_managementKey != address(0));
 
@@ -34,10 +46,13 @@ contract IdentityManager is RegistryUser {
     function getDeployedMetaIds() public view returns(address[]) {
         return metaIds;
     }
+
     function isMetaId(address _addr) public view returns(bool) {
         return metaIdExistence[_addr];
     }
+
     function getLengthOfMetaIds() public view returns(uint256) {
         return metaIds.length;
     }
+
 }
