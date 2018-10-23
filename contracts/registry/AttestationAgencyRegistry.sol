@@ -77,16 +77,16 @@ contract AttestationAgencyRegistry is RegistryUser {
 
     function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[], bytes32[]){
         
-        require(_to<attestationAgencyNum);
+        require(_to<attestationAgencyNum && _from < _to);
         
-        address[] storage saddrs;
-        bytes32[] storage sdescs;
-        bytes32[] storage stitles;
+        address[] memory saddrs = new address[](_to-_from+1);
+        bytes32[] memory sdescs = new bytes32[](_to-_from+1);
+        bytes32[] memory stitles = new bytes32[](_to-_from+1);
 
-        for(uint256 i=_from;i<_to;i++){
-            saddrs.push(attestationAgencies[attestationAgencyNum].addr);
-            sdescs.push(attestationAgencies[attestationAgencyNum].description);
-            stitles.push(attestationAgencies[attestationAgencyNum].title);
+        for(uint256 i=_from;i<=_to;i++){
+            saddrs[i-_from] = attestationAgencies[i].addr;
+            sdescs[i-_from] = attestationAgencies[i].description;
+            stitles[i-_from] = attestationAgencies[i].title;
         }
 
         return (saddrs, stitles, sdescs);

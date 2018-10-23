@@ -1,22 +1,12 @@
 require('babel-register')
-/*
- * NB: since truffle-hdwallet-provider 0.0.5 you must wrap HDWallet providers in a 
- * function when declaring them. Failure to do so will cause commands to hang. ex:
- * ```
- * mainnet: {
- *     provider: function() { 
- *       return new HDWalletProvider(mnemonic, 'https://mainnet.infura.io/<infura-key>') 
- *     },
- *     network_id: '1',
- *     gas: 4500000,
- *     gasPrice: 10000000000,
- *   },
- */
+
+var HDWalletProvider = require("truffle-hdwallet-provider");
+
 const config = require('config')
-const mnemonic = config.get("mnemonic")
-const provider = config.get("provider")
-const network_id = config.get("network_id")
-const gasPrice = config.get("gasPrice")
+const _mnemonic = config.get("mnemonic")
+const _provider = config.get("provider")
+const _network_id = config.get("network_id")
+const _gasPrice = config.get("gasPrice")
 
 module.exports = {
   networks: {
@@ -28,10 +18,10 @@ module.exports = {
     },
     metadiumTestnet: {
       provider: function () {
-        return new HDWalletProvider(mnemonic, provider);
+        return new HDWalletProvider(_mnemonic, _provider);
       },
-      network_id: network_id,
-      gasPrice: gasPrice
+      network_id: _network_id,
+      gasPrice: _gasPrice
     }
   },
   solc: {

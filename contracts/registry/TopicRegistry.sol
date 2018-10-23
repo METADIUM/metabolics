@@ -84,10 +84,22 @@ contract TopicRegistry is RegistryUser {
     function getTotal() view public returns (uint256) {
         return total;
     }
-    function getTopic(uint256 id) view public returns(address, bytes32){
-        
-        return (topics[id].issuer, topics[id].explanation);
+    
+    function getTopic(uint256 _id) view public returns(address, bytes32){
+        return (topics[_id].issuer, topics[_id].explanation);
+    }
 
+    function getTopicFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[]){
+        require(_to>_from);
+        address[] memory saddrs = new address[](_to-_from+1);
+        bytes32[] memory sexplans = new bytes32[](_to-_from+1);
+
+        for(uint256 i=_from;i<=_to;i++){
+            saddrs[i-_from] = topics[i].issuer;
+            sexplans[i-_from] = topics[i].explanation;
+        }
+
+        return (saddrs, sexplans);
     }
 
 }

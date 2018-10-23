@@ -215,8 +215,25 @@ contract AchievementManager is RegistryUser {
 
     }
 
+    function getLengthOfAchievements() view public returns(uint256) {
+        return allAchievements.length;
+    }
 
     function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri) {
+        return (
+            achievements[_achievementId].id, 
+            achievements[_achievementId].creator, 
+            achievements[_achievementId].issuers, 
+            achievements[_achievementId].claimTopics, 
+            achievements[_achievementId].explanation, 
+            achievements[_achievementId].reward, 
+            achievements[_achievementId].uri
+            );
+
+    }
+
+    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri) {
+        bytes32 _achievementId = allAchievements[_index];
         return (
             achievements[_achievementId].id, 
             achievements[_achievementId].creator, 
