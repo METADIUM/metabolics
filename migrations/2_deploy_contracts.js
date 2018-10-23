@@ -43,7 +43,6 @@ async function deploy(deployer) {
                                 await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 16 })
                                 await ar.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 17 })
                                 await tr.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 18 })
-
                                 
                                 // register creator as default aa
                                 console.log(`register default aa and topics`)
