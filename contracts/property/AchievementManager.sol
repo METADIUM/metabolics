@@ -147,6 +147,13 @@ contract AchievementManager is RegistryUser {
     //     return true;
     // }
     
+
+    /**
+     * @dev Update Achievement. Fund can be charged through this, and reward can be set newly.
+     * @param _achievementId achievementId
+     * @param _reward new reward
+     * @return A boolean that indicates if the operation was successful.
+     */
     function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool) {
         //Only creator can charge fund
         require(achievements[_achievementId].creator == msg.sender);
@@ -156,7 +163,13 @@ contract AchievementManager is RegistryUser {
         emit UpdateAchievement(_achievementId, _reward, msg.value);
         return true;
     }
-   
+
+    /**
+     * @dev Delete Achievement. This function DOES NOT actually delete achievement.
+     * Just refund to the creator.
+     * @param _achievementId achievementId
+     * @return A boolean that indicates if the operation was successful.
+     */
     function deleteAchievement(bytes32 _achievementId) public returns (bool) {
         //Only creator can refund
         require(achievements[_achievementId].creator == msg.sender);

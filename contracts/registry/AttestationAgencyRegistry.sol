@@ -16,11 +16,10 @@ contract AttestationAgencyRegistry is RegistryUser {
         // bool type isEnterprise;
          
     }
+    uint256 attestationAgencyNum;
 
     mapping(uint256=>AttestationAgency) public attestationAgencies;
     mapping(address=>uint256) public isAAregistered;
-
-    uint256 attestationAgencyNum;
     
     event RegisterAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 description);
     event UpdateAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 description);
@@ -34,6 +33,13 @@ contract AttestationAgencyRegistry is RegistryUser {
         attestationAgencies[0].description = 'MetadiumDefault';
     }
 
+    /**
+     * @dev Register Attestation Agency
+     * @param _addr address to register
+     * @param _title title
+     * @param _description description
+     * @return A boolean that indicates if the operation was successful.
+     */
     function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
         require(isAAregistered[_addr] == 0);
         
@@ -50,6 +56,14 @@ contract AttestationAgencyRegistry is RegistryUser {
         return true;
     }   
 
+    /**
+     * @dev Update Attestation Agency
+     * @param _num index of the AA
+     * @param _addr address to register
+     * @param _title title
+     * @param _description description
+     * @return A boolean that indicates if the operation was successful.
+     */
     function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
         
         require(isAAregistered[_addr] == _num);
@@ -63,6 +77,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         return true;
 
     }
+
     function isRegistered(address _addr) view public returns(uint256){
         return isAAregistered[_addr];
     }

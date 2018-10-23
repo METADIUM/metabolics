@@ -2,6 +2,10 @@ pragma solidity ^0.4.24;
 
 import "../openzeppelin-solidity/contracts/ECRecovery.sol";
 
+/// @title SignatureVerifier
+/// @author genie
+/// @notice Implement signature verifying logic
+/// @dev almost all of the data need to be verified would use this logic
 contract SignatureVerifier {
     using ECRecovery for bytes32;
     bytes constant internal ETH_PREFIX = "\x19Ethereum Signed Message:\n32";

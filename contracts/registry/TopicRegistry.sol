@@ -13,6 +13,7 @@ contract TopicRegistry is RegistryUser {
         uint256 id;
         address issuer;
         bytes32 explanation;
+        uint256 createdAt;
     }
 
     uint256 public total;
@@ -39,13 +40,14 @@ contract TopicRegistry is RegistryUser {
      */
     function registerTopicBySystem(uint256 _id, address _issuer, bytes32 _explanation) permissioned public returns (uint256) {
 
-        // check topic doen't exist
+        // check topic doesn't exist
         require(topics[_id].id == 0 && _id < RESERVED_TOPICS);
 
         Topic memory t;
         t.id = _id;
         t.issuer = _issuer;
         t.explanation = _explanation;
+        t.createdAt = now;
         topics[_id] = t;
 
         isTopicRegistered[_id] = true;
@@ -69,6 +71,7 @@ contract TopicRegistry is RegistryUser {
         t.id = total;
         t.issuer = _issuer;
         t.explanation = _explanation;
+        t.createdAt = now;
         topics[total] = t;
         
         isTopicRegistered[total] = true;
@@ -104,8 +107,8 @@ contract TopicRegistry is RegistryUser {
         return total;
     }
     
-    function getTopic(uint256 _id) view public returns(address, bytes32){
-        return (topics[_id].issuer, topics[_id].explanation);
+    function getTopic(uint256 _id) view public returns(address, bytes32, uint256){
+        return (topics[_id].issuer, topics[_id].explanation, topics[_id].createdAt);
     }
 
     /**
@@ -114,17 +117,19 @@ contract TopicRegistry is RegistryUser {
      * @param _to to
      * @return A boolean that indicates if the operation was successful.
      */
-    function getTopicFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[]){
+    function getTopicFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[], uint256[]){
         require(_to>_from);
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sexplans = new bytes32[](_to-_from+1);
+        uint256[] memory screateds = new uint256[](_to-_from+1);
 
         for(uint256 i=_from;i<=_to;i++){
             saddrs[i-_from] = topics[i].issuer;
             sexplans[i-_from] = topics[i].explanation;
+            screateds[i-_from] = topics[i].createdAt;
         }
 
-        return (saddrs, sexplans);
+        return (saddrs, sexplans, screateds);
     }
 
 }
