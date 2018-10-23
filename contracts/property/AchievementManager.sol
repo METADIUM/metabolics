@@ -215,6 +215,20 @@ contract AchievementManager is RegistryUser {
 
     }
 
+
+    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri) {
+        return (
+            achievements[_achievementId].id, 
+            achievements[_achievementId].creator, 
+            achievements[_achievementId].issuers, 
+            achievements[_achievementId].claimTopics, 
+            achievements[_achievementId].explanation, 
+            achievements[_achievementId].reward, 
+            achievements[_achievementId].uri
+            );
+
+    }
+
     /**
      * @dev Get achievement id. an achievement ID is unique with given params.
      * achievementId = keccak256(abi.encodePacked(creator, topic1, issuer1, topic2, issuer2, ...))

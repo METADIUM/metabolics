@@ -10,10 +10,13 @@ const Achievement = artifacts.require('Achievement.sol')
 
 async function deploy(deployer) {
     const args = process.argv.slice()
-    let _nonce = 0x130 + 2; // this shuld be current nonce + 2 because of the migration tx
+    
     let _gas = 6000000
     let _gasPrice = 1 * 10 ** 11
-    
+    let _non = web3.eth.getTransactionCount('0xD351858Dd581c4046693cEAe54C169C9f402E16D')
+    let _nonce = _non; // this shuld be current nonce + 2 because of the migration tx
+    console.log(`current nonce : ${_non}`)
+    console.log(`current nonce : ${JSON.stringify(deployer.address)}`)
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
         let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]

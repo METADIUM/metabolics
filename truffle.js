@@ -12,6 +12,11 @@ require('babel-register')
  *     gasPrice: 10000000000,
  *   },
  */
+const config = require('config')
+const mnemonic = config.get("mnemonic")
+const provider = config.get("provider")
+const network_id = config.get("network_id")
+const gasPrice = config.get("gasPrice")
 
 module.exports = {
   networks: {
@@ -20,6 +25,13 @@ module.exports = {
       port: 8545,
       network_id: "*", // Match any network id
       gas: 10000000
+    },
+    metadiumTestnet: {
+      provider: function () {
+        return new HDWalletProvider(mnemonic, provider);
+      },
+      network_id: network_id,
+      gasPrice: gasPrice
     }
   },
   solc: {
