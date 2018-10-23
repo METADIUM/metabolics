@@ -12,6 +12,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         address addr;
         bytes32 title;
         bytes32 description;
+        uint256 createdAt;
         // code for 
         // bool type isEnterprise;
          
@@ -31,6 +32,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         attestationAgencies[0].addr = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
         attestationAgencies[0].title = 'MetadiumDefault';
         attestationAgencies[0].description = 'MetadiumDefault';
+        attestationAgencies[0].createdAt = now;
     }
 
     /**
@@ -46,6 +48,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         attestationAgencies[attestationAgencyNum].addr = _addr;
         attestationAgencies[attestationAgencyNum].title = _title;
         attestationAgencies[attestationAgencyNum].description = _description;
+        attestationAgencies[attestationAgencyNum].createdAt = now;
 
         isAAregistered[_addr] = attestationAgencyNum;
 
@@ -68,9 +71,10 @@ contract AttestationAgencyRegistry is RegistryUser {
         
         require(isAAregistered[_addr] == _num);
 
-        attestationAgencies[attestationAgencyNum].addr = _addr;
-        attestationAgencies[attestationAgencyNum].title = _title;
-        attestationAgencies[attestationAgencyNum].description = _description;
+        attestationAgencies[_num].addr = _addr;
+        attestationAgencies[_num].title = _title;
+        attestationAgencies[_num].description = _description;
+        attestationAgencies[_num].createdAt = now;
 
         emit UpdateAttestationAgency(_addr, _title, _description);
 
@@ -82,29 +86,32 @@ contract AttestationAgencyRegistry is RegistryUser {
         return isAAregistered[_addr];
     }
 
-    function getAttestationAgencySingle(uint256 _num) view public returns(address, bytes32, bytes32) {
+    function getAttestationAgencySingle(uint256 _num) view public returns(address, bytes32, bytes32, uint256) {
         return (
             attestationAgencies[_num].addr,
             attestationAgencies[_num].title,
-            attestationAgencies[_num].description
+            attestationAgencies[_num].description,
+            attestationAgencies[_num].createdAt
         );
     }
 
-    function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[], bytes32[]){
+    function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[], bytes32[], uint256[]){
         
         require(_to<attestationAgencyNum && _from < _to);
         
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sdescs = new bytes32[](_to-_from+1);
         bytes32[] memory stitles = new bytes32[](_to-_from+1);
+        uint256[] memory screateds = new uint256[](_to-_from+1);
 
         for(uint256 i=_from;i<=_to;i++){
             saddrs[i-_from] = attestationAgencies[i].addr;
             sdescs[i-_from] = attestationAgencies[i].description;
             stitles[i-_from] = attestationAgencies[i].title;
+            screateds[i-_from] = attestationAgencies[i].createdAt;
         }
 
-        return (saddrs, stitles, sdescs);
+        return (saddrs, stitles, sdescs, screateds);
     } 
     
 
