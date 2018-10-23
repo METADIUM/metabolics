@@ -23,7 +23,7 @@ contract AchievementManager is RegistryUser {
 
     bytes32[] public allAchievements;
 
-    event CreateAchievement(bytes32 indexed achievementId, uint256[] indexed topics, address[] indexed issuers, uint256 staked, string uri);
+    event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri);
     event UpdateAchievement(bytes32 indexed achievementId, uint256 reward, uint256 charge);
     event DeleteAchievement(bytes32 indexed achievementId, uint256 refund);
     event RequestAchievement(bytes32 indexed achievementId, address indexed receiver, uint256 reward);

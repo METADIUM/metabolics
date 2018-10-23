@@ -8,22 +8,15 @@ const AchievementManager = artifacts.require('AchievementManager.sol')
 const AARegistry = artifacts.require('AttestationAgencyRegistry.sol')
 const Achievement = artifacts.require('Achievement.sol')
 
-// deploy to local test instance
-// truffle migrate all --reset
-
-// deploy to testnet
-// truffle migrate all --network metadiumTestnet --reset
-
 async function deploy(deployer) {
     const args = process.argv.slice()
-    let _nonce = 0x54; // this shuld be current nonce + 2 because of the migration tx
-
+    let _nonce = 0x130 + 2; // this shuld be current nonce + 2 because of the migration tx
     let _gas = 6000000
     let _gasPrice = 1 * 10 ** 11
-
+    
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
-        var proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
+        let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
 
         return deployer.deploy(Registry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce }).then(async (reg) => {
             return deployer.deploy(IdentityManager, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 1 }).then(async (mim) => {
@@ -51,24 +44,45 @@ async function deploy(deployer) {
 
                                 
                                 // register creator as default aa
-                                await reg.setPermission("AttestationAgencyRegistry", deployer, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 19 })
-                                await aaRegistry.registerAttestationAgency(deployer, 'metadiumAA', 'metadiumAADes', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 20})
+                                console.log(`register default aa and topics`)
+                                //let defaultAA = //"0xD351858Dd581c4046693cEAe54C169C9f402E16D"
+                                let defaultAA = await reg.owner();
+                                console.log(`owner is ${JSON.stringify(defaultAA)}`)
+                                await reg.setPermission("AttestationAgencyRegistry", defaultAA, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 19 })
+                                await ar.registerAttestationAgency(defaultAA, 'metadiumAA', 'metadiumAADes', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 20})
 
                                 // register topics 
-                                await topicRegistry.registerTopic(deployer, 'name', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 21})
-                                await topicRegistry.registerTopic(deployer, 'nickname', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 22})
-                                await topicRegistry.registerTopic(deployer, 'email', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 23})
+                                await tr.registerTopic(defaultAA, 'name', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 21})
+                                await tr.registerTopic(defaultAA, 'nickname', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 22})
+                                await tr.registerTopic(defaultAA, 'email', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 23})
 
                                 let _topics = [1025, 1026, 1027]
-                                let _issuers = [issuer1, issuer2, issuer3]
+                                let _issuers = [defaultAA, defaultAA, defaultAA]
                                 let _achievementExplanation = 'Metadium'
-                                let _reward = 0.01 * 10 ** 18
-                                let _uri = '0x3be095406c14a224018c2e749ef954073b0f71f8cef30bb0458aab8662a447a0'
+                                let _reward = 0.1 * 10 ** 18
+                                let _uri = 'You are METAHero'
 
                                 // register achievement
-                                await achievementManager.createAchievement(_topics, _issuers, _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 24, value: ether1 })
+                                await am.createAchievement(_topics, _issuers, _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 24, value: '0xDE0B6B3A7640000' })
                                 
-                                // write contract addresses to json file to share
+                                // write contract addresses to json file for share
+                                var fs = require('fs');
+
+                                let contractData = {}
+                                contractData["Registry"] = reg.address
+                                contractData["IdentityManager"] = mim.address
+                                contractData["AchievementManager"] = am.address
+                                contractData["Achievement"] = achiv.address
+                                contractData["TopicRegistry"] = tr.address
+                                contractData["AttestationAgencyRegistry"] = ar.address
+
+                                fs.writeFile('contracts.json', JSON.stringify(contractData), 'utf-8', function(e){
+                                    if(e){
+                                        console.log(e);
+                                    }else{
+                                        console.log('contracts.json updated!');
+                                    }
+                                });
 
                             })
                         })
