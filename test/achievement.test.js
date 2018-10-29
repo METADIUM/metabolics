@@ -20,7 +20,7 @@ const IdentityManager = artifacts.require('IdentityManager.sol')
 contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user2, issuer1, issuer2, issuer3, proxy1]) {
     let registry, topicRegistry, aaRegistry, identityManager, achievementManager, metaIdentity, achievement
     let ether1 = 1000000000000000000
-    let _topics, _issuers, _topicExplanations, _achievementExplanation, _reward, _uri
+    let _topics, _issuers, _topicExplanations, _title, _achievementExplanation, _reward, _uri
     let _scheme = 1;
     beforeEach(async () => {
         // deploy all
@@ -81,6 +81,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             //AA create achievement
             _topics = [1025, 1026, 1027]
             _issuers = [issuer1, issuer2, issuer3]
+            _title = '0x1234'
             _achievementExplanation = '0x12'
             _reward = 0.1 * 10 ** 18
             _uri = '0x3be095406c14a224018c2e749ef954073b0f71f8cef30bb0458aab8662a447a0'
@@ -91,7 +92,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             let _uris = ["claim1uri", "claim2uri", "claim3uri"];
             let _topicPacked = ["0000000000000000000000000000000000000000000000000000000000000401", "0000000000000000000000000000000000000000000000000000000000000402", "0000000000000000000000000000000000000000000000000000000000000403"]
             // create achievement
-            await achievementManager.createAchievement(_topics, _issuers, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 })
+            await achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 })
 
             let bal = await web3.eth.getBalance(achievementManager.address)
             assert.equal(bal, ether1)

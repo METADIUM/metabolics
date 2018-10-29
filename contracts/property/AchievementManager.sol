@@ -30,6 +30,7 @@ contract AchievementManager is RegistryUser {
 
     struct Achievement {
         bytes32 id;
+        bytes32 title;
         address creator;
         address[] issuers;
         uint256[] claimTopics;
@@ -61,12 +62,13 @@ contract AchievementManager is RegistryUser {
      * @dev Create Achievement. Topics should be registered first.
      * @param _topics registered topics
      * @param _issuers issuers for each topic
+     * @param _title title
      * @param _achievementExplanation achievement explanation
      * @param _reward reward in meta when user request acievement
      * @param _uri basically used for ipfs id or something
      * @return A boolean that indicates if the operation was successful.
      */
-    function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool success) {
+    function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _title, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool success) {
 
         //check if achievement is already registered
         bytes32 achievementId = getAchievementId(msg.sender, _topics, _issuers);
@@ -86,6 +88,7 @@ contract AchievementManager is RegistryUser {
         newAc.creator = msg.sender;
         newAc.issuers = _issuers;
         newAc.claimTopics = _topics;
+        newAc.title = _title;
         newAc.explanation = _achievementExplanation;
         newAc.uri = _uri;
         newAc.reward = _reward;
@@ -234,13 +237,14 @@ contract AchievementManager is RegistryUser {
         return allAchievements.length;
     }
 
-    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
+    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
         Achievement memory ac = achievements[_achievementId];
         return (
             ac.id, 
             ac.creator, 
             ac.issuers, 
             ac.claimTopics, 
+            ac.title, 
             ac.explanation, 
             ac.reward, 
             ac.uri,
@@ -248,13 +252,14 @@ contract AchievementManager is RegistryUser {
             );
     }
 
-    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
+    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
         bytes32 _achievementId = allAchievements[_index];
         return (
             achievements[_achievementId].id, 
             achievements[_achievementId].creator, 
             achievements[_achievementId].issuers, 
             achievements[_achievementId].claimTopics, 
+            achievements[_achievementId].title, 
             achievements[_achievementId].explanation, 
             achievements[_achievementId].reward, 
             achievements[_achievementId].uri,
