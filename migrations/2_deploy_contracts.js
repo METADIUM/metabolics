@@ -13,54 +13,46 @@ async function deploy(deployer, network, accounts) {
     
     let _gas = 6000000
     let _gasPrice = 1 * 10 ** 11
-    //let _nonce2 = await web3.eth.getTransactionCount(accounts[0])
-    let _nonce = 0x21f + 2
-    //let _nonce = await getNonce(accounts[0])
-    //console.log(_nonce2)
-    // console.log(_nonce)
-    //let _nonce = parseInt(_non) + 2; // this shuld be current nonce + 2 because of the migration tx
-
+    
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
         let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
-        //let reg = await deployer.deploy(Registry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce })
-        //console.log(`reg.address : ${reg}`)
-        return deployer.deploy(Registry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce }).then(async (reg) => {
-            return deployer.deploy(IdentityManager, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 1 }).then(async (mim) => {
-                return deployer.deploy(TopicRegistry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 2 }).then(async (tr) => {
-                    return deployer.deploy(AchievementManager, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 3 }).then(async (am) => {
-                        return deployer.deploy(AARegistry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 4 }).then(async (ar) => {
-                            return deployer.deploy(Achievement, "Achievement", "MACH", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 5}).then(async (achiv) => {
+        return deployer.deploy(Registry, { gas: _gas, gasPrice: _gasPrice }).then(async (reg) => {
+            return deployer.deploy(IdentityManager, { gas: _gas, gasPrice: _gasPrice }).then(async (mim) => {
+                return deployer.deploy(TopicRegistry, { gas: _gas, gasPrice: _gasPrice }).then(async (tr) => {
+                    return deployer.deploy(AchievementManager, { gas: _gas, gasPrice: _gasPrice }).then(async (am) => {
+                        return deployer.deploy(AARegistry, { gas: _gas, gasPrice: _gasPrice }).then(async (ar) => {
+                            return deployer.deploy(Achievement, "Achievement", "MACH", { gas: _gas, gasPrice: _gasPrice}).then(async (achiv) => {
                                 //reg: name, permission setup
 
-                                await reg.setContractDomain("IdentityManager", mim.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 6 })
-                                await reg.setContractDomain("Achievement", achiv.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 7 })
-                                await reg.setContractDomain("AchievementManager", am.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 8 })
-                                await reg.setContractDomain("TopicRegistry", tr.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 9})
-                                await reg.setContractDomain("AttestationAgencyRegistry", ar.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 10})
+                                await reg.setContractDomain("IdentityManager", mim.address, { gas: _gas, gasPrice: _gasPrice })
+                                await reg.setContractDomain("Achievement", achiv.address, { gas: _gas, gasPrice: _gasPrice})
+                                await reg.setContractDomain("AchievementManager", am.address, { gas: _gas, gasPrice: _gasPrice})
+                                await reg.setContractDomain("TopicRegistry", tr.address, { gas: _gas, gasPrice: _gasPrice})
+                                await reg.setContractDomain("AttestationAgencyRegistry", ar.address, { gas: _gas, gasPrice: _gasPrice})
 
-                                await reg.setPermission("IdentityManager", proxy1, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 11 })
-                                await reg.setPermission("AttestationAgencyRegistry", proxy1, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 12 })
-                                await reg.setPermission("Achievement", am.address, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 13 })
+                                await reg.setPermission("IdentityManager", proxy1, "true", { gas: _gas, gasPrice: _gasPrice })
+                                await reg.setPermission("AttestationAgencyRegistry", proxy1, "true", { gas: _gas, gasPrice: _gasPrice })
+                                await reg.setPermission("Achievement", am.address, "true", { gas: _gas, gasPrice: _gasPrice })
 
-                                await mim.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 14 })
-                                await am.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 15 })
-                                await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 16 })
-                                await ar.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 17 })
-                                await tr.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 18 })
+                                await mim.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice })
+                                await am.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice })
+                                await achiv.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice })
+                                await ar.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice })
+                                await tr.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice })
                                 
                                 // register creator as default aa
                                 console.log(`register default aa and topics`)
                                 //let defaultAA = //"0xD351858Dd581c4046693cEAe54C169C9f402E16D"
                                 let defaultAA = await reg.owner();
                                 console.log(`owner is ${JSON.stringify(defaultAA)}`)
-                                await reg.setPermission("AttestationAgencyRegistry", defaultAA, "true", { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 19 })
-                                await ar.registerAttestationAgency(defaultAA, 'Metadium Enterprise', 'Metadium Authority', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 20})
+                                await reg.setPermission("AttestationAgencyRegistry", defaultAA, "true", { gas: _gas, gasPrice: _gasPrice })
+                                await ar.registerAttestationAgency(defaultAA, 'Metadium Enterprise', 'Metadium Authority', { gas: _gas, gasPrice: _gasPrice})
 
                                 // register topics 
-                                await tr.registerTopic('Name', 'Metadium Name', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 21})
-                                await tr.registerTopic('NickName', 'Metadium Nickname', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 22})
-                                await tr.registerTopic('Email', 'Metadium Email', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 23})
+                                await tr.registerTopic('Name', 'Metadium Name', { gas: _gas, gasPrice: _gasPrice})
+                                await tr.registerTopic('NickName', 'Metadium Nickname', { gas: _gas, gasPrice: _gasPrice})
+                                await tr.registerTopic('Email', 'Metadium Email', { gas: _gas, gasPrice: _gasPrice})
 
                                 let _topics = [1025, 1026, 1027]
                                 let _issuers = [defaultAA, defaultAA, defaultAA]
@@ -69,7 +61,7 @@ async function deploy(deployer, network, accounts) {
                                 let _uri = 'You are METAHero'
 
                                 // register achievement
-                                await am.createAchievement(_topics, _issuers, 'Metadium', _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 24, value: '0xDE0B6B3A7640000' })
+                                await am.createAchievement(_topics, _issuers, 'Metadium', _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, value: '0xDE0B6B3A7640000' })
                                 
                                 // write contract addresses to json file for share
                                 var fs = require('fs');
