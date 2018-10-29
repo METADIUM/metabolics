@@ -74,9 +74,9 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             await aaRegistry.registerAttestationAgency(aa1, 'metadiumAA', 'metadiumAADes', { from: proxy1 })
 
             //AA register topics to topic registry
-            await topicRegistry.registerTopic(aa1, 'name', {from:aa1})
-            await topicRegistry.registerTopic(aa1, 'nickname', {from:aa1})
-            await topicRegistry.registerTopic(aa1, 'email', {from:aa1})
+            await topicRegistry.registerTopic('name', 'thisisname', { from: aa1 })
+            await topicRegistry.registerTopic('nickname', 'this is nickname', { from: aa1 })
+            await topicRegistry.registerTopic('email','this is email', { from: aa1 })
 
             //AA create achievement
             _topics = [1025, 1026, 1027]

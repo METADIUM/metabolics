@@ -30,7 +30,7 @@ contract Achievement is ERC721Token, RegistryUser {
      * @param _uri the metaID that the newly minted token would get.
      * @return A boolean that indicates if the operation was successful.
      */
-    function mint(address _to, uint256 _tokenId, string _uri) permissioned public returns (bool) {
+    function mint(address _to, uint256 _tokenId, string _uri) permissioned public returns (bool success) {
         super._mint(_to, _tokenId);
         super._setTokenURI(_tokenId, _uri);
         emit Mint(_to, _tokenId);
@@ -42,18 +42,18 @@ contract Achievement is ERC721Token, RegistryUser {
      * @param _tokenId the token index of burning token.
      * @return A boolean that indicates if the operation was successful.
      */
-    function burn(uint256 _tokenId) permissioned public returns (bool){
+    function burn(uint256 _tokenId) permissioned public returns (bool success){
         super._burn(ownerOf(_tokenId), _tokenId);
         emit Burn(ownerOf(_tokenId), _tokenId);
         return true;
     }
 
-    function enableTransfer() permissioned public returns (bool) {
+    function enableTransfer() permissioned public returns (bool success) {
         transferEnabled = true;
         return true;
     }
 
-    function disableTransfer() permissioned public returns (bool) {
+    function disableTransfer() permissioned public returns (bool success) {
         transferEnabled = false;
         return true;
     }
@@ -62,7 +62,7 @@ contract Achievement is ERC721Token, RegistryUser {
      * @dev Throws if the token ID does not exist. May return an empty string.
      * @param _tokenId uint256 ID of the token to query
      */
-    function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes) {
+    function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes URI) {
         require(exists(_tokenId));
         return bytes(tokenURIs[_tokenId]);
     }

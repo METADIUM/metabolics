@@ -32,7 +32,7 @@ contract RegistryUser is Ownable {
      * @param _addr address of sender to check the permission
      * @return A boolean that indicates if the operation was successful.
      */
-    function isPermitted(address _addr) public returns(bool) {
+    function isPermitted(address _addr) public returns(bool found) {
         return REG.getPermission(THIS_NAME, _addr);
     }
 }

@@ -42,7 +42,7 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @param _description description
      * @return A boolean that indicates if the operation was successful.
      */
-    function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
+    function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool success) {
         require(isAAregistered[_addr] == 0);
         
         attestationAgencies[attestationAgencyNum].addr = _addr;
@@ -67,7 +67,7 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @param _description description
      * @return A boolean that indicates if the operation was successful.
      */
-    function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool) {
+    function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool success) {
         
         require(isAAregistered[_addr] == _num);
 
@@ -82,11 +82,11 @@ contract AttestationAgencyRegistry is RegistryUser {
 
     }
 
-    function isRegistered(address _addr) view public returns(uint256){
+    function isRegistered(address _addr) view public returns(uint256 found){
         return isAAregistered[_addr];
     }
 
-    function getAttestationAgencySingle(uint256 _num) view public returns(address, bytes32, bytes32, uint256) {
+    function getAttestationAgencySingle(uint256 _num) view public returns(address addr, bytes32 title, bytes32 description, uint256 createdAt) {
         return (
             attestationAgencies[_num].addr,
             attestationAgencies[_num].title,
@@ -95,7 +95,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         );
     }
 
-    function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[], bytes32[], bytes32[], uint256[]){
+    function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[] addrs, bytes32[] titles, bytes32[] descs, uint256[] createds){
         
         require(_to<attestationAgencyNum && _from < _to);
         

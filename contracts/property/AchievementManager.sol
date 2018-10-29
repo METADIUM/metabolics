@@ -39,7 +39,7 @@ contract AchievementManager is RegistryUser {
         uint256 createdAt;
     }
 
-    function isAAttestationAgency(address _addr) public returns(bool) {
+    function isAAttestationAgency(address _addr) public returns(bool found) {
         
         IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
         require(ar.isRegistered(_addr) != 0);
@@ -66,7 +66,7 @@ contract AchievementManager is RegistryUser {
      * @param _uri basically used for ipfs id or something
      * @return A boolean that indicates if the operation was successful.
      */
-    function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool) {
+    function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool success) {
 
         //check if achievement is already registered
         bytes32 achievementId = getAchievementId(msg.sender, _topics, _issuers);
@@ -156,7 +156,7 @@ contract AchievementManager is RegistryUser {
      * @param _reward new reward
      * @return A boolean that indicates if the operation was successful.
      */
-    function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool) {
+    function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool success) {
         //Only creator can charge fund
         require(achievements[_achievementId].creator == msg.sender);
 
@@ -172,7 +172,7 @@ contract AchievementManager is RegistryUser {
      * @param _achievementId achievementId
      * @return A boolean that indicates if the operation was successful.
      */
-    function deleteAchievement(bytes32 _achievementId) public returns (bool) {
+    function deleteAchievement(bytes32 _achievementId) public returns (bool success) {
         //Only creator can refund
         require(achievements[_achievementId].creator == msg.sender);
 
@@ -190,7 +190,7 @@ contract AchievementManager is RegistryUser {
      * @param _achievementId _achievementId user want to request
      * @return A boolean that indicates if the operation was successful.
      */
-    function requestAchievement(bytes32 _achievementId) public returns (bool) {
+    function requestAchievement(bytes32 _achievementId) public returns (bool success) {
         // check whether msg.sender is deployed using IdentityManager
         IIdentityManager im = IIdentityManager(REG.getContractAddress("IdentityManager"));
         require(im.isMetaId(msg.sender), 'msg.sender is not identity created by IdentityManager');
@@ -222,15 +222,15 @@ contract AchievementManager is RegistryUser {
         return true;
     }
    
-    function getAllAchievementList() view public returns (bytes32[]) {
+    function getAllAchievementList() view public returns (bytes32[] list) {
         return allAchievements;
     }
    
-    function getActiveAchievementList() view public returns(bytes32[]) {
+    function getActiveAchievementList() view public returns(bytes32[] list) {
 
     }
 
-    function getLengthOfAchievements() view public returns(uint256) {
+    function getLengthOfAchievements() view public returns(uint256 length) {
         return allAchievements.length;
     }
 
@@ -271,7 +271,7 @@ contract AchievementManager is RegistryUser {
      * @param issuers issuers achievement requirements
      * @return A boolean that indicates if the operation was successful.
      */
-    function getAchievementId(address creator, uint256[] topics, address[] issuers) pure public returns(bytes32) {
+    function getAchievementId(address creator, uint256[] topics, address[] issuers) pure public returns(bytes32 id) {
         bytes memory idBytes;
         
         require(topics.length == issuers.length);

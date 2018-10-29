@@ -29,7 +29,7 @@ contract IdentityManager is RegistryUser {
      * @param _managementKey basic managementKey to use
      * @return A boolean that indicates if the operation was successful.
      */
-    function createMetaId(address _managementKey) permissioned public returns (bool) {
+    function createMetaId(address _managementKey) permissioned public returns (bool success) {
         require(_managementKey != address(0));
 
         address newMetaId = new MetaIdentity(_managementKey);
@@ -43,15 +43,15 @@ contract IdentityManager is RegistryUser {
 
     }
 
-    function getDeployedMetaIds() public view returns(address[]) {
+    function getDeployedMetaIds() public view returns(address[] addrs) {
         return metaIds;
     }
 
-    function isMetaId(address _addr) public view returns(bool) {
+    function isMetaId(address _addr) public view returns(bool found) {
         return metaIdExistence[_addr];
     }
 
-    function getLengthOfMetaIds() public view returns(uint256) {
+    function getLengthOfMetaIds() public view returns(uint256 length) {
         return metaIds.length;
     }
 

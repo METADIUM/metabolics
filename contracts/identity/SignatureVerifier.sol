@@ -17,7 +17,7 @@ contract SignatureVerifier {
     function getSignatureAddress(bytes32 toSign, bytes signature)
         public
         pure
-        returns (address)
+        returns (address addr)
     {
         return keccak256(abi.encodePacked(ETH_PREFIX, toSign)).recover(signature);
     }

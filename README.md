@@ -102,9 +102,9 @@ You can get the specific address of contract you want to read.
 
 ### Topic Registry
 ```
-function registerTopic(uint256 id, address issuer, bytes32 explanation) permissioned public
+function registerTopic(address _issuer, bytes32 _explanation) public returns (uint256)
 ```
-Register topic
+Register topic. Only AA can register or permissioned user can register topic.
 ```
 function getTopics() public returns(uint256[] topics)
 ```

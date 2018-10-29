@@ -25,7 +25,7 @@ contract Registry is Ownable{
     * @param _addr address
     * @return A boolean that indicates if the operation was successful.
     */
-    function setContractDomain(bytes32 _name, address _addr) onlyOwner public returns (bool){
+    function setContractDomain(bytes32 _name, address _addr) onlyOwner public returns (bool success){
         require(_addr != address(0x0));
         contracts[_name] = _addr;
 
@@ -42,7 +42,7 @@ contract Registry is Ownable{
     * @param _name _name
     * @return An address of the _name
     */
-    function getContractAddress(bytes32 _name) public view returns(address) {
+    function getContractAddress(bytes32 _name) public view returns(address addr) {
         require(contracts[_name] != address(0x0));
         return contracts[_name];
     }
@@ -55,7 +55,7 @@ contract Registry is Ownable{
     * @param _status true = can use, false = cannot use. default is false
     * @return A boolean that indicates if the operation was successful.
     */
-    function setPermission(bytes32 _contract, address _granted, bool _status) onlyOwner public returns(bool) {
+    function setPermission(bytes32 _contract, address _granted, bool _status) onlyOwner public returns(bool success) {
         require(_granted != address(0x0));
         permissions[_contract][_granted] = _status;
 
@@ -71,7 +71,7 @@ contract Registry is Ownable{
     * @param _granted granted address
     * @return permission result
     */
-    function getPermission(bytes32 _contract, address _granted) public view returns(bool) {
+    function getPermission(bytes32 _contract, address _granted) public view returns(bool found) {
         return permissions[_contract][_granted];
     }
     
