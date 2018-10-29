@@ -42,7 +42,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         
     }
 
-    function hasPermission(address _sender, address _to, bytes _data) internal returns(uint256 threshold) { 
+    function hasPermission(address _sender, address _to, bytes _data) view internal returns(uint256 threshold) { 
         if (_to == address(this)) {
             if (_sender == address(this)) {
                 // Contract calling itself to act on itself

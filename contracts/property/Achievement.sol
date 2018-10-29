@@ -19,9 +19,14 @@ contract Achievement is ERC721Token, RegistryUser {
         require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender));
         _;
     }
-    function Achievement(string name, string symbol) public ERC721Token(name, symbol){
+    
+    constructor(string name, string symbol) public ERC721Token(name, symbol){
         THIS_NAME = "Achievement";
     }
+
+    // function Achievement(string name, string symbol) public ERC721Token(name, symbol){
+    //     THIS_NAME = "Achievement";
+    // }
 
     /**
      * @dev Function to mint ERC721 Token.

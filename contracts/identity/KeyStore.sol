@@ -112,5 +112,7 @@ library KeyStore {
     {
         Key storage k = self.keyData[key];
         k.func[to][func] = executable;
+        
+        return executable;
     }
 }

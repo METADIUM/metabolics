@@ -35,14 +35,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/SignatureVerifier.sol",
     "exportedSymbols": {
       "SignatureVerifier": [
-        3714
+        3720
       ]
     },
-    "id": 3715,
+    "id": 3721,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3685,
+        "id": 3691,
         "literals": [
           "solidity",
           "^",
@@ -55,10 +55,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/openzeppelin-solidity/contracts/ECRecovery.sol",
         "file": "../openzeppelin-solidity/contracts/ECRecovery.sol",
-        "id": 3686,
+        "id": 3692,
         "nodeType": "ImportDirective",
-        "scope": 3715,
-        "sourceUnit": 3866,
+        "scope": 3721,
+        "sourceUnit": 3872,
         "src": "26:59:17",
         "symbolAliases": [],
         "unitAlias": ""
@@ -69,31 +69,31 @@
         "contractKind": "contract",
         "documentation": "@title SignatureVerifier\n @author genie\n @notice Implement signature verifying logic\n @dev almost all of the data need to be verified would use this logic",
         "fullyImplemented": true,
-        "id": 3714,
+        "id": 3720,
         "linearizedBaseContracts": [
-          3714
+          3720
         ],
         "name": "SignatureVerifier",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 3689,
+            "id": 3695,
             "libraryName": {
               "contractScope": null,
-              "id": 3687,
+              "id": 3693,
               "name": "ECRecovery",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3865,
+              "referencedDeclaration": 3871,
               "src": "294:10:17",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ECRecovery_$3865",
+                "typeIdentifier": "t_contract$_ECRecovery_$3871",
                 "typeString": "library ECRecovery"
               }
             },
             "nodeType": "UsingForDirective",
             "src": "288:29:17",
             "typeName": {
-              "id": 3688,
+              "id": 3694,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
               "src": "309:7:17",
@@ -105,10 +105,10 @@
           },
           {
             "constant": true,
-            "id": 3692,
+            "id": 3698,
             "name": "ETH_PREFIX",
             "nodeType": "VariableDeclaration",
-            "scope": 3714,
+            "scope": 3720,
             "src": "322:71:17",
             "stateVariable": true,
             "storageLocation": "default",
@@ -117,7 +117,7 @@
               "typeString": "bytes"
             },
             "typeName": {
-              "id": 3690,
+              "id": 3696,
               "name": "bytes",
               "nodeType": "ElementaryTypeName",
               "src": "322:5:17",
@@ -129,7 +129,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "19457468657265756d205369676e6564204d6573736167653a0a3332",
-              "id": 3691,
+              "id": 3697,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -148,7 +148,7 @@
           },
           {
             "body": {
-              "id": 3712,
+              "id": 3718,
               "nodeType": "Block",
               "src": "796:90:17",
               "statements": [
@@ -158,11 +158,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 3709,
+                        "id": 3715,
                         "name": "signature",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3696,
+                        "referencedDeclaration": 3702,
                         "src": "869:9:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -185,11 +185,11 @@
                             "arguments": [
                               {
                                 "argumentTypes": null,
-                                "id": 3704,
+                                "id": 3710,
                                 "name": "ETH_PREFIX",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 3692,
+                                "referencedDeclaration": 3698,
                                 "src": "840:10:17",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_bytes_memory",
@@ -198,11 +198,11 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 3705,
+                                "id": 3711,
                                 "name": "toSign",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 3694,
+                                "referencedDeclaration": 3700,
                                 "src": "852:6:17",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_bytes32",
@@ -223,18 +223,18 @@
                               ],
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 3702,
+                                "id": 3708,
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4628,
+                                "referencedDeclaration": 4634,
                                 "src": "823:3:17",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
                                   "typeString": "abi"
                                 }
                               },
-                              "id": 3703,
+                              "id": 3709,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -248,7 +248,7 @@
                                 "typeString": "function () pure returns (bytes memory)"
                               }
                             },
-                            "id": 3706,
+                            "id": 3712,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -270,18 +270,18 @@
                               "typeString": "bytes memory"
                             }
                           ],
-                          "id": 3701,
+                          "id": 3707,
                           "name": "keccak256",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4635,
+                          "referencedDeclaration": 4641,
                           "src": "813:9:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_sha3_pure$__$returns$_t_bytes32_$",
                             "typeString": "function () pure returns (bytes32)"
                           }
                         },
-                        "id": 3707,
+                        "id": 3713,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -295,21 +295,21 @@
                           "typeString": "bytes32"
                         }
                       },
-                      "id": 3708,
+                      "id": 3714,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "recover",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3851,
+                      "referencedDeclaration": 3857,
                       "src": "813:55:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_bytes32_$_t_bytes_memory_ptr_$returns$_t_address_$bound_to$_t_bytes32_$",
                         "typeString": "function (bytes32,bytes memory) pure returns (address)"
                       }
                     },
-                    "id": 3710,
+                    "id": 3716,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -323,15 +323,15 @@
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 3700,
-                  "id": 3711,
+                  "functionReturnParameters": 3706,
+                  "id": 3717,
                   "nodeType": "Return",
                   "src": "806:73:17"
                 }
               ]
             },
             "documentation": "@dev Recover address used to sign a claim\n @param toSign Hash to be signed, potentially generated with `claimToSign`\n @param signature Signature data i.e. signed hash\n @return address recovered from `signature` which signed the `toSign` hash",
-            "id": 3713,
+            "id": 3719,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -339,15 +339,15 @@
             "name": "getSignatureAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3697,
+              "id": 3703,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3694,
+                  "id": 3700,
                   "name": "toSign",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3713,
+                  "scope": 3719,
                   "src": "700:14:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -356,7 +356,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3693,
+                    "id": 3699,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "700:7:17",
@@ -370,10 +370,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3696,
+                  "id": 3702,
                   "name": "signature",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3713,
+                  "scope": 3719,
                   "src": "716:15:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -382,7 +382,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 3695,
+                    "id": 3701,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "716:5:17",
@@ -399,15 +399,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 3700,
+              "id": 3706,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3699,
+                  "id": 3705,
                   "name": "addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3713,
+                  "scope": 3719,
                   "src": "778:12:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -416,7 +416,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3698,
+                    "id": 3704,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "778:7:17",
@@ -431,14 +431,14 @@
               ],
               "src": "777:14:17"
             },
-            "scope": 3714,
+            "scope": 3720,
             "src": "671:215:17",
             "stateMutability": "pure",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 3715,
+        "scope": 3721,
         "src": "255:634:17"
       }
     ],
@@ -448,14 +448,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/SignatureVerifier.sol",
     "exportedSymbols": {
       "SignatureVerifier": [
-        3714
+        3720
       ]
     },
-    "id": 3715,
+    "id": 3721,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 3685,
+        "id": 3691,
         "literals": [
           "solidity",
           "^",
@@ -468,10 +468,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/openzeppelin-solidity/contracts/ECRecovery.sol",
         "file": "../openzeppelin-solidity/contracts/ECRecovery.sol",
-        "id": 3686,
+        "id": 3692,
         "nodeType": "ImportDirective",
-        "scope": 3715,
-        "sourceUnit": 3866,
+        "scope": 3721,
+        "sourceUnit": 3872,
         "src": "26:59:17",
         "symbolAliases": [],
         "unitAlias": ""
@@ -482,31 +482,31 @@
         "contractKind": "contract",
         "documentation": "@title SignatureVerifier\n @author genie\n @notice Implement signature verifying logic\n @dev almost all of the data need to be verified would use this logic",
         "fullyImplemented": true,
-        "id": 3714,
+        "id": 3720,
         "linearizedBaseContracts": [
-          3714
+          3720
         ],
         "name": "SignatureVerifier",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "id": 3689,
+            "id": 3695,
             "libraryName": {
               "contractScope": null,
-              "id": 3687,
+              "id": 3693,
               "name": "ECRecovery",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 3865,
+              "referencedDeclaration": 3871,
               "src": "294:10:17",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_ECRecovery_$3865",
+                "typeIdentifier": "t_contract$_ECRecovery_$3871",
                 "typeString": "library ECRecovery"
               }
             },
             "nodeType": "UsingForDirective",
             "src": "288:29:17",
             "typeName": {
-              "id": 3688,
+              "id": 3694,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
               "src": "309:7:17",
@@ -518,10 +518,10 @@
           },
           {
             "constant": true,
-            "id": 3692,
+            "id": 3698,
             "name": "ETH_PREFIX",
             "nodeType": "VariableDeclaration",
-            "scope": 3714,
+            "scope": 3720,
             "src": "322:71:17",
             "stateVariable": true,
             "storageLocation": "default",
@@ -530,7 +530,7 @@
               "typeString": "bytes"
             },
             "typeName": {
-              "id": 3690,
+              "id": 3696,
               "name": "bytes",
               "nodeType": "ElementaryTypeName",
               "src": "322:5:17",
@@ -542,7 +542,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "19457468657265756d205369676e6564204d6573736167653a0a3332",
-              "id": 3691,
+              "id": 3697,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -561,7 +561,7 @@
           },
           {
             "body": {
-              "id": 3712,
+              "id": 3718,
               "nodeType": "Block",
               "src": "796:90:17",
               "statements": [
@@ -571,11 +571,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 3709,
+                        "id": 3715,
                         "name": "signature",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 3696,
+                        "referencedDeclaration": 3702,
                         "src": "869:9:17",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes_memory_ptr",
@@ -598,11 +598,11 @@
                             "arguments": [
                               {
                                 "argumentTypes": null,
-                                "id": 3704,
+                                "id": 3710,
                                 "name": "ETH_PREFIX",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 3692,
+                                "referencedDeclaration": 3698,
                                 "src": "840:10:17",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_bytes_memory",
@@ -611,11 +611,11 @@
                               },
                               {
                                 "argumentTypes": null,
-                                "id": 3705,
+                                "id": 3711,
                                 "name": "toSign",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 3694,
+                                "referencedDeclaration": 3700,
                                 "src": "852:6:17",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_bytes32",
@@ -636,18 +636,18 @@
                               ],
                               "expression": {
                                 "argumentTypes": null,
-                                "id": 3702,
+                                "id": 3708,
                                 "name": "abi",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4628,
+                                "referencedDeclaration": 4634,
                                 "src": "823:3:17",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_magic_abi",
                                   "typeString": "abi"
                                 }
                               },
-                              "id": 3703,
+                              "id": 3709,
                               "isConstant": false,
                               "isLValue": false,
                               "isPure": true,
@@ -661,7 +661,7 @@
                                 "typeString": "function () pure returns (bytes memory)"
                               }
                             },
-                            "id": 3706,
+                            "id": 3712,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -683,18 +683,18 @@
                               "typeString": "bytes memory"
                             }
                           ],
-                          "id": 3701,
+                          "id": 3707,
                           "name": "keccak256",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4635,
+                          "referencedDeclaration": 4641,
                           "src": "813:9:17",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_sha3_pure$__$returns$_t_bytes32_$",
                             "typeString": "function () pure returns (bytes32)"
                           }
                         },
-                        "id": 3707,
+                        "id": 3713,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -708,21 +708,21 @@
                           "typeString": "bytes32"
                         }
                       },
-                      "id": 3708,
+                      "id": 3714,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "recover",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 3851,
+                      "referencedDeclaration": 3857,
                       "src": "813:55:17",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_pure$_t_bytes32_$_t_bytes_memory_ptr_$returns$_t_address_$bound_to$_t_bytes32_$",
                         "typeString": "function (bytes32,bytes memory) pure returns (address)"
                       }
                     },
-                    "id": 3710,
+                    "id": 3716,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -736,15 +736,15 @@
                       "typeString": "address"
                     }
                   },
-                  "functionReturnParameters": 3700,
-                  "id": 3711,
+                  "functionReturnParameters": 3706,
+                  "id": 3717,
                   "nodeType": "Return",
                   "src": "806:73:17"
                 }
               ]
             },
             "documentation": "@dev Recover address used to sign a claim\n @param toSign Hash to be signed, potentially generated with `claimToSign`\n @param signature Signature data i.e. signed hash\n @return address recovered from `signature` which signed the `toSign` hash",
-            "id": 3713,
+            "id": 3719,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -752,15 +752,15 @@
             "name": "getSignatureAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 3697,
+              "id": 3703,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3694,
+                  "id": 3700,
                   "name": "toSign",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3713,
+                  "scope": 3719,
                   "src": "700:14:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -769,7 +769,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 3693,
+                    "id": 3699,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "700:7:17",
@@ -783,10 +783,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 3696,
+                  "id": 3702,
                   "name": "signature",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3713,
+                  "scope": 3719,
                   "src": "716:15:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -795,7 +795,7 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 3695,
+                    "id": 3701,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
                     "src": "716:5:17",
@@ -812,15 +812,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 3700,
+              "id": 3706,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 3699,
+                  "id": 3705,
                   "name": "addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 3713,
+                  "scope": 3719,
                   "src": "778:12:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -829,7 +829,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 3698,
+                    "id": 3704,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "778:7:17",
@@ -844,14 +844,14 @@
               ],
               "src": "777:14:17"
             },
-            "scope": 3714,
+            "scope": 3720,
             "src": "671:215:17",
             "stateMutability": "pure",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 3715,
+        "scope": 3721,
         "src": "255:634:17"
       }
     ],
@@ -863,5 +863,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-10-29T01:56:39.590Z"
+  "updatedAt": "2018-10-29T03:17:45.617Z"
 }

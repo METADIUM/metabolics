@@ -91,7 +91,7 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
     )
     public
     whenNotPaused
-    returns (uint256 claimRequestId)
+    returns (bool success)
     {
         // Check signature
         require(_validSignature(_topic, _scheme, issuer, _signature, _data));
@@ -116,6 +116,8 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
             // don't need to update those two fields
             emit ClaimChanged(claimId, _topic, _scheme, issuer, _signature, _data, _uri);
         }
+
+        return true;
     }
 
     

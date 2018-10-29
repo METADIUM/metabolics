@@ -77,8 +77,8 @@
       "type": "function"
     }
   ],
-  "bytecode": "0x608060405260016000556001805534801561001957600080fd5b50610161806100296000396000f30060806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a72305820f0f0e5b24c37590898910dbfe89ef92cbe74a20f294fb51505f710ff872e877c0029",
-  "deployedBytecode": "0x60806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a72305820f0f0e5b24c37590898910dbfe89ef92cbe74a20f294fb51505f710ff872e877c0029",
+  "bytecode": "0x608060405260016000556001805534801561001957600080fd5b50610161806100296000396000f30060806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a723058200d09dfc625d2bac2fa414a6bc44dffcadb0e7807ea40b2596fecafeddc6165740029",
+  "deployedBytecode": "0x60806040526004361061006c5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663058b316c811461007157806338f4edd41461009857806363f14c3c146100ad578063aa0a5142146100db578063c9d24ecc146100f0575b600080fd5b34801561007d57600080fd5b50610086610105565b60408051918252519081900360200190f35b3480156100a457600080fd5b5061008661010a565b3480156100b957600080fd5b5061008673ffffffffffffffffffffffffffffffffffffffff60043516610110565b3480156100e757600080fd5b50610086610129565b3480156100fc57600080fd5b5061008661012f565b600181565b60015481565b73ffffffffffffffffffffffffffffffffffffffff1690565b60005481565b600454905600a165627a7a723058200d09dfc625d2bac2fa414a6bc44dffcadb0e7807ea40b2596fecafeddc6165740029",
   "sourceMap": "197:1609:10:-;;;327:1;290:38;;367:1;334:34;;197:1609;8:9:-1;5:2;;;30:1;27;20:12;5:2;197:1609:10;;;;;;;",
   "deployedSourceMap": "197:1609:10:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;220:42;;8:9:-1;5:2;;;30:1;27;20:12;5:2;220:42:10;;;;;;;;;;;;;;;;;;;;334:34;;8:9:-1;5:2;;;30:1;27;20:12;5:2;334:34:10;;;;848:128;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;848:128:10;;;;;;;290:38;;8:9:-1;5:2;;;30:1;27;20:12;5:2;290:38:10;;;;569:115;;8:9:-1;5:2;;;30:1;27;20:12;5:2;569:115:10;;;;220:42;261:1;220:42;:::o;334:34::-;;;;:::o;848:128::-;956:13;;;848:128::o;290:38::-;;;;:::o;569:115::-;662:15;;569:115;:::o",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./KeyStore.sol\";\n\n/// @title KeyBase\n/// @author genie\n/// @notice Abstract contract for ERC725 implementation\n/// @dev Key data is stored using KeyStore library\n\ncontract KeyBase {\n    uint256 public constant MANAGEMENT_KEY = 1;\n\n    // For multi-sig\n    uint256 public managementThreshold = 1;\n    uint256 public actionThreshold = 1;\n\n    // Key storage\n    using KeyStore for KeyStore.Keys;\n    KeyStore.Keys internal allKeys;\n\n    /// @dev Number of keys managed by the contract\n    /// @return Unsigned integer number of keys\n    function numKeys()\n        external\n        view\n        returns (uint)\n    {\n        return allKeys.numKeys;\n    }\n\n    /// @dev Convert an Ethereum address (20 bytes) to an ERC725 key (32 bytes)\n    /// @dev It's just a simple typecast, but it's especially useful in tests\n    function addrToKey(address addr)\n        public\n        pure\n        returns (bytes32)\n    {\n        return bytes32(addr);\n    }\n\n    /// @dev Checks if sender is either the identity contract or a MANAGEMENT_KEY\n    /// @dev If the multi-sig threshold for MANAGEMENT_KEY if >1, it will throw an error\n    /// @return `true` if sender is either identity contract or a MANAGEMENT_KEY\n    function _managementOrSelf()\n        internal\n        view\n        returns (bool found)\n    {\n        if (msg.sender == address(this)) {\n            // Identity contract itself\n            return true;\n        }\n        // Only works with 1 key threshold, otherwise need multi-sig\n        require(managementThreshold == 1);\n        return allKeys.find(addrToKey(msg.sender), MANAGEMENT_KEY);\n    }\n\n    /// @dev Modifier that only allows keys of purpose 1, or the identity itself\n    modifier onlyManagementOrSelf {\n        require(_managementOrSelf());\n        _;\n    }\n}\n",
@@ -87,14 +87,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyBase.sol",
     "exportedSymbols": {
       "KeyBase": [
-        2269
+        2273
       ]
     },
-    "id": 2270,
+    "id": 2274,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2192,
+        "id": 2196,
         "literals": [
           "solidity",
           "^",
@@ -107,10 +107,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyStore.sol",
         "file": "./KeyStore.sol",
-        "id": 2193,
+        "id": 2197,
         "nodeType": "ImportDirective",
-        "scope": 2270,
-        "sourceUnit": 2850,
+        "scope": 2274,
+        "sourceUnit": 2856,
         "src": "26:24:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -121,19 +121,19 @@
         "contractKind": "contract",
         "documentation": "@title KeyBase\n @author genie\n @notice Abstract contract for ERC725 implementation\n @dev Key data is stored using KeyStore library",
         "fullyImplemented": true,
-        "id": 2269,
+        "id": 2273,
         "linearizedBaseContracts": [
-          2269
+          2273
         ],
         "name": "KeyBase",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": true,
-            "id": 2196,
+            "id": 2200,
             "name": "MANAGEMENT_KEY",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "220:42:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -142,7 +142,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2194,
+              "id": 2198,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "220:7:10",
@@ -154,7 +154,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "31",
-              "id": 2195,
+              "id": 2199,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -173,10 +173,10 @@
           },
           {
             "constant": false,
-            "id": 2199,
+            "id": 2203,
             "name": "managementThreshold",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "290:38:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -185,7 +185,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2197,
+              "id": 2201,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "290:7:10",
@@ -197,7 +197,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "31",
-              "id": 2198,
+              "id": 2202,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -216,10 +216,10 @@
           },
           {
             "constant": false,
-            "id": 2202,
+            "id": 2206,
             "name": "actionThreshold",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "334:34:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -228,7 +228,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2200,
+              "id": 2204,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "334:7:10",
@@ -240,7 +240,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "31",
-              "id": 2201,
+              "id": 2205,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -258,16 +258,16 @@
             "visibility": "public"
           },
           {
-            "id": 2205,
+            "id": 2209,
             "libraryName": {
               "contractScope": null,
-              "id": 2203,
+              "id": 2207,
               "name": "KeyStore",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2849,
+              "referencedDeclaration": 2855,
               "src": "400:8:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_KeyStore_$2849",
+                "typeIdentifier": "t_contract$_KeyStore_$2855",
                 "typeString": "library KeyStore"
               }
             },
@@ -275,39 +275,39 @@
             "src": "394:33:10",
             "typeName": {
               "contractScope": null,
-              "id": 2204,
+              "id": 2208,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2534,
+              "referencedDeclaration": 2538,
               "src": "413:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2534_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2538_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             }
           },
           {
             "constant": false,
-            "id": 2207,
+            "id": 2211,
             "name": "allKeys",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "432:30:10",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_Keys_$2534_storage",
+              "typeIdentifier": "t_struct$_Keys_$2538_storage",
               "typeString": "struct KeyStore.Keys"
             },
             "typeName": {
               "contractScope": null,
-              "id": 2206,
+              "id": 2210,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2534,
+              "referencedDeclaration": 2538,
               "src": "432:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2534_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2538_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             },
@@ -316,7 +316,7 @@
           },
           {
             "body": {
-              "id": 2215,
+              "id": 2219,
               "nodeType": "Block",
               "src": "645:39:10",
               "statements": [
@@ -325,40 +325,40 @@
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 2212,
+                      "id": 2216,
                       "name": "allKeys",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2207,
+                      "referencedDeclaration": 2211,
                       "src": "662:7:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Keys_$2534_storage",
+                        "typeIdentifier": "t_struct$_Keys_$2538_storage",
                         "typeString": "struct KeyStore.Keys storage ref"
                       }
                     },
-                    "id": 2213,
+                    "id": 2217,
                     "isConstant": false,
                     "isLValue": true,
                     "isPure": false,
                     "lValueRequested": false,
                     "memberName": "numKeys",
                     "nodeType": "MemberAccess",
-                    "referencedDeclaration": 2533,
+                    "referencedDeclaration": 2537,
                     "src": "662:15:10",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 2211,
-                  "id": 2214,
+                  "functionReturnParameters": 2215,
+                  "id": 2218,
                   "nodeType": "Return",
                   "src": "655:22:10"
                 }
               ]
             },
             "documentation": "@dev Number of keys managed by the contract\n @return Unsigned integer number of keys",
-            "id": 2216,
+            "id": 2220,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -366,22 +366,22 @@
             "name": "numKeys",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2208,
+              "id": 2212,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "585:2:10"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2211,
+              "id": 2215,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2210,
+                  "id": 2214,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2216,
+                  "scope": 2220,
                   "src": "635:4:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -390,7 +390,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2209,
+                    "id": 2213,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "635:4:10",
@@ -405,7 +405,7 @@
               ],
               "src": "634:6:10"
             },
-            "scope": 2269,
+            "scope": 2273,
             "src": "569:115:10",
             "stateMutability": "view",
             "superFunction": null,
@@ -413,7 +413,7 @@
           },
           {
             "body": {
-              "id": 2227,
+              "id": 2231,
               "nodeType": "Block",
               "src": "939:37:10",
               "statements": [
@@ -423,11 +423,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2224,
+                        "id": 2228,
                         "name": "addr",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2218,
+                        "referencedDeclaration": 2222,
                         "src": "964:4:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -442,7 +442,7 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 2223,
+                      "id": 2227,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -455,7 +455,7 @@
                       },
                       "typeName": "bytes32"
                     },
-                    "id": 2225,
+                    "id": 2229,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -469,15 +469,15 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "functionReturnParameters": 2222,
-                  "id": 2226,
+                  "functionReturnParameters": 2226,
+                  "id": 2230,
                   "nodeType": "Return",
                   "src": "949:20:10"
                 }
               ]
             },
             "documentation": "@dev Convert an Ethereum address (20 bytes) to an ERC725 key (32 bytes)\n @dev It's just a simple typecast, but it's especially useful in tests",
-            "id": 2228,
+            "id": 2232,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -485,15 +485,15 @@
             "name": "addrToKey",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2219,
+              "id": 2223,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2218,
+                  "id": 2222,
                   "name": "addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2228,
+                  "scope": 2232,
                   "src": "867:12:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -502,7 +502,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2217,
+                    "id": 2221,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "867:7:10",
@@ -519,15 +519,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2222,
+              "id": 2226,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2221,
+                  "id": 2225,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2228,
+                  "scope": 2232,
                   "src": "926:7:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -536,7 +536,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2220,
+                    "id": 2224,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "926:7:10",
@@ -551,7 +551,7 @@
               ],
               "src": "925:9:10"
             },
-            "scope": 2269,
+            "scope": 2273,
             "src": "848:128:10",
             "stateMutability": "pure",
             "superFunction": null,
@@ -559,7 +559,7 @@
           },
           {
             "body": {
-              "id": 2258,
+              "id": 2262,
               "nodeType": "Block",
               "src": "1326:305:10",
               "statements": [
@@ -570,7 +570,7 @@
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
-                    "id": 2238,
+                    "id": 2242,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -579,18 +579,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2233,
+                        "id": 2237,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4641,
+                        "referencedDeclaration": 4647,
                         "src": "1340:3:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 2234,
+                      "id": 2238,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -611,14 +611,14 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 2236,
+                          "id": 2240,
                           "name": "this",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4658,
+                          "referencedDeclaration": 4664,
                           "src": "1362:4:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_KeyBase_$2269",
+                            "typeIdentifier": "t_contract$_KeyBase_$2273",
                             "typeString": "contract KeyBase"
                           }
                         }
@@ -626,11 +626,11 @@
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_contract$_KeyBase_$2269",
+                            "typeIdentifier": "t_contract$_KeyBase_$2273",
                             "typeString": "contract KeyBase"
                           }
                         ],
-                        "id": 2235,
+                        "id": 2239,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -643,7 +643,7 @@
                         },
                         "typeName": "address"
                       },
-                      "id": 2237,
+                      "id": 2241,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -664,11 +664,11 @@
                     }
                   },
                   "falseBody": null,
-                  "id": 2242,
+                  "id": 2246,
                   "nodeType": "IfStatement",
                   "src": "1336:109:10",
                   "trueBody": {
-                    "id": 2241,
+                    "id": 2245,
                     "nodeType": "Block",
                     "src": "1369:76:10",
                     "statements": [
@@ -676,7 +676,7 @@
                         "expression": {
                           "argumentTypes": null,
                           "hexValue": "74727565",
-                          "id": 2239,
+                          "id": 2243,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -691,8 +691,8 @@
                           },
                           "value": "true"
                         },
-                        "functionReturnParameters": 2232,
-                        "id": 2240,
+                        "functionReturnParameters": 2236,
+                        "id": 2244,
                         "nodeType": "Return",
                         "src": "1423:11:10"
                       }
@@ -709,18 +709,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 2246,
+                        "id": 2250,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 2244,
+                          "id": 2248,
                           "name": "managementThreshold",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2199,
+                          "referencedDeclaration": 2203,
                           "src": "1531:19:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -732,7 +732,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 2245,
+                          "id": 2249,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -761,21 +761,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2243,
+                      "id": 2247,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4644,
-                        4645
+                        4650,
+                        4651
                       ],
-                      "referencedDeclaration": 4644,
+                      "referencedDeclaration": 4650,
                       "src": "1523:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2247,
+                    "id": 2251,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -789,7 +789,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2248,
+                  "id": 2252,
                   "nodeType": "ExpressionStatement",
                   "src": "1523:33:10"
                 },
@@ -804,18 +804,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 2252,
+                              "id": 2256,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4641,
+                              "referencedDeclaration": 4647,
                               "src": "1596:3:10",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 2253,
+                            "id": 2257,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -837,18 +837,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 2251,
+                          "id": 2255,
                           "name": "addrToKey",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2228,
+                          "referencedDeclaration": 2232,
                           "src": "1586:9:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_address_$returns$_t_bytes32_$",
                             "typeString": "function (address) pure returns (bytes32)"
                           }
                         },
-                        "id": 2254,
+                        "id": 2258,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -864,11 +864,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2255,
+                        "id": 2259,
                         "name": "MANAGEMENT_KEY",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2196,
+                        "referencedDeclaration": 2200,
                         "src": "1609:14:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -889,32 +889,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2249,
+                        "id": 2253,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2207,
+                        "referencedDeclaration": 2211,
                         "src": "1573:7:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2534_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2538_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2250,
+                      "id": 2254,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2588,
+                      "referencedDeclaration": 2592,
                       "src": "1573:12:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2534_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2534_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2538_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2538_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
-                    "id": 2256,
+                    "id": 2260,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -928,15 +928,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 2232,
-                  "id": 2257,
+                  "functionReturnParameters": 2236,
+                  "id": 2261,
                   "nodeType": "Return",
                   "src": "1566:58:10"
                 }
               ]
             },
             "documentation": "@dev Checks if sender is either the identity contract or a MANAGEMENT_KEY\n @dev If the multi-sig threshold for MANAGEMENT_KEY if >1, it will throw an error\n @return `true` if sender is either identity contract or a MANAGEMENT_KEY",
-            "id": 2259,
+            "id": 2263,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -944,22 +944,22 @@
             "name": "_managementOrSelf",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2229,
+              "id": 2233,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1260:2:10"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2232,
+              "id": 2236,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2231,
+                  "id": 2235,
                   "name": "found",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2259,
+                  "scope": 2263,
                   "src": "1310:10:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -968,7 +968,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2230,
+                    "id": 2234,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1310:4:10",
@@ -983,7 +983,7 @@
               ],
               "src": "1309:12:10"
             },
-            "scope": 2269,
+            "scope": 2273,
             "src": "1234:397:10",
             "stateMutability": "view",
             "superFunction": null,
@@ -991,7 +991,7 @@
           },
           {
             "body": {
-              "id": 2267,
+              "id": 2271,
               "nodeType": "Block",
               "src": "1748:56:10",
               "statements": [
@@ -1004,18 +1004,18 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 2262,
+                          "id": 2266,
                           "name": "_managementOrSelf",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2259,
+                          "referencedDeclaration": 2263,
                           "src": "1766:17:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$__$returns$_t_bool_$",
                             "typeString": "function () view returns (bool)"
                           }
                         },
-                        "id": 2263,
+                        "id": 2267,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1037,21 +1037,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2261,
+                      "id": 2265,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4644,
-                        4645
+                        4650,
+                        4651
                       ],
-                      "referencedDeclaration": 4644,
+                      "referencedDeclaration": 4650,
                       "src": "1758:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2264,
+                    "id": 2268,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1065,23 +1065,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2265,
+                  "id": 2269,
                   "nodeType": "ExpressionStatement",
                   "src": "1758:28:10"
                 },
                 {
-                  "id": 2266,
+                  "id": 2270,
                   "nodeType": "PlaceholderStatement",
                   "src": "1796:1:10"
                 }
               ]
             },
             "documentation": "@dev Modifier that only allows keys of purpose 1, or the identity itself",
-            "id": 2268,
+            "id": 2272,
             "name": "onlyManagementOrSelf",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 2260,
+              "id": 2264,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1748:0:10"
@@ -1090,7 +1090,7 @@
             "visibility": "internal"
           }
         ],
-        "scope": 2270,
+        "scope": 2274,
         "src": "197:1609:10"
       }
     ],
@@ -1100,14 +1100,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyBase.sol",
     "exportedSymbols": {
       "KeyBase": [
-        2269
+        2273
       ]
     },
-    "id": 2270,
+    "id": 2274,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2192,
+        "id": 2196,
         "literals": [
           "solidity",
           "^",
@@ -1120,10 +1120,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyStore.sol",
         "file": "./KeyStore.sol",
-        "id": 2193,
+        "id": 2197,
         "nodeType": "ImportDirective",
-        "scope": 2270,
-        "sourceUnit": 2850,
+        "scope": 2274,
+        "sourceUnit": 2856,
         "src": "26:24:10",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1134,19 +1134,19 @@
         "contractKind": "contract",
         "documentation": "@title KeyBase\n @author genie\n @notice Abstract contract for ERC725 implementation\n @dev Key data is stored using KeyStore library",
         "fullyImplemented": true,
-        "id": 2269,
+        "id": 2273,
         "linearizedBaseContracts": [
-          2269
+          2273
         ],
         "name": "KeyBase",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": true,
-            "id": 2196,
+            "id": 2200,
             "name": "MANAGEMENT_KEY",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "220:42:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1155,7 +1155,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2194,
+              "id": 2198,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "220:7:10",
@@ -1167,7 +1167,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "31",
-              "id": 2195,
+              "id": 2199,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1186,10 +1186,10 @@
           },
           {
             "constant": false,
-            "id": 2199,
+            "id": 2203,
             "name": "managementThreshold",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "290:38:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1198,7 +1198,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2197,
+              "id": 2201,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "290:7:10",
@@ -1210,7 +1210,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "31",
-              "id": 2198,
+              "id": 2202,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1229,10 +1229,10 @@
           },
           {
             "constant": false,
-            "id": 2202,
+            "id": 2206,
             "name": "actionThreshold",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "334:34:10",
             "stateVariable": true,
             "storageLocation": "default",
@@ -1241,7 +1241,7 @@
               "typeString": "uint256"
             },
             "typeName": {
-              "id": 2200,
+              "id": 2204,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
               "src": "334:7:10",
@@ -1253,7 +1253,7 @@
             "value": {
               "argumentTypes": null,
               "hexValue": "31",
-              "id": 2201,
+              "id": 2205,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -1271,16 +1271,16 @@
             "visibility": "public"
           },
           {
-            "id": 2205,
+            "id": 2209,
             "libraryName": {
               "contractScope": null,
-              "id": 2203,
+              "id": 2207,
               "name": "KeyStore",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2849,
+              "referencedDeclaration": 2855,
               "src": "400:8:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_KeyStore_$2849",
+                "typeIdentifier": "t_contract$_KeyStore_$2855",
                 "typeString": "library KeyStore"
               }
             },
@@ -1288,39 +1288,39 @@
             "src": "394:33:10",
             "typeName": {
               "contractScope": null,
-              "id": 2204,
+              "id": 2208,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2534,
+              "referencedDeclaration": 2538,
               "src": "413:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2534_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2538_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             }
           },
           {
             "constant": false,
-            "id": 2207,
+            "id": 2211,
             "name": "allKeys",
             "nodeType": "VariableDeclaration",
-            "scope": 2269,
+            "scope": 2273,
             "src": "432:30:10",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_Keys_$2534_storage",
+              "typeIdentifier": "t_struct$_Keys_$2538_storage",
               "typeString": "struct KeyStore.Keys"
             },
             "typeName": {
               "contractScope": null,
-              "id": 2206,
+              "id": 2210,
               "name": "KeyStore.Keys",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2534,
+              "referencedDeclaration": 2538,
               "src": "432:13:10",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_Keys_$2534_storage_ptr",
+                "typeIdentifier": "t_struct$_Keys_$2538_storage_ptr",
                 "typeString": "struct KeyStore.Keys"
               }
             },
@@ -1329,7 +1329,7 @@
           },
           {
             "body": {
-              "id": 2215,
+              "id": 2219,
               "nodeType": "Block",
               "src": "645:39:10",
               "statements": [
@@ -1338,40 +1338,40 @@
                     "argumentTypes": null,
                     "expression": {
                       "argumentTypes": null,
-                      "id": 2212,
+                      "id": 2216,
                       "name": "allKeys",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2207,
+                      "referencedDeclaration": 2211,
                       "src": "662:7:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Keys_$2534_storage",
+                        "typeIdentifier": "t_struct$_Keys_$2538_storage",
                         "typeString": "struct KeyStore.Keys storage ref"
                       }
                     },
-                    "id": 2213,
+                    "id": 2217,
                     "isConstant": false,
                     "isLValue": true,
                     "isPure": false,
                     "lValueRequested": false,
                     "memberName": "numKeys",
                     "nodeType": "MemberAccess",
-                    "referencedDeclaration": 2533,
+                    "referencedDeclaration": 2537,
                     "src": "662:15:10",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
                     }
                   },
-                  "functionReturnParameters": 2211,
-                  "id": 2214,
+                  "functionReturnParameters": 2215,
+                  "id": 2218,
                   "nodeType": "Return",
                   "src": "655:22:10"
                 }
               ]
             },
             "documentation": "@dev Number of keys managed by the contract\n @return Unsigned integer number of keys",
-            "id": 2216,
+            "id": 2220,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1379,22 +1379,22 @@
             "name": "numKeys",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2208,
+              "id": 2212,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "585:2:10"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2211,
+              "id": 2215,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2210,
+                  "id": 2214,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2216,
+                  "scope": 2220,
                   "src": "635:4:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1403,7 +1403,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2209,
+                    "id": 2213,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
                     "src": "635:4:10",
@@ -1418,7 +1418,7 @@
               ],
               "src": "634:6:10"
             },
-            "scope": 2269,
+            "scope": 2273,
             "src": "569:115:10",
             "stateMutability": "view",
             "superFunction": null,
@@ -1426,7 +1426,7 @@
           },
           {
             "body": {
-              "id": 2227,
+              "id": 2231,
               "nodeType": "Block",
               "src": "939:37:10",
               "statements": [
@@ -1436,11 +1436,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2224,
+                        "id": 2228,
                         "name": "addr",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2218,
+                        "referencedDeclaration": 2222,
                         "src": "964:4:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1455,7 +1455,7 @@
                           "typeString": "address"
                         }
                       ],
-                      "id": 2223,
+                      "id": 2227,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -1468,7 +1468,7 @@
                       },
                       "typeName": "bytes32"
                     },
-                    "id": 2225,
+                    "id": 2229,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1482,15 +1482,15 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "functionReturnParameters": 2222,
-                  "id": 2226,
+                  "functionReturnParameters": 2226,
+                  "id": 2230,
                   "nodeType": "Return",
                   "src": "949:20:10"
                 }
               ]
             },
             "documentation": "@dev Convert an Ethereum address (20 bytes) to an ERC725 key (32 bytes)\n @dev It's just a simple typecast, but it's especially useful in tests",
-            "id": 2228,
+            "id": 2232,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1498,15 +1498,15 @@
             "name": "addrToKey",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2219,
+              "id": 2223,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2218,
+                  "id": 2222,
                   "name": "addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2228,
+                  "scope": 2232,
                   "src": "867:12:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1515,7 +1515,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2217,
+                    "id": 2221,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "867:7:10",
@@ -1532,15 +1532,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2222,
+              "id": 2226,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2221,
+                  "id": 2225,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2228,
+                  "scope": 2232,
                   "src": "926:7:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1549,7 +1549,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2220,
+                    "id": 2224,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "926:7:10",
@@ -1564,7 +1564,7 @@
               ],
               "src": "925:9:10"
             },
-            "scope": 2269,
+            "scope": 2273,
             "src": "848:128:10",
             "stateMutability": "pure",
             "superFunction": null,
@@ -1572,7 +1572,7 @@
           },
           {
             "body": {
-              "id": 2258,
+              "id": 2262,
               "nodeType": "Block",
               "src": "1326:305:10",
               "statements": [
@@ -1583,7 +1583,7 @@
                       "typeIdentifier": "t_address",
                       "typeString": "address"
                     },
-                    "id": 2238,
+                    "id": 2242,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1592,18 +1592,18 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2233,
+                        "id": 2237,
                         "name": "msg",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 4641,
+                        "referencedDeclaration": 4647,
                         "src": "1340:3:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_magic_message",
                           "typeString": "msg"
                         }
                       },
-                      "id": 2234,
+                      "id": 2238,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1624,14 +1624,14 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 2236,
+                          "id": 2240,
                           "name": "this",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 4658,
+                          "referencedDeclaration": 4664,
                           "src": "1362:4:10",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_contract$_KeyBase_$2269",
+                            "typeIdentifier": "t_contract$_KeyBase_$2273",
                             "typeString": "contract KeyBase"
                           }
                         }
@@ -1639,11 +1639,11 @@
                       "expression": {
                         "argumentTypes": [
                           {
-                            "typeIdentifier": "t_contract$_KeyBase_$2269",
+                            "typeIdentifier": "t_contract$_KeyBase_$2273",
                             "typeString": "contract KeyBase"
                           }
                         ],
-                        "id": 2235,
+                        "id": 2239,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
@@ -1656,7 +1656,7 @@
                         },
                         "typeName": "address"
                       },
-                      "id": 2237,
+                      "id": 2241,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -1677,11 +1677,11 @@
                     }
                   },
                   "falseBody": null,
-                  "id": 2242,
+                  "id": 2246,
                   "nodeType": "IfStatement",
                   "src": "1336:109:10",
                   "trueBody": {
-                    "id": 2241,
+                    "id": 2245,
                     "nodeType": "Block",
                     "src": "1369:76:10",
                     "statements": [
@@ -1689,7 +1689,7 @@
                         "expression": {
                           "argumentTypes": null,
                           "hexValue": "74727565",
-                          "id": 2239,
+                          "id": 2243,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1704,8 +1704,8 @@
                           },
                           "value": "true"
                         },
-                        "functionReturnParameters": 2232,
-                        "id": 2240,
+                        "functionReturnParameters": 2236,
+                        "id": 2244,
                         "nodeType": "Return",
                         "src": "1423:11:10"
                       }
@@ -1722,18 +1722,18 @@
                           "typeIdentifier": "t_uint256",
                           "typeString": "uint256"
                         },
-                        "id": 2246,
+                        "id": 2250,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
                         "lValueRequested": false,
                         "leftExpression": {
                           "argumentTypes": null,
-                          "id": 2244,
+                          "id": 2248,
                           "name": "managementThreshold",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2199,
+                          "referencedDeclaration": 2203,
                           "src": "1531:19:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_uint256",
@@ -1745,7 +1745,7 @@
                         "rightExpression": {
                           "argumentTypes": null,
                           "hexValue": "31",
-                          "id": 2245,
+                          "id": 2249,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
@@ -1774,21 +1774,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2243,
+                      "id": 2247,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4644,
-                        4645
+                        4650,
+                        4651
                       ],
-                      "referencedDeclaration": 4644,
+                      "referencedDeclaration": 4650,
                       "src": "1523:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2247,
+                    "id": 2251,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1802,7 +1802,7 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2248,
+                  "id": 2252,
                   "nodeType": "ExpressionStatement",
                   "src": "1523:33:10"
                 },
@@ -1817,18 +1817,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 2252,
+                              "id": 2256,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 4641,
+                              "referencedDeclaration": 4647,
                               "src": "1596:3:10",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 2253,
+                            "id": 2257,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1850,18 +1850,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 2251,
+                          "id": 2255,
                           "name": "addrToKey",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2228,
+                          "referencedDeclaration": 2232,
                           "src": "1586:9:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_pure$_t_address_$returns$_t_bytes32_$",
                             "typeString": "function (address) pure returns (bytes32)"
                           }
                         },
-                        "id": 2254,
+                        "id": 2258,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1877,11 +1877,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2255,
+                        "id": 2259,
                         "name": "MANAGEMENT_KEY",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2196,
+                        "referencedDeclaration": 2200,
                         "src": "1609:14:10",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1902,32 +1902,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2249,
+                        "id": 2253,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2207,
+                        "referencedDeclaration": 2211,
                         "src": "1573:7:10",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2534_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2538_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2250,
+                      "id": 2254,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2588,
+                      "referencedDeclaration": 2592,
                       "src": "1573:12:10",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2534_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2534_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2538_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2538_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
-                    "id": 2256,
+                    "id": 2260,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1941,15 +1941,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 2232,
-                  "id": 2257,
+                  "functionReturnParameters": 2236,
+                  "id": 2261,
                   "nodeType": "Return",
                   "src": "1566:58:10"
                 }
               ]
             },
             "documentation": "@dev Checks if sender is either the identity contract or a MANAGEMENT_KEY\n @dev If the multi-sig threshold for MANAGEMENT_KEY if >1, it will throw an error\n @return `true` if sender is either identity contract or a MANAGEMENT_KEY",
-            "id": 2259,
+            "id": 2263,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1957,22 +1957,22 @@
             "name": "_managementOrSelf",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2229,
+              "id": 2233,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1260:2:10"
             },
             "payable": false,
             "returnParameters": {
-              "id": 2232,
+              "id": 2236,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2231,
+                  "id": 2235,
                   "name": "found",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2259,
+                  "scope": 2263,
                   "src": "1310:10:10",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1981,7 +1981,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2230,
+                    "id": 2234,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1310:4:10",
@@ -1996,7 +1996,7 @@
               ],
               "src": "1309:12:10"
             },
-            "scope": 2269,
+            "scope": 2273,
             "src": "1234:397:10",
             "stateMutability": "view",
             "superFunction": null,
@@ -2004,7 +2004,7 @@
           },
           {
             "body": {
-              "id": 2267,
+              "id": 2271,
               "nodeType": "Block",
               "src": "1748:56:10",
               "statements": [
@@ -2017,18 +2017,18 @@
                         "arguments": [],
                         "expression": {
                           "argumentTypes": [],
-                          "id": 2262,
+                          "id": 2266,
                           "name": "_managementOrSelf",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 2259,
+                          "referencedDeclaration": 2263,
                           "src": "1766:17:10",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$__$returns$_t_bool_$",
                             "typeString": "function () view returns (bool)"
                           }
                         },
-                        "id": 2263,
+                        "id": 2267,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -2050,21 +2050,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 2261,
+                      "id": 2265,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        4644,
-                        4645
+                        4650,
+                        4651
                       ],
-                      "referencedDeclaration": 4644,
+                      "referencedDeclaration": 4650,
                       "src": "1758:7:10",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 2264,
+                    "id": 2268,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -2078,23 +2078,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 2265,
+                  "id": 2269,
                   "nodeType": "ExpressionStatement",
                   "src": "1758:28:10"
                 },
                 {
-                  "id": 2266,
+                  "id": 2270,
                   "nodeType": "PlaceholderStatement",
                   "src": "1796:1:10"
                 }
               ]
             },
             "documentation": "@dev Modifier that only allows keys of purpose 1, or the identity itself",
-            "id": 2268,
+            "id": 2272,
             "name": "onlyManagementOrSelf",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 2260,
+              "id": 2264,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "1748:0:10"
@@ -2103,7 +2103,7 @@
             "visibility": "internal"
           }
         ],
-        "scope": 2270,
+        "scope": 2274,
         "src": "197:1609:10"
       }
     ],
@@ -2115,5 +2115,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-10-29T01:56:39.562Z"
+  "updatedAt": "2018-10-29T03:17:45.593Z"
 }

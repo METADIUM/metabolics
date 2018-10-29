@@ -19,7 +19,7 @@ contract IdentityManager is RegistryUser {
 
     event CreateMetaId(address indexed managementKey, address metaId);
     
-    function IdentityManager() public {
+    constructor() public {
         THIS_NAME = "IdentityManager";
     }
 
@@ -40,6 +40,8 @@ contract IdentityManager is RegistryUser {
         //give first achievement to new MetaId
 
         emit CreateMetaId(_managementKey, newMetaId);
+
+        return true;
 
     }
 

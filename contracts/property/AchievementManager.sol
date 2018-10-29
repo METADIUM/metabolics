@@ -40,7 +40,7 @@ contract AchievementManager is RegistryUser {
         uint256 createdAt;
     }
 
-    function isAAttestationAgency(address _addr) public returns(bool found) {
+    function isAAttestationAgency(address _addr) view public returns(bool found) {
         
         IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
         require(ar.isRegistered(_addr) != 0);
@@ -54,7 +54,7 @@ contract AchievementManager is RegistryUser {
     }
 
 
-    function AchievementManager() public {
+    constructor() public {
         THIS_NAME = "AchievementManager";
     }
 
@@ -230,14 +230,14 @@ contract AchievementManager is RegistryUser {
     }
    
     function getActiveAchievementList() view public returns(bytes32[] list) {
-
+        return allAchievements;
     }
 
     function getLengthOfAchievements() view public returns(uint256 length) {
         return allAchievements.length;
     }
 
-    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
+    function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 createdAt) {
         Achievement memory ac = achievements[_achievementId];
         return (
             ac.id, 
@@ -252,7 +252,7 @@ contract AchievementManager is RegistryUser {
             );
     }
 
-    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 timestamp) {
+    function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 createdAt) {
         bytes32 _achievementId = allAchievements[_index];
         return (
             achievements[_achievementId].id, 

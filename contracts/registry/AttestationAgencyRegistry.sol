@@ -11,7 +11,7 @@ contract AttestationAgencyRegistry is RegistryUser {
     struct AttestationAgency {
         address addr;
         bytes32 title;
-        bytes32 description;
+        bytes32 explanation;
         uint256 createdAt;
         // code for 
         // bool type isEnterprise;
@@ -22,16 +22,16 @@ contract AttestationAgencyRegistry is RegistryUser {
     mapping(uint256=>AttestationAgency) public attestationAgencies;
     mapping(address=>uint256) public isAAregistered;
     
-    event RegisterAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 description);
-    event UpdateAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 description);
+    event RegisterAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 explanation);
+    event UpdateAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 explanation);
 
-    function AttestationAgencyRegistry() public {
+    constructor() public {
         THIS_NAME = "AttestationAgencyRegistry";
         attestationAgencyNum = 1;
 
         attestationAgencies[0].addr = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
         attestationAgencies[0].title = 'MetadiumDefault';
-        attestationAgencies[0].description = 'MetadiumDefault';
+        attestationAgencies[0].explanation = 'MetadiumDefault';
         attestationAgencies[0].createdAt = now;
     }
 
@@ -39,22 +39,22 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @dev Register Attestation Agency
      * @param _addr address to register
      * @param _title title
-     * @param _description description
+     * @param _explanation explanation
      * @return A boolean that indicates if the operation was successful.
      */
-    function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool success) {
+    function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success) {
         require(isAAregistered[_addr] == 0);
         
         attestationAgencies[attestationAgencyNum].addr = _addr;
         attestationAgencies[attestationAgencyNum].title = _title;
-        attestationAgencies[attestationAgencyNum].description = _description;
+        attestationAgencies[attestationAgencyNum].explanation = _explanation;
         attestationAgencies[attestationAgencyNum].createdAt = now;
 
         isAAregistered[_addr] = attestationAgencyNum;
 
         attestationAgencyNum++;
 
-        emit RegisterAttestationAgency(_addr, _title, _description);
+        emit RegisterAttestationAgency(_addr, _title, _explanation);
 
         return true;
     }   
@@ -64,19 +64,19 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @param _num index of the AA
      * @param _addr address to register
      * @param _title title
-     * @param _description description
+     * @param _explanation explanation
      * @return A boolean that indicates if the operation was successful.
      */
-    function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool success) {
+    function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success) {
         
         require(isAAregistered[_addr] == _num);
 
         attestationAgencies[_num].addr = _addr;
         attestationAgencies[_num].title = _title;
-        attestationAgencies[_num].description = _description;
+        attestationAgencies[_num].explanation = _explanation;
         attestationAgencies[_num].createdAt = now;
 
-        emit UpdateAttestationAgency(_addr, _title, _description);
+        emit UpdateAttestationAgency(_addr, _title, _explanation);
 
         return true;
 
@@ -86,11 +86,11 @@ contract AttestationAgencyRegistry is RegistryUser {
         return isAAregistered[_addr];
     }
 
-    function getAttestationAgencySingle(uint256 _num) view public returns(address addr, bytes32 title, bytes32 description, uint256 createdAt) {
+    function getAttestationAgencySingle(uint256 _num) view public returns(address addr, bytes32 title, bytes32 explanation, uint256 createdAt) {
         return (
             attestationAgencies[_num].addr,
             attestationAgencies[_num].title,
-            attestationAgencies[_num].description,
+            attestationAgencies[_num].explanation,
             attestationAgencies[_num].createdAt
         );
     }
@@ -106,7 +106,7 @@ contract AttestationAgencyRegistry is RegistryUser {
 
         for(uint256 i=_from;i<=_to;i++){
             saddrs[i-_from] = attestationAgencies[i].addr;
-            sdescs[i-_from] = attestationAgencies[i].description;
+            sdescs[i-_from] = attestationAgencies[i].explanation;
             stitles[i-_from] = attestationAgencies[i].title;
             screateds[i-_from] = attestationAgencies[i].createdAt;
         }

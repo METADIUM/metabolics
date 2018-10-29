@@ -101,6 +101,8 @@ contract TopicRegistry is RegistryUser {
 
         emit UpdateTopic(_id, msg.sender , _explanation);
 
+        return true;
+
     }
 
 
