@@ -8,18 +8,23 @@ const AchievementManager = artifacts.require('AchievementManager.sol')
 const AARegistry = artifacts.require('AttestationAgencyRegistry.sol')
 const Achievement = artifacts.require('Achievement.sol')
 
-async function deploy(deployer) {
+async function deploy(deployer, network, accounts) {
     const args = process.argv.slice()
     
     let _gas = 6000000
     let _gasPrice = 1 * 10 ** 11
-    //let _deployer = "0xD351858Dd581c4046693cEAe54C169C9f402E16D"
-    //let _non = await web3.eth.getTransactionCount(_deployer)
-    let _nonce = 0 + 2; // this shuld be current nonce + 2 because of the migration tx
+    //let _nonce2 = await web3.eth.getTransactionCount(accounts[0])
+    let _nonce = 0x21f + 2
+    //let _nonce = await getNonce(accounts[0])
+    //console.log(_nonce2)
+    // console.log(_nonce)
+    //let _nonce = parseInt(_non) + 2; // this shuld be current nonce + 2 because of the migration tx
+
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
         let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
-
+        //let reg = await deployer.deploy(Registry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce })
+        //console.log(`reg.address : ${reg}`)
         return deployer.deploy(Registry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce }).then(async (reg) => {
             return deployer.deploy(IdentityManager, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 1 }).then(async (mim) => {
                 return deployer.deploy(TopicRegistry, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 2 }).then(async (tr) => {
@@ -89,8 +94,34 @@ async function deploy(deployer) {
                         })
                     })
                 })
-
             })
+        })
+
+    } else if (args[3] == 'updateIdentityManager'){
+        // deploy contract
+        // setContractDomain
+        // setPermission
+        // setRgistry
+
+
+    } else if (args[3] == 'updateAttestationAgencyRegistry'){
+
+        // for(var propName in Registry) {
+        //     propValue = Registry[propName]
+        //     console.log(`${propName} : ${propValue}`)
+        // }
+        
+        return deployer.deploy(AARegistry, { gas: _gas, gasPrice: _gasPrice}).then(async (ar) => {
+            console.log('Change Attestation Agency Registry')
+            let currentRegistryAddress = '0xd3f977d8da3f9be3329d24b2d944257ed5312fed' // put the current registry address
+            let reg = Registry.at(currentRegistryAddress)
+
+            await reg.setContractDomain("AttestationAgencyRegistry", ar.address, { gas: _gas, gasPrice: _gasPrice})
+            await ar.setRegistry(reg.address, { gas: _gas, gasPrice: _gasPrice })
+            
+            let defaultAA = await reg.owner();
+            console.log(`current owner is ${JSON.stringify(defaultAA)}`)
+            await ar.registerAttestationAgency(defaultAA, 'Metadium Enterprise', 'Metadium Authority', { gas: _gas, gasPrice: _gasPrice})
         })
 
     } else {
@@ -100,4 +131,8 @@ async function deploy(deployer) {
 
 }
 
+var getNonce = async (_address) => {
+    let nonce = web3.eth.getTransactionCount(_address)
+    return nonce
+}
 module.exports = deploy
