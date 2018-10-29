@@ -31,7 +31,7 @@ contract TopicRegistry is RegistryUser {
         total = RESERVED_TOPICS + 1;
 
     }
-
+    
     /**
      * @dev Register new topic by system. this topic numbers should be 0~1024.
      * @param _id basic managementKey to use

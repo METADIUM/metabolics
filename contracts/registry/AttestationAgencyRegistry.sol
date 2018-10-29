@@ -17,7 +17,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         // bool type isEnterprise;
          
     }
-    uint256 attestationAgencyNum;
+    uint256 public attestationAgencyNum;
 
     mapping(uint256=>AttestationAgency) public attestationAgencies;
     mapping(address=>uint256) public isAAregistered;
