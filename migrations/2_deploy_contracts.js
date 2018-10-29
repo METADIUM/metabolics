@@ -15,7 +15,7 @@ async function deploy(deployer) {
     let _gasPrice = 1 * 10 ** 11
     //let _deployer = "0xD351858Dd581c4046693cEAe54C169C9f402E16D"
     //let _non = await web3.eth.getTransactionCount(_deployer)
-    let _nonce = 0x16e + 2; // this shuld be current nonce + 2 because of the migration tx
+    let _nonce = 0x1a4 + 2; // this shuld be current nonce + 2 because of the migration tx
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
         let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
@@ -53,9 +53,9 @@ async function deploy(deployer) {
                                 await ar.registerAttestationAgency(defaultAA, 'metadiumAA', 'metadiumAADes', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 20})
 
                                 // register topics 
-                                await tr.registerTopic(defaultAA, 'name', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 21})
-                                await tr.registerTopic(defaultAA, 'nickname', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 22})
-                                await tr.registerTopic(defaultAA, 'email', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 23})
+                                await tr.registerTopic('name', 'name', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 21})
+                                await tr.registerTopic('nickname', 'nickname', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 22})
+                                await tr.registerTopic('email', 'email', { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 23})
 
                                 let _topics = [1025, 1026, 1027]
                                 let _issuers = [defaultAA, defaultAA, defaultAA]
@@ -64,7 +64,7 @@ async function deploy(deployer) {
                                 let _uri = 'You are METAHero'
 
                                 // register achievement
-                                await am.createAchievement(_topics, _issuers, _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 24, value: '0xDE0B6B3A7640000' })
+                                await am.createAchievement(_topics, _issuers, 'achievtitle', _achievementExplanation, _reward, _uri, { gas: _gas, gasPrice: _gasPrice, nonce: _nonce + 24, value: '0xDE0B6B3A7640000' })
                                 
                                 // write contract addresses to json file for share
                                 var fs = require('fs');
