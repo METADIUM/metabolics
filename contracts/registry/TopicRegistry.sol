@@ -18,7 +18,7 @@ contract TopicRegistry is RegistryUser {
     }
 
     uint256 public total;
-    uint256 public constant RESERVED_TOPICS = 1024;
+    uint256 public constant RESERVED_TOPICS = 1025; // 0 ~ 1024
     
     mapping(uint256 => Topic) public topics;
     mapping(uint256 => bool) isTopicRegistered;
@@ -27,8 +27,8 @@ contract TopicRegistry is RegistryUser {
     event UpdateTopic(uint256 indexed id, address indexed issuer, bytes32 explanation);
 
     constructor() public {
-
-        total = RESERVED_TOPICS + 1;
+        THIS_NAME = "TopicRegistry";
+        total = RESERVED_TOPICS;
 
     }
     
