@@ -30,6 +30,7 @@ Metadium Smart Contracts consist of followings
 function createMetaId(address _managementKey) permissioned public returns (bool)
 function getDeployedMetaIds() public view returns(address[])
 function getLengthOfMetaIds() public view returns(uint256)
+function isMetaId(address _addr) public view returns(bool found)
 ```
 Permissioned user can make MetaID through Identity Manager using **createMetaId**.
 
@@ -102,23 +103,48 @@ You can get the specific address of contract you want to read.
 
 ### Topic Registry
 ```
-function registerTopic(address _issuer, bytes32 _explanation) public returns (uint256)
+function registerTopic(bytes32 _title, bytes32 _explanation) public returns (uint256 topicId)
 ```
-Register topic. Only AA can register or permissioned user can register topic.
+Register topic. Only AA can register or permissioned user can register topic(1025~).
+
 ```
-function getTopics() public returns(uint256[] topics)
+function registerTopicBySystem(uint256 _id, bytes32 _title, bytes32 _explanation) permissioned public returns (uint256 topicId)
 ```
-Get topic list
+Only system admin can register the topic(0~1024)
+```
+function updateTopic(uint256 _id, bytes32 _explanation) public returns (bool success)
+```
+Update topic's explanation
+```
+function getTotal() view public returns (uint256 length)
+```
+Get total topic length
+```
+function getTopic(uint256 _id) view public returns(address issuer, bytes32 title, bytes32 explanation, uint256 createdAt)
+```
+Get topic by id
+```
+function getTopicFromTo(uint256 _from, uint256 _to) view public returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
+```
+Batch read for topic
 
 ### Attestation Agency Registry
 ```
-function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _description) permissioned public returns (bool)
+function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success)
 ```
-register Attestation Agency, only permissioned user can register AA.
+Register Attestation Agency, only permissioned user can register AA.
 ```
-function getAttestationAgencyList() permissioned public returns(bool)
+function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success)
 ```
-Get Attestation Agency List
+Update AA info.
+```
+function getAttestationAgencySingle(uint256 _num) view public returns(address addr, bytes32 title, bytes32 explanation, uint256 createdAt)
+```
+Get a single Attestation Agency Info
+```
+function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[] addrs, bytes32[] titles, bytes32[] descs, uint256[] createds)
+```
+Batch read for AA info 
 
 ### Achievement
 **Achievement Manager**
@@ -140,6 +166,8 @@ function requestAchievement(bytes32 achievementId) public returns(bool);
 ```
 User can request achievement if he or she has enough claims for achievement. Then the achievement ERC1155(ERC721) is minted and the user get the reward from the contract(staked by achievement issuer).
 
+When you mint ERC721 token, ERC721 tokenId = uint256(keccak256(abi.encodePacked(msg.sender, _achievementId)))
+
 ```
 function getAllAchievementList() pure public returns(bytes32[])
 ```
@@ -154,11 +182,21 @@ Returns current active achievement list(staked reward is enough)
 function getAchievementId(address creator, uint256[] topics) pure public returns(bytes32)
 ```
 Get achievement ID. Achievement Id = keccak256(abi.encodePacked(creator, topics[0], issuer[0], topics[1], issuer[1], ...))
+```
+function getLengthOfAchievements() view public returns(uint256 length);
+```
+Get total length of achievements
+```
+function getAchievementById(bytes32 _achievementId) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 createdAt)
+```
+Get achievement by Id
+```
+function getAchievementByIndex(uint256 _index) view public returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 createdAt);
+```
+Get achievement by index
 
-```
-function getAchievementInfo(bytes32 achievementId) view public returns(bytes32, address, uint256[], bytes32, string)
-```
 **Achievement(ERC721/1155)**
+The owner enable/disable transfer and approve. Transfer and Approve is disabled at first.
 
 ```
 function getAllOf(address owner) pure public returns(uint256 ids, uint256[] uris)
@@ -182,7 +220,3 @@ interface ERC1155Metadata {
     function name(uint256 _id) external view returns (string);
 }
 ```
-## TODO
---------------------
-1. Move assets to the key owner when destruct the meta identity
-2. dev
