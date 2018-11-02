@@ -80,7 +80,7 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
             let _topic = 1 // MetaID_TOPIC
             let _scheme = 1 // ECDSA_SCHEME
             let _issuer = user1
-            let _data = "0x1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc" // metaID
+            let _data = "0x1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc" // metaPrint
             let _uri = "MetaPrint"
 
             //abi.encodePacked(subject, topic, data) -> topic with uint256 packed 32bytes

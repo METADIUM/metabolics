@@ -2,6 +2,7 @@ pragma solidity ^0.4.24;
 
 import "../openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../identity/ERC735.sol";
+import "../identity/ERC725.sol";
 import "../RegistryUser.sol";
 import "../registry/TopicRegistry.sol";
 import "../interface/IAchievement.sol";
@@ -203,11 +204,21 @@ contract AchievementManager is RegistryUser {
         // // check if sender has enough claims
         for(i=0;i<achievements[_achievementId].claimTopics.length;i++) {
             address issuer;
-            // claimId is made by topic and issuer.
-            bytes32 claimId = keccak256(abi.encodePacked(achievements[_achievementId].issuers[i], achievements[_achievementId].claimTopics[i]));
-            (, , issuer, , , ) = identity.getClaim(claimId); // getClaim returns (topic, scheme, issuer, signature, data, uri)
+            // check this claim issuer is for self claim
+            if(achievements[_achievementId].issuers[i] == 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF){
+                //self claim
+                //bytes32 claimId = keccak256(abi.encodePacked(msg.sender, achievements[_achievementId].claimTopics[i]));
+                //check msg.sender is erc735 implementation
+                //
+                //identity.getClaimIdsByType(achievements[_achievementId].claimTopics[i]);
+                require(hasSelfClaim(msg.sender, achievements[_achievementId].claimTopics[i]));
 
-            require(issuer != address(0));
+            }else {
+                // claimId is made by topic and issuer.
+                bytes32 claimId = keccak256(abi.encodePacked(achievements[_achievementId].issuers[i], achievements[_achievementId].claimTopics[i]));
+                (, , issuer, , , ) = identity.getClaim(claimId); // getClaim returns (topic, scheme, issuer, signature, data, uri)
+                require(issuer != address(0));
+            }
 
         }
         
@@ -224,7 +235,21 @@ contract AchievementManager is RegistryUser {
 
         return true;
     }
-   
+    function hasSelfClaim(address _identity, uint256 _topic) public view returns (bool) {
+        bytes32[] memory claims = ERC735(_identity).getClaimIdsByType(_topic);
+        address c;
+        for(uint256 i=0;i<claims.length;i++){
+            (, , c, , ,) = ERC735(_identity).getClaim(claims[i]);
+            //3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.
+            //bytes32(address) : addrToKey(addr)
+            if(ERC725(_identity).keyHasPurpose(bytes32(c), 3)){
+                return true;
+            }
+            
+        }
+        return false;
+
+    }
     function getAllAchievementList() view public returns (bytes32[] list) {
         return allAchievements;
     }

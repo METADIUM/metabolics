@@ -12,9 +12,6 @@ const fs = require('fs');
 async function deploy(deployer, network, accounts) {
     const args = process.argv.slice()
 
-    //let _gas = 6000000
-    //let _gasPrice = 1 * 10 ** 11
-
     if (args[3] == 'all') {
         //proxy create metaID instead user for now. Because users do not have enough fee.
         let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
@@ -143,6 +140,33 @@ async function deploy(deployer, network, accounts) {
             }
             console.log('Register System Topics End')
         })
+
+    } else if (args[3] == 'registerSystemAAMetaHand') {
+        //deploy meta identity through meta identity manager
+
+        //register the deployed meta identity to aa registry
+        console.log(web3.version)
+        console.log(web3.currentProvider.host)
+        var Tx = require('ethereumjs-tx');
+        var privateKey = new Buffer('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
+        var rawTx = {
+            nonce: '0x00',
+            gasPrice: '0x09184e72a000',
+            gasLimit: '0x2710',
+            to: '0x0000000000000000000000000000000000000000',
+            value: '0x00',
+            data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
+        }
+        var tx = new Tx(rawTx);
+        tx.sign(privateKey);
+        var serializedTx = tx.serialize();
+        console.log(serializedTx.toString('hex'));
+        /*
+        web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function (err, hash) {
+            if (!err)
+                console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
+        });
+        */
 
     } else {
         deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);

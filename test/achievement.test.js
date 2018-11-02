@@ -69,7 +69,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
 
         });
 
-        it.only('user who has enough claims can get achievement(all topics not registered and above 1024)', async () => {
+        it('user who has enough claims can get achievement(all topics not registered and above 1024)', async () => {
             //system register AA to AA registry
             await aaRegistry.registerAttestationAgency(aa1, 'metadiumAA', 'metadiumAADes', { from: proxy1 })
 
@@ -129,6 +129,56 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             */
             //let achievementCnt = await 
 
+        });
+        it.only('user can get achievement with achievement which has self-claim term', async () => {
+            //system register AA to AA registry
+            await aaRegistry.registerAttestationAgency(aa1, 'metadiumAA', 'metadiumAADes', { from: proxy1 })
+
+            //AA register topics to topic registry
+            await topicRegistry.registerTopic('name', 'thisisname', { from: aa1 })
+            await topicRegistry.registerTopic('nickname', 'this is nickname', { from: aa1 })
+            await topicRegistry.registerTopic('email','this is email', { from: aa1 })
+
+            //AA create achievement
+            _topics = [1025, 1026, 1027]
+            _issuers = ['0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF','0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF','0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF']//[issuer1, issuer2, issuer3]
+            _title = '0x1234'
+            _achievementExplanation = '0x12'
+            _reward = 0.1 * 10 ** 18
+            _uri = '0x3be095406c14a224018c2e749ef954073b0f71f8cef30bb0458aab8662a447a0'
+
+            let _signatures = [];
+            let _datas = ['facebook user', 'twitter user', 'google user'];
+            let _signingDatas = [];
+            let _uris = ["claim1uri", "claim2uri", "claim3uri"];
+            let _topicPacked = ["0000000000000000000000000000000000000000000000000000000000000401", "0000000000000000000000000000000000000000000000000000000000000402", "0000000000000000000000000000000000000000000000000000000000000403"]
+            // create achievement
+            await achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 })
+
+            let bal = await web3.eth.getBalance(achievementManager.address)
+            assert.equal(bal, ether1)
+
+            // register claims to identity1
+            _datas = _datas.map((v) => { return web3.sha3(metaIdentity.address + v, { encoding: 'hex' }) })
+            _signingDatas = _datas.map((v, i) => { return web3.sha3(metaIdentity.address + _topicPacked[i] + v.slice(2), { encoding: 'hex' }) })
+            _signatures = _signingDatas.map((v, i) => { return web3.eth.sign(identity1, v) })
+
+            await metaIdentity.addClaim(_topics[0], _scheme, identity1, _signatures[0], _datas[0], _uris[0], { from: identity1 })
+            await metaIdentity.addClaim(_topics[1], _scheme, identity1, _signatures[1], _datas[1], _uris[1], { from: identity1 })
+            await metaIdentity.addClaim(_topics[2], _scheme, identity1, _signatures[2], _datas[2], _uris[2], { from: identity1 })
+
+            // request achievement
+            //let addKeyData = await identity.contract.addKey.getData(keys.action[3], Purpose.ACTION, KeyType.ECDSA);
+            let _achievementId = await achievementManager.getAchievementId(aa1, _topics, _issuers)
+            let _requestData = await achievementManager.contract.requestAchievement.getData(_achievementId)
+
+            await metaIdentity.execute(achievementManager.address, 0, _requestData, { from: identity1 })
+
+            let achiBal = await achievement.balanceOf(metaIdentity.address)
+            assert.equal(achiBal, 1)
+
+            let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
+            assert.equal(IdentityBal, _reward)
         });
 
         it('user who has enough claims can get achievement(some topics not registered)', async () => {
