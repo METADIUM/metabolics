@@ -61,17 +61,15 @@ contract AttestationAgencyRegistry is RegistryUser {
 
     /**
      * @dev Update Attestation Agency
-     * @param _num index of the AA
      * @param _addr address to register
      * @param _title title
      * @param _explanation explanation
      * @return A boolean that indicates if the operation was successful.
      */
-    function updateAttestationAgency(uint256 _num, address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success) {
+    function updateAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success) {
+        uint256 _num = isAAregistered[_addr];
+        require(_num != 0);
         
-        require(isAAregistered[_addr] == _num);
-
-        attestationAgencies[_num].addr = _addr;
         attestationAgencies[_num].title = _title;
         attestationAgencies[_num].explanation = _explanation;
         attestationAgencies[_num].createdAt = now;
