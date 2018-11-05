@@ -8,6 +8,8 @@ const TopicRegistry = artifacts.require('TopicRegistry.sol')
 const AchievementManager = artifacts.require('AchievementManager.sol')
 const AARegistry = artifacts.require('AttestationAgencyRegistry.sol')
 const Achievement = artifacts.require('Achievement.sol')
+const MetaIdentity = artifacts.require('MetaIdentity.sol')
+
 const fs = require('fs');
 async function deploy(deployer, network, accounts) {
     const args = process.argv.slice()
@@ -32,7 +34,9 @@ async function deploy(deployer, network, accounts) {
                                 await reg.setContractDomain("AttestationAgencyRegistry", ar.address)
 
                                 await reg.setPermission("IdentityManager", proxy1, "true")
+                                await reg.setPermission("IdentityManager", accounts[0], "true")
                                 await reg.setPermission("AttestationAgencyRegistry", proxy1, "true")
+                                await reg.setPermission("AttestationAgencyRegistry", accounts[0], "true")
                                 await reg.setPermission("Achievement", am.address, "true")
                                 await reg.setPermission("TopicRegistry", accounts[0], "true")
                                 await reg.setPermission("TopicRegistry", proxy1, "true")
@@ -66,6 +70,14 @@ async function deploy(deployer, network, accounts) {
                                 // register achievement
                                 await am.createAchievement(_topics, _issuers, 'Metadium', _achievementExplanation, _reward, _uri, { value: '0xDE0B6B3A7640000' })
 
+                                // create metaHand identity
+                                await mim.createMetaId('0xa408fcd6b7f3847686cb5f41e52a7f4e084fd3cc')
+
+                                // register metaHand identity as AA
+                                let metaIds = await mim.getDeployedMetaIds()
+                                // let metaHandAddress = await MetaIdentity.at(metaIds[0])
+                                await ar.registerAttestationAgency(metaIds[0], 'MetaHand', 'Metadium Hand')
+
                                 // write contract addresses to json file for share
 
 
@@ -76,6 +88,7 @@ async function deploy(deployer, network, accounts) {
                                 contractData["Achievement"] = achiv.address
                                 contractData["TopicRegistry"] = tr.address
                                 contractData["AttestationAgencyRegistry"] = ar.address
+                                contractData["MetaHand"] = metaIds[0]
 
                                 fs.writeFile('contracts.json', JSON.stringify(contractData), 'utf-8', function (e) {
                                     if (e) {
@@ -142,31 +155,7 @@ async function deploy(deployer, network, accounts) {
         })
 
     } else if (args[3] == 'registerSystemAAMetaHand') {
-        //deploy meta identity through meta identity manager
-
-        //register the deployed meta identity to aa registry
-        console.log(web3.version)
-        console.log(web3.currentProvider.host)
-        var Tx = require('ethereumjs-tx');
-        var privateKey = new Buffer('e331b6d69882b4cb4ea581d88e0b604039a3de5967688d3dcffdd2270c0fd109', 'hex')
-        var rawTx = {
-            nonce: '0x00',
-            gasPrice: '0x09184e72a000',
-            gasLimit: '0x2710',
-            to: '0x0000000000000000000000000000000000000000',
-            value: '0x00',
-            data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
-        }
-        var tx = new Tx(rawTx);
-        tx.sign(privateKey);
-        var serializedTx = tx.serialize();
-        console.log(serializedTx.toString('hex'));
-        /*
-        web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function (err, hash) {
-            if (!err)
-                console.log(hash); // "0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385"
-        });
-        */
+        
 
     } else {
         deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);
