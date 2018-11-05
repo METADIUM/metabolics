@@ -5,6 +5,10 @@ pragma solidity ^0.4.24;
  * @dev Interface for MetaIdentityUsingLib
  */
 contract MetaIdentityUsingLib {
+    // Line All the MetaIdentity variables up.
+    // For delegate call, contract storage layout must be same.
+    // Line up order is following the solidity inheritance logic(python like)
+    
     //ERC165
     mapping(bytes4 => bool) internal supportedInterfaces;
 
