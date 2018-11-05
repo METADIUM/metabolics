@@ -105,6 +105,8 @@ async function deploy(deployer, network, accounts) {
             })
         })
 
+    } else if (args[3] == 'useFunc') {
+        deployContracts(deployer, network, accounts)
     } else if (args[3] == 'updateIdentityManager') {
         // deploy contract
         // setContractDomain
@@ -155,7 +157,7 @@ async function deploy(deployer, network, accounts) {
         })
 
     } else if (args[3] == 'registerSystemAAMetaHand') {
-        
+
 
     } else {
         deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);
@@ -163,6 +165,98 @@ async function deploy(deployer, network, accounts) {
     }
 }
 
+async function deployContracts(deployer, network, accounts) {
+    //proxy create metaID instead user for now. Because users do not have enough fee.
+    let proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
+    deployer.then(async () => {
+        let reg, mim, tr, am, ar, achiv
+        reg = await deployer.deploy(Registry)
+        mim = await deployer.deploy(IdentityManager)
+        tr = await deployer.deploy(TopicRegistry)
+        am = await deployer.deploy(AchievementManager)
+        ar = await deployer.deploy(AARegistry)
+        achiv = await deployer.deploy(Achievement, "Achievement", "MACH")
+
+
+        //reg: name, permission setup
+        await reg.setContractDomain("IdentityManager", mim.address)
+        await reg.setContractDomain("Achievement", achiv.address)
+        await reg.setContractDomain("AchievementManager", am.address)
+        await reg.setContractDomain("TopicRegistry", tr.address)
+        await reg.setContractDomain("AttestationAgencyRegistry", ar.address)
+
+        await reg.setPermission("IdentityManager", proxy1, "true")
+        await reg.setPermission("IdentityManager", accounts[0], "true")
+        await reg.setPermission("AttestationAgencyRegistry", proxy1, "true")
+        await reg.setPermission("AttestationAgencyRegistry", accounts[0], "true")
+        await reg.setPermission("Achievement", am.address, "true")
+        await reg.setPermission("TopicRegistry", accounts[0], "true")
+        await reg.setPermission("TopicRegistry", proxy1, "true")
+
+        await mim.setRegistry(reg.address)
+        await am.setRegistry(reg.address)
+        await achiv.setRegistry(reg.address)
+        await ar.setRegistry(reg.address)
+        await tr.setRegistry(reg.address)
+
+        // register creator as default aa
+        console.log(`register default aa and topics`)
+
+        //let defaultAA = //"0x08aa639ee52c20386984a740c4a5c0972f4849bb"
+        let defaultAA = await reg.owner();
+        console.log(`owner is ${JSON.stringify(defaultAA)}`)
+        await reg.setPermission("AttestationAgencyRegistry", defaultAA, "true")
+        await ar.registerAttestationAgency(defaultAA, 'Metadium Enterprise', 'Metadium Authority')
+
+        // register topics 
+        await tr.registerTopic('Name', 'Metadium Name')
+        await tr.registerTopic('NickName', 'Metadium Nickname')
+        await tr.registerTopic('Email', 'Metadium Email')
+
+        let _topics = [1025, 1026, 1027]
+        let _issuers = [defaultAA, defaultAA, defaultAA]
+        let _achievementExplanation = 'Meta Hero'
+        let _reward = 0.1 * 10 ** 18
+        let _uri = 'You are METAHero'
+
+        // register achievement
+        await am.createAchievement(_topics, _issuers, 'Metadium', _achievementExplanation, _reward, _uri, { value: '0xDE0B6B3A7640000' })
+
+        // create metaHand identity
+        await mim.createMetaId('0xa408fcd6b7f3847686cb5f41e52a7f4e084fd3cc')
+
+        // register metaHand identity as AA
+        let metaIds = await mim.getDeployedMetaIds()
+        // let metaHandAddress = await MetaIdentity.at(metaIds[0])
+        await ar.registerAttestationAgency(metaIds[0], 'MetaHand', 'Metadium Hand')
+
+        // write contract addresses to json file for share
+
+
+        let contractData = {}
+        contractData["Registry"] = reg.address
+        contractData["IdentityManager"] = mim.address
+        contractData["AchievementManager"] = am.address
+        contractData["Achievement"] = achiv.address
+        contractData["TopicRegistry"] = tr.address
+        contractData["AttestationAgencyRegistry"] = ar.address
+        contractData["MetaHand"] = metaIds[0]
+
+        fs.writeFile('contracts.json', JSON.stringify(contractData), 'utf-8', function (e) {
+            if (e) {
+                console.log(e);
+            } else {
+                console.log('contracts.json updated!');
+            }
+        });
+
+
+    })
+    //async await for deployer.deploy do not work well. Tx is made, but information in not printed
+
+
+
+}
 function readTopicsFromFile() {
     var fullLines = fs.readFileSync('./config/systemTopics.txt').toString().split("\n");
     let systemTopics = []

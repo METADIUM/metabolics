@@ -154,14 +154,3 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
     });
 
 });
-
-// ganache-cli -d -m '' -l 10000000
-// aa create achievement -> register to topic, register to aa
-// ask achievement -> mint achievement erc721
-// update achievement
-// delete achievement
-
-// deploy registry
-// deploy identity manager
-// deploy identity using identity manager
-// add self claim
