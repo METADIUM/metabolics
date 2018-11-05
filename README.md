@@ -220,3 +220,5 @@ interface ERC1155Metadata {
     function name(uint256 _id) external view returns (string);
 }
 ```
+
+# solidity_flattener

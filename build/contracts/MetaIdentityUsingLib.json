@@ -1,10 +1,439 @@
 {
-  "contractName": "KeyStore",
-  "abi": [],
-  "bytecode": "0x604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582028be2f008f5f2139a7e83cf40642f02662af4205846ed7755dfd22fb43a3a0120029",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a7230582028be2f008f5f2139a7e83cf40642f02662af4205846ed7755dfd22fb43a3a0120029",
-  "sourceMap": "4624:3347:17:-;;132:2:-1;166:7;155:9;146:7;137:37;252:7;246:14;243:1;238:23;232:4;229:33;270:1;265:20;;;;222:63;;265:20;274:9;222:63;;298:9;295:1;288:20;328:4;319:7;311:22;352:7;343;336:24",
-  "deployedSourceMap": "4624:3347:17:-;;;;;;;;",
+  "contractName": "MetaIdentityUsingLib",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "REGISTRY_TOPIC",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "MANAGEMENT_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "CONTRACT_SCHEME",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "RSA_TYPE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "actionThreshold",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ECDSA_TYPE",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "paused",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "execution",
+      "outputs": [
+        {
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "name": "needsApprove",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "approved",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "METAID_TOPIC",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ACTION_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ECDSA_SCHEME",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ENCRYPTION_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "RESIDENCE_TOPIC",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "managementThreshold",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "PROFILE_TOPIC",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "nonce",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "CUSTOM_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "LABEL_TOPIC",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "RESTORE_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "CLAIM_SIGNER_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "ASSIST_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "DELEGATE_KEY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "RSA_SCHEME",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "numClaims",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newImple",
+          "type": "address"
+        }
+      ],
+      "name": "setImplementaion",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "implementation",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "proxyType",
+      "outputs": [
+        {
+          "name": "proxyTypeId",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x6080604052600180805560028190556006805460ff19169055600a5534801561002757600080fd5b506105cc806100376000396000f3006080604052600436106101695763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630440b43a81146101af578063058b316c146101d657806323d6c46d146101eb578063251de3e9146101af5780632d32d4421461022057806338f4edd4146102355780634555d5c91461024a57806349991ec8146101d65780635c60da1b1461025f5780635c975abb146102905780635dccebba146102a55780636e4c43111461035c578063710ca550146101d657806375e5598c1461022057806382d09446146101d65780639e140cc814610377578063a550f0c714610220578063aa0a51421461038c578063ae62838614610377578063affed0e0146103a1578063b132734e146103b6578063b1e9f64c146103cb578063b9133d63146103e0578063c6702187146101af578063dbfa74b7146103cb578063ead09fab146103f5578063f22d08a614610220578063fc0fc8491461040a575b600061017361041f565b9050600160a060020a038116151561018a57600080fd5b60405136600082376000803683855af43d806000843e8180156101ab578184f35b8184fd5b3480156101bb57600080fd5b506101c461042e565b60408051918252519081900360200190f35b3480156101e257600080fd5b506101c4610433565b3480156101f757600080fd5b5061020c600160a060020a0360043516610438565b604080519115158252519081900360200190f35b34801561022c57600080fd5b506101c4610469565b34801561024157600080fd5b506101c461046e565b34801561025657600080fd5b506101c4610474565b34801561026b57600080fd5b5061027461041f565b60408051600160a060020a039092168252519081900360200190f35b34801561029c57600080fd5b5061020c610479565b3480156102b157600080fd5b506102bd600435610482565b6040518085600160a060020a0316600160a060020a0316815260200184815260200180602001838152602001828103825284818151815260200191508051906020019080838360005b8381101561031e578181015183820152602001610306565b50505050905090810190601f16801561034b5780820380516001836020036101000a031916815260200191505b509550505050505060405180910390f35b34801561036857600080fd5b5061027460043560243561053e565b34801561038357600080fd5b506101c4610575565b34801561039857600080fd5b506101c461057a565b3480156103ad57600080fd5b506101c4610580565b3480156103c257600080fd5b506101c4610586565b3480156103d757600080fd5b506101c461058b565b3480156103ec57600080fd5b506101c4610590565b34801561040157600080fd5b506101c4610595565b34801561041657600080fd5b506101c461059a565b600d54600160a060020a031690565b600381565b600181565b600d8054600160a060020a03831673ffffffffffffffffffffffffffffffffffffffff199091161790556001919050565b600281565b60025481565b600290565b60065460ff1681565b600b6020908152600091825260409182902080546001808301546002808501805488516101009582161595909502600019011691909104601f8101879004870284018701909752868352600160a060020a0390931695909491929183018282801561052e5780601f106105035761010080835404028352916020019161052e565b820191906000526020600020905b81548152906001019060200180831161051157829003601f168201915b5050505050908060030154905084565b600c6020528160005260406000208181548110151561055957fe5b600091825260209091200154600160a060020a03169150829050565b600481565b60015481565b600a5481565b600881565b600581565b600781565b600681565b600954815600a165627a7a723058201cd2e1509071c6678fadeb155e0991e68c099f675f41b75d6a6c6eb971b9f7120029",
+  "deployedBytecode": "0x6080604052600436106101695763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416630440b43a81146101af578063058b316c146101d657806323d6c46d146101eb578063251de3e9146101af5780632d32d4421461022057806338f4edd4146102355780634555d5c91461024a57806349991ec8146101d65780635c60da1b1461025f5780635c975abb146102905780635dccebba146102a55780636e4c43111461035c578063710ca550146101d657806375e5598c1461022057806382d09446146101d65780639e140cc814610377578063a550f0c714610220578063aa0a51421461038c578063ae62838614610377578063affed0e0146103a1578063b132734e146103b6578063b1e9f64c146103cb578063b9133d63146103e0578063c6702187146101af578063dbfa74b7146103cb578063ead09fab146103f5578063f22d08a614610220578063fc0fc8491461040a575b600061017361041f565b9050600160a060020a038116151561018a57600080fd5b60405136600082376000803683855af43d806000843e8180156101ab578184f35b8184fd5b3480156101bb57600080fd5b506101c461042e565b60408051918252519081900360200190f35b3480156101e257600080fd5b506101c4610433565b3480156101f757600080fd5b5061020c600160a060020a0360043516610438565b604080519115158252519081900360200190f35b34801561022c57600080fd5b506101c4610469565b34801561024157600080fd5b506101c461046e565b34801561025657600080fd5b506101c4610474565b34801561026b57600080fd5b5061027461041f565b60408051600160a060020a039092168252519081900360200190f35b34801561029c57600080fd5b5061020c610479565b3480156102b157600080fd5b506102bd600435610482565b6040518085600160a060020a0316600160a060020a0316815260200184815260200180602001838152602001828103825284818151815260200191508051906020019080838360005b8381101561031e578181015183820152602001610306565b50505050905090810190601f16801561034b5780820380516001836020036101000a031916815260200191505b509550505050505060405180910390f35b34801561036857600080fd5b5061027460043560243561053e565b34801561038357600080fd5b506101c4610575565b34801561039857600080fd5b506101c461057a565b3480156103ad57600080fd5b506101c4610580565b3480156103c257600080fd5b506101c4610586565b3480156103d757600080fd5b506101c461058b565b3480156103ec57600080fd5b506101c4610590565b34801561040157600080fd5b506101c4610595565b34801561041657600080fd5b506101c461059a565b600d54600160a060020a031690565b600381565b600181565b600d8054600160a060020a03831673ffffffffffffffffffffffffffffffffffffffff199091161790556001919050565b600281565b60025481565b600290565b60065460ff1681565b600b6020908152600091825260409182902080546001808301546002808501805488516101009582161595909502600019011691909104601f8101879004870284018701909752868352600160a060020a0390931695909491929183018282801561052e5780601f106105035761010080835404028352916020019161052e565b820191906000526020600020905b81548152906001019060200180831161051157829003601f168201915b5050505050908060030154905084565b600c6020528160005260406000208181548110151561055957fe5b600091825260209091200154600160a060020a03169150829050565b600481565b60015481565b600a5481565b600881565b600581565b600781565b600681565b600954815600a165627a7a723058201cd2e1509071c6678fadeb155e0991e68c099f675f41b75d6a6c6eb971b9f7120029",
+  "sourceMap": "108:4514:17:-;;;2568:1;2531:38;;;2575:34;;;;2730:26;;;-1:-1:-1;;2730:26:17;;;3219:24;;108:4514;5:2:-1;;;;30:1;27;20:12;5:2;108:4514:17;;;;;;;",
+  "deployedSourceMap": "108:4514:17:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;4163:13;4179:16;:14;:16::i;:::-;4163:32;-1:-1:-1;;;;;;4213:19:17;;;;4205:28;;;;;;4284:4;4278:11;4323:12;4320:1;4315:3;4302:34;4411:1;4408;4394:12;4389:3;4382:5;4377:3;4364:49;4438:14;4488:4;4485:1;4480:3;4465:28;4514:6;4533:28;;;;4596:4;4591:3;4584:17;4533:28;4554:4;4549:3;4542:17;1836:42;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1836:42:17;;;;;;;;;;;;;;;;;;;;427;;8:9:-1;5:2;;;30:1;27;20:12;5:2;427:42:17;;;;3539:134;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;3539:134:17;;;-1:-1:-1;;;;;3539:134:17;;;;;;;;;;;;;;;;;;;;;1463:36;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1463:36:17;;;;2575:34;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2575:34:17;;;;3896:88;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3896:88:17;;;;3679:97;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3679:97:17;;;;;;;;-1:-1:-1;;;;;3679:97:17;;;;;;;;;;;;;;2730:26;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2730:26:17;;;;3373:47;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;3373:47:17;;;;;;;;;-1:-1:-1;;;;;3373:47:17;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;3373:47:17;;;;;;;;;-1:-1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;3373:47:17;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;3426:46;;8:9:-1;5:2;;;30:1;27;20:12;5:2;-1:-1;3426:46:17;;;;;;;842:42;;8:9:-1;5:2;;;30:1;27;20:12;5:2;842:42:17;;;;2531:38;;8:9:-1;5:2;;;30:1;27;20:12;5:2;2531:38:17;;;;3219:24;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3219:24:17;;;;1268:38;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1268:38:17;;;;1975:39;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1975:39:17;;;;1158;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1158:39:17;;;;1046:40;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1046:40:17;;;;3174:21;;8:9:-1;5:2;;;30:1;27;20:12;5:2;3174:21:17;;;;3679:97;3752:17;;-1:-1:-1;;;;;3752:17:17;;3679:97::o;1836:42::-;1877:1;1836:42;:::o;427:::-;468:1;427:42;:::o;3539:134::-;3616:17;:29;;-1:-1:-1;;3616:29:17;-1:-1:-1;;;;;3616:29:17;;;;;;;;;;-1:-1:-1;;3539:134:17:o;1463:36::-;1498:1;1463:36;:::o;2575:34::-;;;;:::o;3896:88::-;3976:1;3896:88;:::o;2730:26::-;;;;;;:::o;3373:47::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;3373:47:17;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;3373:47:17;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;3426:46::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;3426:46:17;;-1:-1:-1;3426:46:17;;-1:-1:-1;3426:46:17:o;842:42::-;883:1;842:42;:::o;2531:38::-;;;;:::o;3219:24::-;;;;:::o;1268:38::-;1305:1;1268:38;:::o;1975:39::-;2013:1;1975:39;:::o;1158:::-;1196:1;1158:39;:::o;1046:40::-;1085:1;1046:40;:::o;3174:21::-;;;;:::o",
   "source": "pragma solidity ^0.4.24;\n\n/**\n * @title MetaIdentityUsingLib\n * @dev Interface for MetaIdentityUsingLib\n */\ncontract MetaIdentityUsingLib {\n    //ERC165\n    mapping(bytes4 => bool) internal supportedInterfaces;\n\n    //ERC165Query\n    bytes4 constant internal INVALID_ID = 0xffffffff;\n    bytes4 constant internal ERC165_ID = 0x01ffc9a7;\n\n    //ERC725\n    // Purpose\n    // 1: MANAGEMENT keys, which can manage the identity\n    uint256 public constant MANAGEMENT_KEY = 1;\n    // 2: ACTION keys, which perform actions in this identities name (signing, logins, transactions, etc.)\n    uint256 public constant ACTION_KEY = 2;\n    // 3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.\n    uint256 public constant CLAIM_SIGNER_KEY = 3;\n    // 4: ENCRYPTION keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant ENCRYPTION_KEY = 4;\n    // 5: ASSIST keys, used to authenticate.\n    uint256 public constant ASSIST_KEY = 5;\n    // 6: DELEGATE keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant DELEGATE_KEY = 6;\n    // 7: RESTORE keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant RESTORE_KEY = 7;\n    // 8: CUSTOM keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant CUSTOM_KEY = 8;\n    \n    // KeyType\n    uint256 public constant ECDSA_TYPE = 1;\n    // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51\n    uint256 public constant RSA_TYPE = 2;\n\n    //ERC735\n    // Topic\n    //uint256 public constant BIOMETRIC_TOPIC = 1; // you're a person and not a business\n    uint256 public constant METAID_TOPIC = 1; // TODO: real name, business name, nick name, brand name, alias, etc.\n    uint256 public constant RESIDENCE_TOPIC = 2; // you have a physical address or reference point\n    uint256 public constant REGISTRY_TOPIC = 3;\n    uint256 public constant PROFILE_TOPIC = 4; // TODO: social media profiles, blogs, etc.\n    uint256 public constant LABEL_TOPIC = 5; // TODO: real name, business name, nick name, brand name, alias, etc.\n\n    // Scheme\n    uint256 public constant ECDSA_SCHEME = 1;\n    // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51\n    uint256 public constant RSA_SCHEME = 2;\n    // 3 is contract verification, where the data will be call data, and the issuer a contract address to call\n    uint256 public constant CONTRACT_SCHEME = 3;\n\n\n    //KeyBase\n\n    //uint256 public constant MANAGEMENT_KEY = 1;\n\n    // For multi-sig\n    uint256 public managementThreshold = 1;\n    uint256 public actionThreshold = 1;\n\n    // Key storage\n    using KeyStore for KeyStore.Keys;\n    KeyStore.Keys internal allKeys;\n    \n    // Pausable\n    bool public paused = false;\n\n    // ClaimManager\n\n    bytes constant internal ETH_PREFIX = \"\\x19Ethereum Signed Message:\\n32\";\n\n    struct Claim {\n        uint256 topic;\n        uint256 scheme;\n        address issuer; // msg.sender\n        bytes signature; // this.address + topic + data\n        bytes data;\n        string uri;\n    }\n\n    mapping(bytes32 => Claim) internal claims;\n    mapping(uint256 => bytes32[]) internal claimsByTopic;\n    uint public numClaims;\n\n    // MultiSig\n\n    uint256 public nonce = 1;\n\n    struct Execution {\n        address to;\n        uint256 value;\n        bytes data;\n        uint256 needsApprove;\n    }\n\n    mapping (uint256 => Execution) public execution;\n    mapping (uint256 => address[]) public approved;\n\n\n    //Proxy Only\n    address internal libImplementation;\n\n\n    function setImplementaion(address _newImple) public returns (bool) {\n        libImplementation = _newImple;\n        return true;\n    }\n\n    function implementation() public view returns (address) {\n        return libImplementation;\n    }\n\n\n    /**\n    * @dev Tells the type of proxy (EIP 897)\n    * @return Type of proxy, 2 for upgradeable proxy\n    */\n    function proxyType() public pure returns (uint256 proxyTypeId) {\n        return 2;\n    }\n    \n\n    /**\n     * @dev Fallback function for delegate call. This function will return whatever the implementaion call returns\n     */\n    function () payable public {\n        address _impl = implementation();\n        require(_impl != address(0));\n\n        assembly {\n            let ptr := mload(0x40)\n            calldatacopy(ptr, 0, calldatasize)\n\n            let result := delegatecall(gas, _impl, ptr, calldatasize, 0, 0)\n            let size := returndatasize\n            returndatacopy(ptr, 0, size)\n\n            switch result\n            case 0 { revert(ptr, size) }\n            default { return(ptr, size) }\n\n        }\n    }\n}\n\nlibrary KeyStore {\n    struct Key {\n        uint256[] purposes; //e.g., MANAGEMENT_KEY = 1, ACTION_KEY = 2, etc.\n        uint256 keyType; // e.g. 1 = ECDSA, 2 = RSA, etc.\n        bytes32 key; // for non-hex and long keys, its the Keccak256 hash of the key\n        mapping(address=>mapping(bytes4=>bool)) func;\n    }\n\n    struct Keys {\n        mapping (bytes32 => Key) keyData;\n        mapping (uint256 => bytes32[]) keysByPurpose;\n        uint numKeys;\n    }\n\n    /// @dev Find a key + purpose tuple\n    /// @param key Key bytes to find\n    /// @param purpose Purpose to find\n    /// @return `true` if key + purpose tuple if found\n    function find(Keys storage self, bytes32 key, uint256 purpose)\n        internal\n        view\n        returns (bool found)\n    {\n        Key memory k = self.keyData[key];\n        if (k.key == 0) {\n            return false;\n        }\n        for (uint i = 0; i < k.purposes.length; i++) {\n            if (k.purposes[i] == purpose) {\n                found = true;\n                return;\n            }\n        }\n    }\n\n    function isExist(Keys storage self, bytes32 key)\n        internal\n        view\n        returns (bool found)\n    {\n        Key memory k = self.keyData[key];\n        return (k.key != 0);\n    }\n\n    /// @dev Add a Key\n    /// @param key Key bytes to add\n    /// @param purpose Purpose to add\n    /// @param keyType Key type to add\n    function add(Keys storage self, bytes32 key, uint256 purpose, uint256 keyType)\n        internal\n    {\n        Key storage k = self.keyData[key];\n        k.purposes.push(purpose);\n        if (k.key == 0) {\n            k.key = key;\n            k.keyType = keyType;\n        }\n        self.keysByPurpose[purpose].push(key);\n        self.numKeys++;\n    }\n\n    /// @dev Remove Key\n    /// @param key Key bytes to remove\n    /// @param purpose Purpose to remove\n    /// @return Key type of the key that was removed\n    function remove(Keys storage self, bytes32 key, uint256 purpose)\n        internal\n        returns (uint256 keyType)\n    {\n        keyType = self.keyData[key].keyType;\n\n        uint256[] storage p = self.keyData[key].purposes;\n        // Delete purpose from keyData\n        for (uint i = 0; i < p.length; i++) {\n            if (p[i] == purpose) {\n                p[i] = p[p.length - 1];\n                delete p[p.length - 1];\n                p.length--;\n                self.numKeys--;\n                break;\n            }\n        }\n        // No more purposes\n        if (p.length == 0) {\n            delete self.keyData[key];\n        }\n\n        // Delete key from keysByPurpose\n        bytes32[] storage k = self.keysByPurpose[purpose];\n        for (i = 0; i < k.length; i++) {\n            if (k[i] == key) {\n                k[i] = k[k.length - 1];\n                delete k[k.length - 1];\n                k.length--;\n            }\n        }\n    }\n\n    /// @dev Set function that the specific key can excute\n    /// @param key Key to use\n    /// @param to smart contract address at which this key can be used\n    /// @param func function to use\n    /// @param executable is executable\n    function setFunc(Keys storage self, bytes32 key, address to, bytes4 func, bool executable)\n        internal returns (bool set)\n    {\n        Key storage k = self.keyData[key];\n        k.func[to][func] = executable;\n        \n        return executable;\n    }\n}",
   "sourcePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/MetaIdentityUsingLib.sol",
   "ast": {
@@ -13101,5 +13530,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-05T06:17:20.450Z"
+  "updatedAt": "2018-11-05T06:17:20.475Z"
 }

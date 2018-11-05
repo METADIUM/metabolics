@@ -54,7 +54,6 @@ contract AchievementManager is RegistryUser {
         _;
     }
 
-
     constructor() public {
         THIS_NAME = "AchievementManager";
     }

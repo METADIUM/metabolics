@@ -35,4 +35,5 @@ contract RegistryUser is Ownable {
     function isPermitted(address _addr) public view returns(bool found) {
         return REG.getPermission(THIS_NAME, _addr);
     }
+    
 }

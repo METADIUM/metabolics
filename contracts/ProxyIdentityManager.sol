@@ -1,16 +1,16 @@
 pragma solidity ^0.4.24;
 
 import "./openzeppelin-solidity/contracts/ownership/Ownable.sol";
-import "./identity/MetaIdentity.sol";
+import "./identity/MetaIdentityUsingLib.sol";
 import "./RegistryUser.sol";
 
 
 /**
- * @title IdentityManager
- * @dev IdentityManager is factory contract to make identity
+ * @title ProxyIdentityManager
+ * @dev ProxyIdentityManager is factory contract to make identity
  * permissoined sender can create metadium identity through this contract
  */
-contract IdentityManager is RegistryUser {
+contract ProxyIdentityManager is RegistryUser {
     //Hold the list of MetaIds
     //CreateMetaId
     
@@ -32,7 +32,7 @@ contract IdentityManager is RegistryUser {
     function createMetaId(address _managementKey) permissioned public returns (bool success) {
         require(_managementKey != address(0));
 
-        address newMetaId = new MetaIdentity(_managementKey);
+        address newMetaId = new MetaIdentityUsingLib();
         metaIds.push(newMetaId);
         metaIdExistence[newMetaId] = true;
 
