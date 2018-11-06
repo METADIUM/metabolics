@@ -184,6 +184,8 @@ contract AchievementManager is RegistryUser {
 
         return true;
     }
+
+
     function hasSelfClaim(address _identity, uint256 _topic) public view returns (bool) {
         bytes32[] memory claims = ERC735(_identity).getClaimIdsByType(_topic);
         address c;
@@ -191,7 +193,8 @@ contract AchievementManager is RegistryUser {
             (, , c, , ,) = ERC735(_identity).getClaim(claims[i]);
             //3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.
             //bytes32(address) : addrToKey(addr)
-            if(ERC725(_identity).keyHasPurpose(bytes32(c), 3)){
+            if(ERC725(_identity).keyHasPurpose(bytes32(c), 3) || c == msg.sender){
+                //true if isuuer is identity's claim key or smart contract identity itself
                 return true;
             }
             

@@ -31,10 +31,19 @@ async function deploy(deployer, network, accounts) {
 
         })
     } else if (args[3] == 'updateIdentityManager') {
+        deployer.then(async () => {
+            let currentRegistryAddress = '0xd8f3fcd161c4771c07bf09bc6136da1663a05929' // put the current registry address
+            let reg = Registry.at(currentRegistryAddress)
+
+            mim = await deployer.deploy(IdentityManager)
+            await reg.setContractDomain("IdentityManager", mim.address)
+            
+            await mim.setRegistry(reg.address)
+
+        })
         // deploy contract
         // setContractDomain
-        // setPermission
-        // setRgistry
+        // setRegistry
 
 
     } else if (args[3] == 'updateAttestationAgencyRegistry') {
