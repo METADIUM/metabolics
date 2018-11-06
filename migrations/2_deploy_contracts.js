@@ -192,13 +192,26 @@ async function registerSystemTopics(accounts, reg, mim, tr, am, ar, achiv) {
     let _achievementtitle = 'Basic Profile'
     let _achievementExplanation = 'Name/Phone/Email'
     let _reward = 0.1 * 10 ** 18
-    let _uri = 'You registered your basic profile'
+    let _uri = 'You registered your basic profile!'
 
     // register achievement
+
+    //Basic Profile
     await am.createAchievement(_topics, _issuers, _achievementtitle, _achievementExplanation, _reward, _uri, { value: '0xDE0B6B3A7640000' })
+
+    //Birth Info
+    await am.createAchievement([3,4], [selfClaimAddress, selfClaimAddress], 'Birth Info', 'DateOfBirth And Gender', _reward, 'You have birth and gender!', { value: '0xDE0B6B3A7640000' })
+
+    //Nationality
+    await am.createAchievement([70, 80], [selfClaimAddress, selfClaimAddress], 'Nationality', 'Nationality And Language', _reward, 'You have Nationality and Language', { value: '0xDE0B6B3A7640000' })
+
+    //Name Card
+    await am.createAchievement([90, 100], [selfClaimAddress, selfClaimAddress], 'Name Card', 'Occupation And SNS', _reward, 'You have Occupation and SNS', { value: '0xDE0B6B3A7640000' })
 
     console.log('System achievements are registered')
 }
+
+
 async function writeToContractsJson(reg, mim, tr, am, ar, achiv, metaHand) {
     console.log(`Writing Contract Address To contracts.json`)
     let contractData = {}
@@ -217,7 +230,7 @@ async function writeToContractsJson(reg, mim, tr, am, ar, achiv, metaHand) {
             console.log('contracts.json updated!');
         }
     });
-    console.log(`Writing End`)
+    
 }
 function readTopicsFromFile() {
     var fullLines = fs.readFileSync('./config/systemTopics.txt').toString().split("\n");
