@@ -25,13 +25,17 @@ contract AttestationAgencyRegistry is RegistryUser {
     event RegisterAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 explanation);
     event UpdateAttestationAgency(address indexed aa, bytes32 indexed title, bytes32 explanation);
 
+
+    /**
+     * @dev Metadium SelfSovereign address is used to self claim.
+     */
     constructor() public {
         THIS_NAME = "AttestationAgencyRegistry";
         attestationAgencyNum = 1;
 
         attestationAgencies[0].addr = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
-        attestationAgencies[0].title = 'MetadiumDefault';
-        attestationAgencies[0].explanation = 'MetadiumDefault';
+        attestationAgencies[0].title = 'Metadium SelfSovereign';
+        attestationAgencies[0].explanation = 'Metadium SelfSovereign';
         attestationAgencies[0].createdAt = now;
     }
 

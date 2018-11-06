@@ -103,56 +103,6 @@ contract AchievementManager is RegistryUser {
         return true;
     }
 
-    //TODO createAchievementWithNewTopics
-    // /**
-    //  * @dev Create Achievement. If topic is not exist, register it to the topic registry.
-    //  * @param _topics registered topics
-    //  * @param _newTopicExaplanations explanations of new topics
-    //  * @param _issuers issuers for each topic
-    //  * @param _achievementExplanation achievement explanation
-    //  * @param _reward reward in meta when user request acievement
-    //  * @param _uri basically used for ipfs id or something
-    //  * @return A boolean that indicates if the operation was successful.
-    //  */
-    // function createAchievementWithNewTopics(uint256[] _topics, bytes32[] _newTopicExaplanations, address[] _issuers, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool) {
-
-    //     require((_topics.length + _newTopicExaplanations.length) == issuers.length);
-
-    //     //check staking amount used for reward
-    //     require(msg.value >= minimumDeposit);
-    //     TopicRegistry topicRegistry = TopicRegistry(REG.getContractAddress("TopicRegistry"));
-
-    //     uint256[] memory allTopics = new uint[](_topics.length + _newTopicExaplanations.length);
-
-    //     uint256 i;
-    //     for(i=0;i<_topics.length;i++){
-    //         allTopics[i] = _topics[i];
-    //     }
-
-    //     for(i=_topics.length;i<_topics.length+_newTopicExaplanations.length;i++) {
-    //         allTopics[i] = topicRegistry.registerTopic(msg.sender, _newTopicExaplanations[i]);
-    //     }
-
-    //     //check if achievement is already registered
-    //     bytes32 achievementId = getAchievementId(msg.sender, topics, issuers);
-    //     require(achievements[achievementId].id == 0);
-    //     Achievement memory newAc;
-    //     newAc.id = achievementId;
-    //     newAc.creator = msg.sender;
-    //     newAc.issuers = issuers;
-    //     newAc.claimTopics = topics;
-    //     newAc.explanation = achievementExplanation;
-    //     newAc.uri = uri;
-    //     newAc.reward = reward;
-
-    //     achievements[newAc.id] = newAc;
-    //     allAchievements.push(achievementId);
-    //     balance[achievementId] = msg.value;
-
-    //     return true;
-    // }
-    
-
     /**
      * @dev Update Achievement. Fund can be charged through this, and reward can be set newly.
      * @param _achievementId achievementId

@@ -200,7 +200,7 @@ async function registerSystemTopics(accounts, reg, mim, tr, am, ar, achiv) {
     await am.createAchievement(_topics, _issuers, _achievementtitle, _achievementExplanation, _reward, _uri, { value: '0xDE0B6B3A7640000' })
 
     //Birth Info
-    await am.createAchievement([3,4], [selfClaimAddress, selfClaimAddress], 'Birth Info', 'DateOfBirth And Gender', _reward, 'You have birth and gender!', { value: '0xDE0B6B3A7640000' })
+    await am.createAchievement([3,4], [selfClaimAddress, selfClaimAddress], 'Birth Info', 'Date Of Birth And Gender', _reward, 'You have birth and gender!', { value: '0xDE0B6B3A7640000' })
 
     //Nationality
     await am.createAchievement([70, 80], [selfClaimAddress, selfClaimAddress], 'Nationality', 'Nationality And Language', _reward, 'You have Nationality and Language', { value: '0xDE0B6B3A7640000' })
