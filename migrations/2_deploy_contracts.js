@@ -92,7 +92,7 @@ async function deploy(deployer, network, accounts) {
 
 
     } else {
-        deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);
+        //deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);
         deployer.deploy(TestContract);
     }
 }

@@ -50,9 +50,8 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     assertBlockGasLimit(blockGasLimit);
 
     // Use deployed identity for other identity
-    //TODO deploy other identity here
-    //let otherIdentity = await Identity.deployed();
     let otherIdentity = await Identity.new([], [], 1, 1, [], [], '', '', '', [])
+
     addr.other = accounts[0];
     keys.other = await otherIdentity.addrToKey(accounts[0]);
 
