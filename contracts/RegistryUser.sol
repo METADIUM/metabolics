@@ -11,7 +11,6 @@ contract RegistryUser is Ownable {
     
     Registry public REG;
     bytes32 public THIS_NAME;
-    event Per(address addr, bytes32 name, bool go);
 
     /**
      * @dev Function to set registry address. Contract that wants to use registry should setRegistry first.

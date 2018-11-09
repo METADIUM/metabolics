@@ -9,7 +9,7 @@ const Registry = artifacts.require('Registry.sol')
 const TopicRegistry = artifacts.require('TopicRegistry.sol')
 const AttestationAgencyRegistry = artifacts.require('AttestationAgencyRegistry.sol')
 
-contract('Attestation Agency Registry', function ([deployer, identity1, aa1, aa2, user2, issuer1, issuer2, issuer3, proxy1]) {
+contract('Topic Registry', function ([deployer, identity1, aa1, aa2, user2, issuer1, issuer2, issuer3, proxy1]) {
     let registry, topicRegistry, aaRegistry
 
     beforeEach(async () => {
