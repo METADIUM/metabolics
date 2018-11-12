@@ -118,14 +118,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/RegistryUser.sol",
     "exportedSymbols": {
       "RegistryUser": [
-        397
+        399
       ]
     },
-    "id": 398,
+    "id": 400,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 349,
+        "id": 351,
         "literals": [
           "solidity",
           "^",
@@ -138,10 +138,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/openzeppelin-solidity/contracts/ownership/Ownable.sol",
         "file": "./openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "id": 350,
+        "id": 352,
         "nodeType": "ImportDirective",
-        "scope": 398,
-        "sourceUnit": 4796,
+        "scope": 400,
+        "sourceUnit": 4246,
         "src": "26:65:3",
         "symbolAliases": [],
         "unitAlias": ""
@@ -149,10 +149,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/Registry.sol",
         "file": "./Registry.sol",
-        "id": 351,
+        "id": 353,
         "nodeType": "ImportDirective",
-        "scope": 398,
-        "sourceUnit": 348,
+        "scope": 400,
+        "sourceUnit": 350,
         "src": "92:24:3",
         "symbolAliases": [],
         "unitAlias": ""
@@ -163,57 +163,57 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 352,
+              "id": 354,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 4795,
+              "referencedDeclaration": 4245,
               "src": "232:7:3",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$4795",
+                "typeIdentifier": "t_contract$_Ownable_$4245",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 353,
+            "id": 355,
             "nodeType": "InheritanceSpecifier",
             "src": "232:7:3"
           }
         ],
         "contractDependencies": [
-          4795
+          4245
         ],
         "contractKind": "contract",
         "documentation": "@title RegistryUser\n@dev RegistryUser Contract that uses Registry contract",
         "fullyImplemented": true,
-        "id": 397,
+        "id": 399,
         "linearizedBaseContracts": [
-          397,
-          4795
+          399,
+          4245
         ],
         "name": "RegistryUser",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 355,
+            "id": 357,
             "name": "REG",
             "nodeType": "VariableDeclaration",
-            "scope": 397,
+            "scope": 399,
             "src": "251:19:3",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Registry_$347",
+              "typeIdentifier": "t_contract$_Registry_$349",
               "typeString": "contract Registry"
             },
             "typeName": {
               "contractScope": null,
-              "id": 354,
+              "id": 356,
               "name": "Registry",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 347,
+              "referencedDeclaration": 349,
               "src": "251:8:3",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Registry_$347",
+                "typeIdentifier": "t_contract$_Registry_$349",
                 "typeString": "contract Registry"
               }
             },
@@ -222,10 +222,10 @@
           },
           {
             "constant": false,
-            "id": 357,
+            "id": 359,
             "name": "THIS_NAME",
             "nodeType": "VariableDeclaration",
-            "scope": 397,
+            "scope": 399,
             "src": "276:24:3",
             "stateVariable": true,
             "storageLocation": "default",
@@ -234,7 +234,7 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 356,
+              "id": 358,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
               "src": "276:7:3",
@@ -248,28 +248,28 @@
           },
           {
             "body": {
-              "id": 370,
+              "id": 372,
               "nodeType": "Block",
               "src": "597:38:3",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 368,
+                    "id": 370,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 364,
+                      "id": 366,
                       "name": "REG",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 355,
+                      "referencedDeclaration": 357,
                       "src": "607:3:3",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Registry_$347",
+                        "typeIdentifier": "t_contract$_Registry_$349",
                         "typeString": "contract Registry"
                       }
                     },
@@ -280,11 +280,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 366,
+                          "id": 368,
                           "name": "_addr",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 359,
+                          "referencedDeclaration": 361,
                           "src": "622:5:3",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -299,18 +299,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 365,
+                        "id": 367,
                         "name": "Registry",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 347,
+                        "referencedDeclaration": 349,
                         "src": "613:8:3",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_Registry_$347_$",
+                          "typeIdentifier": "t_type$_t_contract$_Registry_$349_$",
                           "typeString": "type(contract Registry)"
                         }
                       },
-                      "id": 367,
+                      "id": 369,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -320,38 +320,38 @@
                       "nodeType": "FunctionCall",
                       "src": "613:15:3",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Registry_$347",
+                        "typeIdentifier": "t_contract$_Registry_$349",
                         "typeString": "contract Registry"
                       }
                     },
                     "src": "607:21:3",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Registry_$347",
+                      "typeIdentifier": "t_contract$_Registry_$349",
                       "typeString": "contract Registry"
                     }
                   },
-                  "id": 369,
+                  "id": 371,
                   "nodeType": "ExpressionStatement",
                   "src": "607:21:3"
                 }
               ]
             },
             "documentation": "@dev Function to set registry address. Contract that wants to use registry should setRegistry first.\n@param _addr address of registry\n@return A boolean that indicates if the operation was successful.",
-            "id": 371,
+            "id": 373,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 362,
+                "id": 364,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 361,
+                  "id": 363,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4769,
+                  "referencedDeclaration": 4219,
                   "src": "587:9:3",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -365,15 +365,15 @@
             "name": "setRegistry",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 360,
+              "id": 362,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 359,
+                  "id": 361,
                   "name": "_addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 371,
+                  "scope": 373,
                   "src": "565:13:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -382,7 +382,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 358,
+                    "id": 360,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "565:7:3",
@@ -399,12 +399,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 363,
+              "id": 365,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "597:0:3"
             },
-            "scope": 397,
+            "scope": 399,
             "src": "544:91:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -412,7 +412,7 @@
           },
           {
             "body": {
-              "id": 381,
+              "id": 383,
               "nodeType": "Block",
               "src": "669:60:3",
               "statements": [
@@ -427,18 +427,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 375,
+                              "id": 377,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 6190,
+                              "referencedDeclaration": 6519,
                               "src": "699:3:3",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 376,
+                            "id": 378,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -460,18 +460,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 374,
+                          "id": 376,
                           "name": "isPermitted",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 396,
+                          "referencedDeclaration": 398,
                           "src": "687:11:3",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                             "typeString": "function (address) view returns (bool)"
                           }
                         },
-                        "id": 377,
+                        "id": 379,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -493,21 +493,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 373,
+                      "id": 375,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6193,
-                        6194
+                        6522,
+                        6523
                       ],
-                      "referencedDeclaration": 6193,
+                      "referencedDeclaration": 6522,
                       "src": "679:7:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 378,
+                    "id": 380,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -521,23 +521,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 379,
+                  "id": 381,
                   "nodeType": "ExpressionStatement",
                   "src": "679:32:3"
                 },
                 {
-                  "id": 380,
+                  "id": 382,
                   "nodeType": "PlaceholderStatement",
                   "src": "721:1:3"
                 }
               ]
             },
             "documentation": null,
-            "id": 382,
+            "id": 384,
             "name": "permissioned",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 372,
+              "id": 374,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "666:2:3"
@@ -547,7 +547,7 @@
           },
           {
             "body": {
-              "id": 395,
+              "id": 397,
               "nodeType": "Block",
               "src": "999:59:3",
               "statements": [
@@ -557,11 +557,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 391,
+                        "id": 393,
                         "name": "THIS_NAME",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 357,
+                        "referencedDeclaration": 359,
                         "src": "1034:9:3",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -570,11 +570,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 392,
+                        "id": 394,
                         "name": "_addr",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 384,
+                        "referencedDeclaration": 386,
                         "src": "1045:5:3",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -595,32 +595,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 389,
+                        "id": 391,
                         "name": "REG",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 355,
+                        "referencedDeclaration": 357,
                         "src": "1016:3:3",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Registry_$347",
+                          "typeIdentifier": "t_contract$_Registry_$349",
                           "typeString": "contract Registry"
                         }
                       },
-                      "id": 390,
+                      "id": 392,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "getPermission",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 346,
+                      "referencedDeclaration": 348,
                       "src": "1016:17:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_address_$returns$_t_bool_$",
                         "typeString": "function (bytes32,address) view external returns (bool)"
                       }
                     },
-                    "id": 393,
+                    "id": 395,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -634,15 +634,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 388,
-                  "id": 394,
+                  "functionReturnParameters": 390,
+                  "id": 396,
                   "nodeType": "Return",
                   "src": "1009:42:3"
                 }
               ]
             },
             "documentation": "@dev Function to check the permission\n@param _addr address of sender to check the permission\n@return A boolean that indicates if the operation was successful.",
-            "id": 396,
+            "id": 398,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -650,15 +650,15 @@
             "name": "isPermitted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 385,
+              "id": 387,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 384,
+                  "id": 386,
                   "name": "_addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 396,
+                  "scope": 398,
                   "src": "952:13:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -667,7 +667,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 383,
+                    "id": 385,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "952:7:3",
@@ -684,15 +684,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 388,
+              "id": 390,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 387,
+                  "id": 389,
                   "name": "found",
                   "nodeType": "VariableDeclaration",
-                  "scope": 396,
+                  "scope": 398,
                   "src": "987:10:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -701,7 +701,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 386,
+                    "id": 388,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "987:4:3",
@@ -716,14 +716,14 @@
               ],
               "src": "986:12:3"
             },
-            "scope": 397,
+            "scope": 399,
             "src": "931:127:3",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 398,
+        "scope": 400,
         "src": "207:858:3"
       }
     ],
@@ -733,14 +733,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/RegistryUser.sol",
     "exportedSymbols": {
       "RegistryUser": [
-        397
+        399
       ]
     },
-    "id": 398,
+    "id": 400,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 349,
+        "id": 351,
         "literals": [
           "solidity",
           "^",
@@ -753,10 +753,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/openzeppelin-solidity/contracts/ownership/Ownable.sol",
         "file": "./openzeppelin-solidity/contracts/ownership/Ownable.sol",
-        "id": 350,
+        "id": 352,
         "nodeType": "ImportDirective",
-        "scope": 398,
-        "sourceUnit": 4796,
+        "scope": 400,
+        "sourceUnit": 4246,
         "src": "26:65:3",
         "symbolAliases": [],
         "unitAlias": ""
@@ -764,10 +764,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/Registry.sol",
         "file": "./Registry.sol",
-        "id": 351,
+        "id": 353,
         "nodeType": "ImportDirective",
-        "scope": 398,
-        "sourceUnit": 348,
+        "scope": 400,
+        "sourceUnit": 350,
         "src": "92:24:3",
         "symbolAliases": [],
         "unitAlias": ""
@@ -778,57 +778,57 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 352,
+              "id": 354,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 4795,
+              "referencedDeclaration": 4245,
               "src": "232:7:3",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$4795",
+                "typeIdentifier": "t_contract$_Ownable_$4245",
                 "typeString": "contract Ownable"
               }
             },
-            "id": 353,
+            "id": 355,
             "nodeType": "InheritanceSpecifier",
             "src": "232:7:3"
           }
         ],
         "contractDependencies": [
-          4795
+          4245
         ],
         "contractKind": "contract",
         "documentation": "@title RegistryUser\n@dev RegistryUser Contract that uses Registry contract",
         "fullyImplemented": true,
-        "id": 397,
+        "id": 399,
         "linearizedBaseContracts": [
-          397,
-          4795
+          399,
+          4245
         ],
         "name": "RegistryUser",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "constant": false,
-            "id": 355,
+            "id": 357,
             "name": "REG",
             "nodeType": "VariableDeclaration",
-            "scope": 397,
+            "scope": 399,
             "src": "251:19:3",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_contract$_Registry_$347",
+              "typeIdentifier": "t_contract$_Registry_$349",
               "typeString": "contract Registry"
             },
             "typeName": {
               "contractScope": null,
-              "id": 354,
+              "id": 356,
               "name": "Registry",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 347,
+              "referencedDeclaration": 349,
               "src": "251:8:3",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Registry_$347",
+                "typeIdentifier": "t_contract$_Registry_$349",
                 "typeString": "contract Registry"
               }
             },
@@ -837,10 +837,10 @@
           },
           {
             "constant": false,
-            "id": 357,
+            "id": 359,
             "name": "THIS_NAME",
             "nodeType": "VariableDeclaration",
-            "scope": 397,
+            "scope": 399,
             "src": "276:24:3",
             "stateVariable": true,
             "storageLocation": "default",
@@ -849,7 +849,7 @@
               "typeString": "bytes32"
             },
             "typeName": {
-              "id": 356,
+              "id": 358,
               "name": "bytes32",
               "nodeType": "ElementaryTypeName",
               "src": "276:7:3",
@@ -863,28 +863,28 @@
           },
           {
             "body": {
-              "id": 370,
+              "id": 372,
               "nodeType": "Block",
               "src": "597:38:3",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 368,
+                    "id": 370,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 364,
+                      "id": 366,
                       "name": "REG",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 355,
+                      "referencedDeclaration": 357,
                       "src": "607:3:3",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Registry_$347",
+                        "typeIdentifier": "t_contract$_Registry_$349",
                         "typeString": "contract Registry"
                       }
                     },
@@ -895,11 +895,11 @@
                       "arguments": [
                         {
                           "argumentTypes": null,
-                          "id": 366,
+                          "id": 368,
                           "name": "_addr",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 359,
+                          "referencedDeclaration": 361,
                           "src": "622:5:3",
                           "typeDescriptions": {
                             "typeIdentifier": "t_address",
@@ -914,18 +914,18 @@
                             "typeString": "address"
                           }
                         ],
-                        "id": 365,
+                        "id": 367,
                         "name": "Registry",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 347,
+                        "referencedDeclaration": 349,
                         "src": "613:8:3",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_Registry_$347_$",
+                          "typeIdentifier": "t_type$_t_contract$_Registry_$349_$",
                           "typeString": "type(contract Registry)"
                         }
                       },
-                      "id": 367,
+                      "id": 369,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
@@ -935,38 +935,38 @@
                       "nodeType": "FunctionCall",
                       "src": "613:15:3",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_contract$_Registry_$347",
+                        "typeIdentifier": "t_contract$_Registry_$349",
                         "typeString": "contract Registry"
                       }
                     },
                     "src": "607:21:3",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_contract$_Registry_$347",
+                      "typeIdentifier": "t_contract$_Registry_$349",
                       "typeString": "contract Registry"
                     }
                   },
-                  "id": 369,
+                  "id": 371,
                   "nodeType": "ExpressionStatement",
                   "src": "607:21:3"
                 }
               ]
             },
             "documentation": "@dev Function to set registry address. Contract that wants to use registry should setRegistry first.\n@param _addr address of registry\n@return A boolean that indicates if the operation was successful.",
-            "id": 371,
+            "id": 373,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": false,
             "modifiers": [
               {
                 "arguments": null,
-                "id": 362,
+                "id": 364,
                 "modifierName": {
                   "argumentTypes": null,
-                  "id": 361,
+                  "id": 363,
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 4769,
+                  "referencedDeclaration": 4219,
                   "src": "587:9:3",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -980,15 +980,15 @@
             "name": "setRegistry",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 360,
+              "id": 362,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 359,
+                  "id": 361,
                   "name": "_addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 371,
+                  "scope": 373,
                   "src": "565:13:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -997,7 +997,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 358,
+                    "id": 360,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "565:7:3",
@@ -1014,12 +1014,12 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 363,
+              "id": 365,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "597:0:3"
             },
-            "scope": 397,
+            "scope": 399,
             "src": "544:91:3",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1027,7 +1027,7 @@
           },
           {
             "body": {
-              "id": 381,
+              "id": 383,
               "nodeType": "Block",
               "src": "669:60:3",
               "statements": [
@@ -1042,18 +1042,18 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 375,
+                              "id": 377,
                               "name": "msg",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 6190,
+                              "referencedDeclaration": 6519,
                               "src": "699:3:3",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_magic_message",
                                 "typeString": "msg"
                               }
                             },
-                            "id": 376,
+                            "id": 378,
                             "isConstant": false,
                             "isLValue": false,
                             "isPure": false,
@@ -1075,18 +1075,18 @@
                               "typeString": "address"
                             }
                           ],
-                          "id": 374,
+                          "id": 376,
                           "name": "isPermitted",
                           "nodeType": "Identifier",
                           "overloadedDeclarations": [],
-                          "referencedDeclaration": 396,
+                          "referencedDeclaration": 398,
                           "src": "687:11:3",
                           "typeDescriptions": {
                             "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
                             "typeString": "function (address) view returns (bool)"
                           }
                         },
-                        "id": 377,
+                        "id": 379,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": false,
@@ -1108,21 +1108,21 @@
                           "typeString": "bool"
                         }
                       ],
-                      "id": 373,
+                      "id": 375,
                       "name": "require",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [
-                        6193,
-                        6194
+                        6522,
+                        6523
                       ],
-                      "referencedDeclaration": 6193,
+                      "referencedDeclaration": 6522,
                       "src": "679:7:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_require_pure$_t_bool_$returns$__$",
                         "typeString": "function (bool) pure"
                       }
                     },
-                    "id": 378,
+                    "id": 380,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1136,23 +1136,23 @@
                       "typeString": "tuple()"
                     }
                   },
-                  "id": 379,
+                  "id": 381,
                   "nodeType": "ExpressionStatement",
                   "src": "679:32:3"
                 },
                 {
-                  "id": 380,
+                  "id": 382,
                   "nodeType": "PlaceholderStatement",
                   "src": "721:1:3"
                 }
               ]
             },
             "documentation": null,
-            "id": 382,
+            "id": 384,
             "name": "permissioned",
             "nodeType": "ModifierDefinition",
             "parameters": {
-              "id": 372,
+              "id": 374,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "666:2:3"
@@ -1162,7 +1162,7 @@
           },
           {
             "body": {
-              "id": 395,
+              "id": 397,
               "nodeType": "Block",
               "src": "999:59:3",
               "statements": [
@@ -1172,11 +1172,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 391,
+                        "id": 393,
                         "name": "THIS_NAME",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 357,
+                        "referencedDeclaration": 359,
                         "src": "1034:9:3",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1185,11 +1185,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 392,
+                        "id": 394,
                         "name": "_addr",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 384,
+                        "referencedDeclaration": 386,
                         "src": "1045:5:3",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1210,32 +1210,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 389,
+                        "id": 391,
                         "name": "REG",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 355,
+                        "referencedDeclaration": 357,
                         "src": "1016:3:3",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_contract$_Registry_$347",
+                          "typeIdentifier": "t_contract$_Registry_$349",
                           "typeString": "contract Registry"
                         }
                       },
-                      "id": 390,
+                      "id": 392,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "getPermission",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 346,
+                      "referencedDeclaration": 348,
                       "src": "1016:17:3",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_external_view$_t_bytes32_$_t_address_$returns$_t_bool_$",
                         "typeString": "function (bytes32,address) view external returns (bool)"
                       }
                     },
-                    "id": 393,
+                    "id": 395,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1249,15 +1249,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 388,
-                  "id": 394,
+                  "functionReturnParameters": 390,
+                  "id": 396,
                   "nodeType": "Return",
                   "src": "1009:42:3"
                 }
               ]
             },
             "documentation": "@dev Function to check the permission\n@param _addr address of sender to check the permission\n@return A boolean that indicates if the operation was successful.",
-            "id": 396,
+            "id": 398,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1265,15 +1265,15 @@
             "name": "isPermitted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 385,
+              "id": 387,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 384,
+                  "id": 386,
                   "name": "_addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 396,
+                  "scope": 398,
                   "src": "952:13:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1282,7 +1282,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 383,
+                    "id": 385,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "952:7:3",
@@ -1299,15 +1299,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 388,
+              "id": 390,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 387,
+                  "id": 389,
                   "name": "found",
                   "nodeType": "VariableDeclaration",
-                  "scope": 396,
+                  "scope": 398,
                   "src": "987:10:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1316,7 +1316,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 386,
+                    "id": 388,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "987:4:3",
@@ -1331,14 +1331,14 @@
               ],
               "src": "986:12:3"
             },
-            "scope": 397,
+            "scope": 399,
             "src": "931:127:3",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 398,
+        "scope": 400,
         "src": "207:858:3"
       }
     ],
@@ -1350,5 +1350,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-09T08:11:52.240Z"
+  "updatedAt": "2018-11-12T02:28:39.934Z"
 }
