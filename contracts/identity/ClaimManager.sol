@@ -153,6 +153,12 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         return true;
     }
 
+    /// @dev Returns whether the claim exists
+    /// @return true if claim exist
+    function isClaimExist(bytes32 _claimId) public view returns (bool) {
+        return (claims[_claimId].issuer != address(0));   
+    }
+
     /// @dev Returns a claim by ID
     /// @return (topic, scheme, issuer, signature, data, uri) tuple with claim data
     function getClaim(bytes32 _claimId)

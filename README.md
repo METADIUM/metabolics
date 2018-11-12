@@ -3,6 +3,45 @@
 
 This is Metadium 2.0 Smart Contract.
 
+
+## Deployed Contracts
+
+## Setup
+
+## Testing
+Whole test
+```
+$ npm install ganache-cli
+$ ganache-cli -d -m 'hello' -l 10000000
+$ truffle test
+```
+## Misc
+
+### flatten
+You can flatten major contracts.
+
+Install [solidity-flattener](https://github.com/BlockCatIO/solidity-flattener)
+```
+$ npm run flatten
+```
+
+### compile
+You can compile.
+```
+$ npm run compile
+```
+OR
+```
+$ truffle compile
+```
+### lint
+npm install [solium](https://www.npmjs.com/package/solium)
+
+```
+$ npm run lint
+```
+
+## Metadium Smart Contract Architecture
 Metadium Smart Contracts consist of followings
 
 **Registry**
@@ -18,17 +57,6 @@ Metadium Smart Contracts consist of followings
 **Achievement**
 * Achievement Manager
 * Achievement(ERC721)
-
-
-## Deployed Contracts
-
-## Setup
-
-## Testing
-
-## Misc
-
-
 
 ### Meta ID CRUD functions
 
@@ -160,7 +188,7 @@ Public
 ```
 function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool);
 ```
-Create Achievement. Topics are registered before to the topic registry with descriptions. The creator should send enough balance for rewards.
+Create Achievement. Topics are registered before to the topic registry with descriptions. Topics should be ascending order. Topic & issuer term cannot be same simultaneously with the previos one. The creator should send enough balance for rewards.
 ```
 function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool);
 ```
@@ -229,7 +257,7 @@ interface ERC1155Metadata {
 }
 ```
 
-# solidity_flattener
 
-
-* Original ERC725-735 Source Code From : https://github.com/mirceapasoi/erc725-735
+# Reference
+* [Original ERC725-735 by mirceapasoi](https://github.com/mirceapasoi/erc725-735)
+* [Origin Protocal](https://github.com/OriginProtocol)

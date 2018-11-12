@@ -57,18 +57,93 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
 
     });
 
-    describe('Create an achievement', function () {
+    describe('Create achievement', function () {
         beforeEach(async () => {
 
         });
 
-        it('any user can make achievement', async () => {
-        });
-
-        it('user who has enough claims can get achievement', async () => {
+        it('AA with enough balance can create achievement', async () => {
 
         });
 
+        it('AA with not enough balance cannot create achievement', async () => {
+
+        });
+        it('AA can create with not registered topic', async () => {
+
+        });
+        it('AA cannot create with not registered topic', async () => {
+
+        });
+        it('AA cannot create achievement withs same achievementId(same topic-issuers-creator)', async () => {
+
+        });
+
+        it('non-AA cannot create achievement', async () => {
+
+        });
+
+        it('topics should be ascending order', async () => {
+
+        });
+
+    })
+
+    describe('Update achievement', function () {
+        beforeEach(async () => {
+
+        });
+
+        it('achievement creator can charge the fund and change the reward', async () => {
+
+        });
+
+        it('other users cannot charge the fund and cannot change the reward', async () => {
+
+        });
+    })
+
+    describe('Request achievement', function () {
+        beforeEach(async () => {
+
+        });
+
+        it('user with enough claim can request achievement', async () => {
+
+        });
+
+        it('user without metaId cannot reqeust achievement', async () => {
+
+        });
+        it('user with self-claim can get achievement', async () => {
+
+        });
+        it('user cannot get achievement if there is no balance for that achievement', async () => {
+
+        });
+        it('user cannot request same achievement twice', async () => {
+
+        });
+    })
+
+    describe('Delete achievement', function () {
+        beforeEach(async () => {
+
+        });
+
+        it('creator can refund the rest', async () => {
+
+        });
+
+        it('other users cannot refund the rest', async () => {
+
+        });
+    })
+
+    describe.only('achievement basic ', function () {
+        it('contract can make achievementId by the protocol', async () => {
+
+        });
         it('user who has enough claims can get achievement(all topics not registered and above 1024)', async () => {
             //system register AA to AA registry
             await aaRegistry.registerAttestationAgency(aa1, 'metadiumAA', 'metadiumAADes', { from: proxy1 })
@@ -130,7 +205,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             //let achievementCnt = await 
 
         });
-        it.only('user can get achievement with achievement which has self-claim term', async () => {
+        it('user can get achievement with achievement which has self-claim term', async () => {
             //system register AA to AA registry
             await aaRegistry.registerAttestationAgency(aa1, 'metadiumAA', 'metadiumAADes', { from: proxy1 })
 
@@ -181,19 +256,44 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
             assert.equal(IdentityBal, _reward)
         });
 
-        it('user who has enough claims can get achievement(some topics not registered)', async () => {
-
-        });
-
-        it('user who has enough claims can get achievement(all topics registered)', async () => {
-
-        });
-
     });
 
 });
 
-// ganache-cli -d -m '' -l 10000000
+/*
+
+create Achievement
+ aa with enough balance can create achievement
+ aa with not enough balance cannot create achievement
+
+ aa can create with not registered topic
+ aa cannot create with not registered topic
+ 
+ aa cannot create achievement withs same achievementId
+
+update achievement
+ achievement creator can charge the fund and change the reward
+ other users cannot charge the fund and cannot change the reward
+
+request Achievement
+ user with enough claim can request achievement
+ user without metaId cannot reqeust achievement
+ user with self-claim can get achievement
+ user cannot get achievement if there is no balance for that achievement
+ user cannot request same achievement twice
+
+delete achievement
+ creator can refund the rest
+ other users cannot refund the rest
+
+basic functions
+ contract can make achievementId by the protocol
+
+
+*/
+
+
+// ganache-cli -d -m 'hello' -l 10000000
 // aa create achievement -> register to topic, register to aa
 // ask achievement -> mint achievement erc721
 // update achievement

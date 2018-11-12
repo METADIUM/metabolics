@@ -60,7 +60,8 @@ contract AchievementManager is RegistryUser {
 
     /**
      * @dev Create Achievement. Topics should be registered first.
-     * @param _topics registered topics
+     * topic & issuer term cannot be same simultaneously with the previos one.
+     * @param _topics registered topics, ascending order (1,10,10, 100)
      * @param _issuers issuers for each topic
      * @param _title title
      * @param _achievementExplanation achievement explanation
@@ -80,6 +81,15 @@ contract AchievementManager is RegistryUser {
         //topics should be registered already
         TopicRegistry topicRegistry = TopicRegistry(REG.getContractAddress("TopicRegistry"));
         for(uint256 i=0;i<_topics.length;i++){
+            if( i > 0 ) {
+                if(
+                    _topics[i] < _topics[i-1] ||
+                    (_topics[i] == _topics[i-1] && _issuers[i] == _issuers[i-1])
+
+                ){
+                    revert('Topic and Issuer condition is wrong');
+                }
+            }
             require(topicRegistry.isRegistered(_topics[i]), "topic not registered");
         }
         
@@ -205,7 +215,8 @@ contract AchievementManager is RegistryUser {
     function getAllAchievementList() view public returns (bytes32[] list) {
         return allAchievements;
     }
-   
+
+    //TODO : achievement with proper balance
     function getActiveAchievementList() view public returns(bytes32[] list) {
         return allAchievements;
     }
