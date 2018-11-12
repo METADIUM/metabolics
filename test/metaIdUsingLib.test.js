@@ -20,7 +20,7 @@ const Achievement = artifacts.require('Achievement.sol')
 const IdentityManager = artifacts.require('IdentityManager.sol')
 const ProxyIdentityManager = artifacts.require('ProxyIdentityManager.sol')
 
-contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user2, issuer1, issuer2, issuer3, proxy1]) {
+contract('MetaIdUsingLib', function ([deployer, identity1, aa1, user1, user2, issuer1, issuer2, issuer3, proxy1]) {
     let registry, topicRegistry, aaRegistry, identityManager, achievementManager, metaIdentity, achievement
     let proxyIdentityManager, metaIdLib, proxyMetaId, proxyMetaIdUsingLib
     let ether1 = 1000000000000000000
@@ -143,7 +143,10 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, user
 
         });
         
-        it('user who has enough claims can get achievement(some topics not registered)', async () => {
+        it('addKey', async () => {
+
+        });
+        it('removeKey', async () => {
 
         });
 

@@ -80,7 +80,7 @@ contract AchievementManager is RegistryUser {
         //topics should be registered already
         TopicRegistry topicRegistry = TopicRegistry(REG.getContractAddress("TopicRegistry"));
         for(uint256 i=0;i<_topics.length;i++){
-            require(topicRegistry.isRegistered(_topics[i]), 'topic not registered');
+            require(topicRegistry.isRegistered(_topics[i]), "topic not registered");
         }
         
         Achievement memory newAc;
@@ -146,7 +146,7 @@ contract AchievementManager is RegistryUser {
     function requestAchievement(bytes32 _achievementId) public returns (bool success) {
         // check whether msg.sender is deployed using IdentityManager
         IIdentityManager im = IIdentityManager(REG.getContractAddress("IdentityManager"));
-        require(im.isMetaId(msg.sender), 'msg.sender is not identity created by IdentityManager');
+        require(im.isMetaId(msg.sender), "msg.sender is not identity created by IdentityManager");
         
         uint256 i;
         ERC735 identity = ERC735(msg.sender);

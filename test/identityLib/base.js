@@ -1,4 +1,9 @@
 const Identity = artifacts.require("Identity");
+const MetaIdentityLib = artifacts.require('MetaIdentityLib.sol')
+const MetaIdentityUsingLib = artifacts.require('MetaIdentityUsingLib.sol')
+const ProxyIdentityManager = artifacts.require('ProxyIdentityManager.sol')
+
+
 import colors from 'colors';
 import { assertOkTx, getAndClearGas, measureTx, contractAddress, assertBlockGasLimit } from '../util';
 
@@ -90,12 +95,22 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
         initPurposes = initPurposes.concat(p);
     }
 
+    //deploy metaIdLib, metaIdUsingLib
+    let metaId = await MetaIdentityUsingLib.new()
+    let metaIdUsingLib = await MetaIdentityLib.at(metaId.address)
+
+    let metaIdLib = await MetaIdentityLib.new()
+    await metaId.setImplementation(metaIdLib.address)
+
+
+
     // Init self-claims to be sent in constructor
-    let willDeployAt = contractAddress(addr.manager[0]);
+    let willDeployAt = metaId.address; // already deployed
     let signatures = [];
     if (claims.length > 0) {
         // Must have at least one claim address if making claim
         assert(addr.claim.length > 0);
+
         // First, sort claims by issuer, topic
         claims.sort((c1, c2) => {
             if (c1.self == c2.self) return c1.type - c2.type;
@@ -103,6 +118,7 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
             let a2 = c2.self ? willDeployAt : otherIdentity.address;
             return a1.localeCompare(a2);
         });
+
         for (const { type, data, self } of claims) {
             // Claim hash
             let toSign = await otherIdentity.claimToSign(willDeployAt, type, data);
@@ -112,38 +128,110 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
             signatures.push(signature);
         }
     }
-
     // N bytes are encoded as a 2N+2 hex string (0x prefix, plus 2 characters per byte)
     let sizes = claims.map((c, i) => [(signatures[i].length - 2) / 2, c.data.length, c.uri.length]);
     sizes = [].concat(...sizes);
-
     // Deploy identity
-    let identity = await Identity.new(
-        // Keys
-        initKeys,
-        initPurposes,
-        // Thresholds
-        managementThreshold,
-        actionThreshold,
-        // Claims
-        claims.map(c => c.self ? willDeployAt : otherIdentity.address),
-        claims.map(c => c.type),
-        // strip 0x prefix from each signature
-        "0x" + signatures.map(s => s.slice(2)).join(''),
-        claims.map(c => c.data).join(''),
-        claims.map(c => c.uri).join(''),
-        sizes,
-        // Use max gas for deploys
-        { from: addr.manager[0], gas: blockGasLimit }
-    );
-    // Make sure it matches address used for signatures
-    assert.equal(identity.address, willDeployAt);
-    // Measure gas usage
-    await measureTx(identity.transactionHash);
+    // let identity = await Identity.new(
+    //     // Keys
+    //     initKeys,
+    //     initPurposes,
+    //     // Thresholds
+    //     managementThreshold,
+    //     actionThreshold,
+    //     // Claims
+    //     claims.map(c => c.self ? willDeployAt : otherIdentity.address),
+    //     claims.map(c => c.type),
+    //     // strip 0x prefix from each signature
+    //     "0x" + signatures.map(s => s.slice(2)).join(''),
+    //     claims.map(c => c.data).join(''),
+    //     claims.map(c => c.uri).join(''),
+    //     sizes,
+    //     // Use max gas for deploys
+    //     { from: addr.manager[0], gas: blockGasLimit }
+    // );
 
-    // Check init keys
+    /////////////////////////
+
+
+
+    //catch the first management key
+    let firstMgmt
+    //if there is no initial key, should add msg.sender as mgmt, action, claim key at first.
+    for (const [i, k] of initKeys.entries()) {
+        if (initPurposes[i] == 1) {
+            firstMgmt = i
+            await metaIdUsingLib.init(initKeys[i])
+
+            //metaId basically register first key as management, action and claim key
+            //for the test remove key for action and claim
+            await metaIdUsingLib.removeKey(initKeys[i], 2, { from: addr.manager[0] }) // action
+            await metaIdUsingLib.removeKey(initKeys[i], 3, { from: addr.manager[0] }) // claim
+
+            break;
+        }
+    }
+
+    //register other keys
+    for (const [i, k] of initKeys.entries()) {
+        if (i != firstMgmt) {
+            await metaIdUsingLib.addKey(initKeys[i], initPurposes[i], KeyType.ECDSA, { from: addr.manager[0] })
+        }
+    }
+    
+
+    for (const [i, c] of claims.entries()) {
+        // await assertOkTx(identity.addClaim(Topic.PROFILE, Scheme.ECDSA, identity.address, signature, uri, uri, {from: addr.manager[0]}));
+        let claimSigner = c.self ? addr.claim[0] : addr.other;
+        let issuer = c.self ? willDeployAt : otherIdentity.address
+        // let toSign = await otherIdentity.claimToSign(willDeployAt, c.type, c.data);
+        // let signedBy = await otherIdentity.getSignatureAddress(toSign, signatures[i]);
+
+        // console.log(c.type)
+        // console.log(Scheme.ECDSA)
+        // console.log(issuer)
+        // console.log(signatures[i])
+        // console.log(c.data)
+        // console.log(c.uri)
+        // console.log(claimSigner)
+        // console.log(toSign)
+        // console.log(signedBy)
+        // console.log(`otherIdentity address : ${otherIdentity.address}`)
+        // console.log(`willDeployAt address : ${willDeployAt}`)
+        // console.log(`metaIdUsingLib address : ${metaIdUsingLib.address}`)
+        await metaIdUsingLib.addClaim(c.type, Scheme.ECDSA, issuer, signatures[i], c.data, c.uri, { from: addr.manager[0] })
+
+
+
+    }
+    // console.log(`initKeys : ${initKeys}`)
+    // console.log(`initPurposes : ${initPurposes}`)
+    // console.log(`managementThreshold : ${managementThreshold}`)
+    // console.log(`actionThreshold : ${actionThreshold}`)
+
+
+    let identity = metaIdUsingLib
+    ////
+
+    // addKey
+    // addCliam
+    // set management threshold
+    // set action threshold
+
+    ////
+    // Make sure it matches address used for signatures
+
+    // assert.equal(identity.address, willDeployAt);
+    // // Measure gas usage
+    // await measureTx(identity.transactionHash);
+
+    console.log(`meta id address : ${identity.address}`)
+    console.log(`meta id library address : ${metaIdLib.address}`)
+    
+    // // Check init keys
     let contractKeys = await identity.numKeys();
     contractKeys.should.be.bignumber.equal(initSum);
+    
     // Check init claims
     let contractClaims = await identity.numClaims();
     contractClaims.should.be.bignumber.equal(claims.length);

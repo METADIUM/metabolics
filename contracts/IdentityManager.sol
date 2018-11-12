@@ -29,8 +29,8 @@ contract IdentityManager is RegistryUser {
      * @param _managementKey basic managementKey to use
      * @return A boolean that indicates if the operation was successful.
      */
-    function createMetaId(address _managementKey) permissioned public returns (bool success) {
-        require(_managementKey != address(0));
+    function createMetaId(address _managementKey) public permissioned returns (bool success) {
+        require(_managementKey != address(0), "address is 0x0");
 
         address newMetaId = new MetaIdentity(_managementKey);
         metaIds.push(newMetaId);

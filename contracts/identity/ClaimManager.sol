@@ -28,7 +28,7 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
 
     mapping(bytes32 => Claim) internal claims;
     mapping(uint256 => bytes32[]) internal claimsByTopic;
-    uint public numClaims;
+    uint256 public numClaims;
 
 
   /// @dev Requests the ADDITION or the CHANGE of a claim from an issuer.
@@ -52,6 +52,7 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         whenNotPaused
         returns (uint256 claimRequestId)
     {
+        
         // Check signature
         require(_validSignature(_topic, _scheme, issuer, _signature, _data));
         // Check we can perform action
@@ -269,13 +270,6 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
     {
         if (_scheme == ECDSA_SCHEME) {
             address signedBy;
-            /*
-            if (_topic == MetaID_TOPIC) {
-                //metaID validating logic
-                signedBy = keccak256(abi.encodePacked(ETH_PREFIX, _data)).recover(_signature);
-                return allKeys.find(addrToKey(signedBy), CLAIM_SIGNER_KEY);
-            }
-            */
 
             signedBy = getSignatureAddress(claimToSign(address(this), _topic, _data), _signature);
             if (issuer == signedBy) {

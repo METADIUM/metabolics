@@ -87,7 +87,7 @@ contract MetaIdentityUsingLib {
 
     mapping(bytes32 => Claim) internal claims;
     mapping(uint256 => bytes32[]) internal claimsByTopic;
-    uint public numClaims;
+    uint256 public numClaims;
 
     // MultiSig
 

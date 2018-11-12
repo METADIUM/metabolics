@@ -34,8 +34,8 @@ contract AttestationAgencyRegistry is RegistryUser {
         attestationAgencyNum = 1;
 
         attestationAgencies[0].addr = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
-        attestationAgencies[0].title = 'Metadium SelfSovereign';
-        attestationAgencies[0].explanation = 'Metadium SelfSovereign';
+        attestationAgencies[0].title = "Metadium SelfSovereign";
+        attestationAgencies[0].explanation = "Metadium SelfSovereign";
         attestationAgencies[0].createdAt = now;
     }
 
