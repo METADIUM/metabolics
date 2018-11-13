@@ -19,8 +19,6 @@ async function deploy(deployer, network, accounts) {
     const args = process.argv.slice()
 
     if (args[3] == 'all') {
-        deployContracts(deployer, network, accounts)
-    } else if (args[3] == 'useFunc') {
         deployer.then(async () => {
             [reg, mim, tr, am, ar, achiv] = await deployContracts(deployer, network, accounts)
             await basicRegistrySetup(deployer, network, accounts, reg, mim, tr, am, ar, achiv)
@@ -93,6 +91,8 @@ async function deploy(deployer, network, accounts) {
 
     } else {
         //deployer.deploy(Identity, [], [], 1, 1, [], [], '', '', '', []);
+        
+        //need for test
         deployer.deploy(TestContract);
     }
 }

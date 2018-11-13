@@ -71,10 +71,6 @@ contract AchievementManager is RegistryUser {
      */
     function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _title, bytes32 _achievementExplanation, uint256 _reward, string _uri) onlyAttestationAgency public payable returns (bool success) {
 
-        //check if achievement is already registered
-        bytes32 achievementId = getAchievementId(msg.sender, _topics, _issuers);
-        require(achievements[achievementId].id == 0);
-
         //check staking amount used for reward
         require(msg.value >= minimumDeposit);
 
@@ -92,7 +88,12 @@ contract AchievementManager is RegistryUser {
             }
             require(topicRegistry.isRegistered(_topics[i]), "topic not registered");
         }
-        
+
+        //check if achievement is already registered
+        bytes32 achievementId = getAchievementId(msg.sender, _topics, _issuers);
+        require(achievements[achievementId].id == 0);
+
+
         Achievement memory newAc;
         newAc.id = achievementId;
         newAc.creator = msg.sender;
