@@ -38,7 +38,7 @@ $ truffle compile
 npm install [solium](https://www.npmjs.com/package/solium)
 
 ```
-$ npm run lint
+$ ./node_modules/solium/bin/solium.js -d ./contracts --fix
 ```
 
 ## Metadium Smart Contract Architecture

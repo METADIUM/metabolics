@@ -83,7 +83,7 @@ contract AchievementManager is RegistryUser {
                     (_topics[i] == _topics[i-1] && _issuers[i] == _issuers[i-1])
 
                 ){
-                    revert('Topic and Issuer condition is wrong');
+                    revert("Topic and Issuer condition is wrong");
                 }
             }
             require(topicRegistry.isRegistered(_topics[i]), "topic not registered");
@@ -103,13 +103,13 @@ contract AchievementManager is RegistryUser {
         newAc.explanation = _achievementExplanation;
         newAc.uri = _uri;
         newAc.reward = _reward;
-        newAc.createdAt = now;
+        newAc.createdAt = block.timestamp;
 
         achievements[newAc.id] = newAc;
         allAchievements.push(achievementId);
         balance[achievementId] = msg.value;
 
-        emit CreateAchievement(achievementId, _topics, _issuers, msg.value, _uri, now);
+        emit CreateAchievement(achievementId, _topics, _issuers, msg.value, _uri, block.timestamp);
 
         return true;
     }
@@ -189,7 +189,7 @@ contract AchievementManager is RegistryUser {
 
         // mint achievement erc721 to msg.sender;
         IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
-        require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, _achievementId))), string(abi.encodePacked(now,achievements[_achievementId].uri))));
+        require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, _achievementId))), string(abi.encodePacked(block.timestamp,achievements[_achievementId].uri))));
         
         emit RequestAchievement(_achievementId, msg.sender, achievements[_achievementId].reward);
 

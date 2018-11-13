@@ -46,12 +46,11 @@ contract IdentityManager is RegistryUser {
      * @param _metaId meta id address
      * @return A boolean that indicates if the operation was successful.
      */
-    function addMetaId(address _metaId) public permissioned returns (bool success) {
-        
+    function addMetaId(address _metaId, address _managementKey) public permissioned returns (bool success) {
         metaIds.push(_metaId);
         metaIdExistence[_metaId] = true;
 
-        emit CreateMetaId(_managementKey, newMetaId);
+        emit CreateMetaId(_managementKey, _metaId);
         
         return true;
     }

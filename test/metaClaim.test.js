@@ -15,7 +15,7 @@ const Registry = artifacts.require('Registry.sol')
 const MetaIdentity = artifacts.require('MetaIdentity.sol');
 
 
-contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2, user1, user2]) {
+contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, proxy2, user1, user2]) {
     const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
     const defaultGas = 8000000;
     const defaultGasPrice = 10;
@@ -36,12 +36,12 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
 
         });
 
-        it('create Meta ID and add self claim(issuer == managementkey)', async function () {
+        it.only('create Meta ID and add self claim(issuer == managementkey)', async function () {
             //uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
             let _topic = 1 // MetaID_TOPIC
             let _scheme = 1 // ECDSA_SCHEME
             let _issuer = user1
-            let _data = "0x1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc" // metaID
+            let _data = "0x1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc" // metaPrint
             let _uri = "MetaPrint"
 
             //abi.encodePacked(subject, topic, data) -> topic with uint256 packed 32bytes
@@ -50,13 +50,30 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
 
             await this.identityManager.createMetaId(user1, { from: proxy1, gas: defaultGas })
 
+            //637ce7ee7858ae3599330d8435f75b2488f0fc8f73e85a6d7a3b1e8751ed9d0b, 0xeedbabac60f6cb77a94fc8bf82a168b318c8d204
+            console.log(`user1 : ${user1}`)
+            console.log(`address : 0xeedbabac60f6cb77a94fc8bf82a168b318c8d204`)
+            
+
             let metaIds = await this.identityManager.getDeployedMetaIds()
             let metaId = await MetaIdentity.at(metaIds[0])
             
+
             signingData = metaIds[0] + signingData
+            console.log(`_topic: ${_topic}`)
+            console.log(`_scheme: ${_scheme}`)
+            
+            console.log(`metaId: ${metaId}`)
+
+            console.log(`signing Data before sha3: ${signingData}`)
+
             signingData = web3.sha3(signingData, { encoding: 'hex' })
+
+            console.log(`signing Data after sha3: ${signingData}`)
             
             let _signature = web3.eth.sign(user1, signingData)
+
+            console.log(`_signature: ${_signature}`)
             
             await metaId.addClaim(_topic, _scheme, _issuer, _signature, _data, _uri, { from: user1, gas: defaultGas })
 
@@ -75,7 +92,7 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
 
         });
 
-        it.only('create Meta ID and add self claim(issuer == metaId)', async function () {
+        it('create Meta ID and add self claim(issuer == metaId)', async function () {
             //uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
             let _topic = 1 // MetaID_TOPIC
             let _scheme = 1 // ECDSA_SCHEME
