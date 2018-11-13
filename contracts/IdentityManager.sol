@@ -41,6 +41,20 @@ contract IdentityManager is RegistryUser {
         return true;
 
     }
+    /**
+     * @dev Add MetaId to the list. This function is for migration.
+     * @param _metaId meta id address
+     * @return A boolean that indicates if the operation was successful.
+     */
+    function addMetaId(address _metaId) public permissioned returns (bool success) {
+        
+        metaIds.push(_metaId);
+        metaIdExistence[_metaId] = true;
+
+        emit CreateMetaId(_managementKey, newMetaId);
+        
+        return true;
+    }
 
     function getDeployedMetaIds() public view returns(address[] addrs) {
         return metaIds;

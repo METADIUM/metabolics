@@ -245,7 +245,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
         });
     })
 
-    describe.only('Delete achievement', function () {
+    describe('Delete achievement', function () {
         let achivId, _achievementId, _requestData
         beforeEach(async () => {
             await registerTopics()
