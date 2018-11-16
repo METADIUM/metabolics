@@ -35,7 +35,7 @@ contract Ownable {
 
 }
 
-contract Registry is Ownable{
+contract Registry is Ownable {
     
     mapping(bytes32=>address) public contracts;
     mapping(bytes32=>mapping(address=>bool)) public permissions;
@@ -51,8 +51,8 @@ contract Registry is Ownable{
     * @param _addr address
     * @return A boolean that indicates if the operation was successful.
     */
-    function setContractDomain(bytes32 _name, address _addr) onlyOwner public returns (bool success){
-        require(_addr != address(0x0));
+    function setContractDomain(bytes32 _name, address _addr) public onlyOwner returns (bool success) {
+        require(_addr != address(0x0), "address should be non-zero");
         contracts[_name] = _addr;
 
         emit SetContractDomain(msg.sender, _name, _addr);
@@ -69,7 +69,7 @@ contract Registry is Ownable{
     * @return An address of the _name
     */
     function getContractAddress(bytes32 _name) public view returns(address addr) {
-        require(contracts[_name] != address(0x0));
+        require(contracts[_name] != address(0x0), "address should be non-zero");
         return contracts[_name];
     }
     /**
@@ -81,8 +81,8 @@ contract Registry is Ownable{
     * @param _status true = can use, false = cannot use. default is false
     * @return A boolean that indicates if the operation was successful.
     */
-    function setPermission(bytes32 _contract, address _granted, bool _status) onlyOwner public returns(bool success) {
-        require(_granted != address(0x0));
+    function setPermission(bytes32 _contract, address _granted, bool _status) public onlyOwner returns(bool success) {
+        require(_granted != address(0x0), "address should be non-zero");
         permissions[_contract][_granted] = _status;
 
         emit SetPermission(_contract, _granted, _status);
@@ -118,7 +118,7 @@ contract RegistryUser is Ownable {
     }
     
     modifier permissioned() {
-        require(isPermitted(msg.sender));
+        require(isPermitted(msg.sender), "No Permission");
         _;
     }
 
@@ -163,7 +163,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         attestationAgencies[0].addr = 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF;
         attestationAgencies[0].title = "Metadium SelfSovereign";
         attestationAgencies[0].explanation = "Metadium SelfSovereign";
-        attestationAgencies[0].createdAt = now;
+        attestationAgencies[0].createdAt = block.timestamp;
     }
 
     /**
@@ -173,13 +173,13 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @param _explanation explanation
      * @return A boolean that indicates if the operation was successful.
      */
-    function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success) {
-        require(isAAregistered[_addr] == 0);
+    function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) public permissioned returns (bool success) {
+        require(isAAregistered[_addr] == 0, "zero address");
         
         attestationAgencies[attestationAgencyNum].addr = _addr;
         attestationAgencies[attestationAgencyNum].title = _title;
         attestationAgencies[attestationAgencyNum].explanation = _explanation;
-        attestationAgencies[attestationAgencyNum].createdAt = now;
+        attestationAgencies[attestationAgencyNum].createdAt = block.timestamp;
 
         isAAregistered[_addr] = attestationAgencyNum;
 
@@ -197,13 +197,13 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @param _explanation explanation
      * @return A boolean that indicates if the operation was successful.
      */
-    function updateAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) permissioned public returns (bool success) {
+    function updateAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) public permissioned returns (bool success) {
         uint256 _num = isAAregistered[_addr];
-        require(_num != 0);
+        require(_num != 0, "number should non-zero");
         
         attestationAgencies[_num].title = _title;
         attestationAgencies[_num].explanation = _explanation;
-        attestationAgencies[_num].createdAt = now;
+        attestationAgencies[_num].createdAt = block.timestamp;
 
         emit UpdateAttestationAgency(_addr, _title, _explanation);
 
@@ -211,11 +211,11 @@ contract AttestationAgencyRegistry is RegistryUser {
 
     }
 
-    function isRegistered(address _addr) view public returns(uint256 found){
+    function isRegistered(address _addr) public view returns(uint256 found) {
         return isAAregistered[_addr];
     }
 
-    function getAttestationAgencySingle(uint256 _num) view public returns(address addr, bytes32 title, bytes32 explanation, uint256 createdAt) {
+    function getAttestationAgencySingle(uint256 _num) public view returns(address addr, bytes32 title, bytes32 explanation, uint256 createdAt) {
         return (
             attestationAgencies[_num].addr,
             attestationAgencies[_num].title,
@@ -224,16 +224,20 @@ contract AttestationAgencyRegistry is RegistryUser {
         );
     }
 
-    function getAttestationAgenciesFromTo(uint256 _from, uint256 _to) view public returns(address[] addrs, bytes32[] titles, bytes32[] descs, uint256[] createds){
+    function getAttestationAgenciesFromTo(uint256 _from, uint256 _to)
+    public
+    view
+    returns(address[] addrs, bytes32[] titles, bytes32[] descs, uint256[] createds)
+    {
         
-        require(_to<attestationAgencyNum && _from < _to);
+        require(_to<attestationAgencyNum && _from < _to, "from to mismatch");
         
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sdescs = new bytes32[](_to-_from+1);
         bytes32[] memory stitles = new bytes32[](_to-_from+1);
         uint256[] memory screateds = new uint256[](_to-_from+1);
 
-        for(uint256 i=_from;i<=_to;i++){
+        for (uint256 i = _from;i<=_to;i++) {
             saddrs[i-_from] = attestationAgencies[i].addr;
             sdescs[i-_from] = attestationAgencies[i].explanation;
             stitles[i-_from] = attestationAgencies[i].title;

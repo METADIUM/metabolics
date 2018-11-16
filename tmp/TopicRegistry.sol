@@ -40,7 +40,7 @@ contract Ownable {
 
 }
 
-contract Registry is Ownable{
+contract Registry is Ownable {
     
     mapping(bytes32=>address) public contracts;
     mapping(bytes32=>mapping(address=>bool)) public permissions;
@@ -56,8 +56,8 @@ contract Registry is Ownable{
     * @param _addr address
     * @return A boolean that indicates if the operation was successful.
     */
-    function setContractDomain(bytes32 _name, address _addr) onlyOwner public returns (bool success){
-        require(_addr != address(0x0));
+    function setContractDomain(bytes32 _name, address _addr) public onlyOwner returns (bool success) {
+        require(_addr != address(0x0), "address should be non-zero");
         contracts[_name] = _addr;
 
         emit SetContractDomain(msg.sender, _name, _addr);
@@ -74,7 +74,7 @@ contract Registry is Ownable{
     * @return An address of the _name
     */
     function getContractAddress(bytes32 _name) public view returns(address addr) {
-        require(contracts[_name] != address(0x0));
+        require(contracts[_name] != address(0x0), "address should be non-zero");
         return contracts[_name];
     }
     /**
@@ -86,8 +86,8 @@ contract Registry is Ownable{
     * @param _status true = can use, false = cannot use. default is false
     * @return A boolean that indicates if the operation was successful.
     */
-    function setPermission(bytes32 _contract, address _granted, bool _status) onlyOwner public returns(bool success) {
-        require(_granted != address(0x0));
+    function setPermission(bytes32 _contract, address _granted, bool _status) public onlyOwner returns(bool success) {
+        require(_granted != address(0x0), "address should be non-zero");
         permissions[_contract][_granted] = _status;
 
         emit SetPermission(_contract, _granted, _status);
@@ -123,7 +123,7 @@ contract RegistryUser is Ownable {
     }
     
     modifier permissioned() {
-        require(isPermitted(msg.sender));
+        require(isPermitted(msg.sender), "No Permission");
         _;
     }
 
@@ -170,17 +170,17 @@ contract TopicRegistry is RegistryUser {
      * @param _explanation explanation
      * @return new topic id
      */
-    function registerTopicBySystem(uint256 _id, bytes32 _title, bytes32 _explanation) permissioned public returns (uint256 topicId) {
+    function registerTopicBySystem(uint256 _id, bytes32 _title, bytes32 _explanation) public permissioned returns (uint256 topicId) {
 
         // check topic doesn't exist
-        require(topics[_id].id == 0 && _id < RESERVED_TOPICS);
+        require(topics[_id].id == 0 && _id < RESERVED_TOPICS, "Topic term is wrong");
 
         Topic memory t;
         t.id = _id;
         t.title = _title;
         t.issuer = msg.sender;
         t.explanation = _explanation;
-        t.createdAt = now;
+        t.createdAt = block.timestamp;
         topics[_id] = t;
 
         isTopicRegistered[_id] = true;
@@ -198,14 +198,16 @@ contract TopicRegistry is RegistryUser {
      */
     function registerTopic(bytes32 _title, bytes32 _explanation) public returns (uint256 topicId) {
         IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
-        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender)); //Only Attestation Agency or permissioned can register topic
+
+        //Only Attestation Agency or permissioned can register topic
+        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender),"No permission"); 
 
         Topic memory t;
         t.id = total;
         t.issuer = msg.sender;
         t.title = _title;
         t.explanation = _explanation;
-        t.createdAt = now;
+        t.createdAt = block.timestamp;
         topics[total] = t;
         
         isTopicRegistered[total] = true;
@@ -226,27 +228,27 @@ contract TopicRegistry is RegistryUser {
      */
     function updateTopic(uint256 _id, bytes32 _explanation) public returns (bool success) {
         
-        require(topics[_id].issuer == msg.sender);
+        require(topics[_id].issuer == msg.sender,"issuer mismatch");
 
         topics[_id].explanation = _explanation;
 
-        emit UpdateTopic(_id, msg.sender , _explanation);
+        emit UpdateTopic(_id, msg.sender, _explanation);
 
         return true;
 
     }
 
 
-    function isRegistered(uint256 _id) view public returns (bool found) {
+    function isRegistered(uint256 _id) public view returns (bool found) {
         return isTopicRegistered[_id];
     }
 
 
-    function getTotal() view public returns (uint256 length) {
+    function getTotal() public view returns (uint256 length) {
         return total;
     }
     
-    function getTopic(uint256 _id) view public returns(address issuer, bytes32 title, bytes32 explanation, uint256 createdAt){
+    function getTopic(uint256 _id) public view returns(address issuer, bytes32 title, bytes32 explanation, uint256 createdAt) {
         return (topics[_id].issuer, topics[_id].title, topics[_id].explanation, topics[_id].createdAt);
     }
 
@@ -256,14 +258,18 @@ contract TopicRegistry is RegistryUser {
      * @param _to to
      * @return topic data
      */
-    function getTopicFromTo(uint256 _from, uint256 _to) view public returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds){
-        require(_to>_from);
+    function getTopicFromTo(uint256 _from, uint256 _to) 
+    public 
+    view
+    returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
+    {
+        require(_to>_from, "from to mismatch");
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sexplans = new bytes32[](_to-_from+1);
         uint256[] memory screateds = new uint256[](_to-_from+1);
         bytes32[] memory stitles = new bytes32[](_to-_from+1);
 
-        for(uint256 i=_from;i<=_to;i++){
+        for (uint256 i = _from;i<=_to;i++) {
             saddrs[i-_from] = topics[i].issuer;
             sexplans[i-_from] = topics[i].explanation;
             screateds[i-_from] = topics[i].createdAt;
