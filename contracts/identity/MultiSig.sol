@@ -102,11 +102,26 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
     }
 
     function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig) public  whenNotPaused returns (uint256 executionId) {
+        // check nonce
+        //require(_nonce == nonce,"nonce mismatch");
+
         // sinature verify
         address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_to, _value, _data, _nonce)), _sig);
+        return preExecute(signedBy, _to, _value, _data);
+    }
+
+    function delegatedApprove(uint256 _id, bool _approve, uint256 _nonce, bytes _sig) public  whenNotPaused returns (bool success) {
+        // check nonce
+        //require(_nonce == nonce,"nonce mismatch");
+
+        // sinature verify
+        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_id, _approve, _nonce)), _sig);
 
         return preExecute(signedBy, _to, _value, _data);
     }
+    
+
+
     /// @dev Approves an execution. If the execution is being approved multiple times,
     ///  it will throw an error. Disapproving multiple times will work i.e. not do anything.
     ///  The approval could potentially trigger an execution (if the threshold is met).
