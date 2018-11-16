@@ -281,11 +281,9 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
             if (issuer == signedBy) {
                 // Issuer signed the signature
                 return true;
-            } else
-            if (issuer == address(this)) {
+            } else if (issuer == address(this)) {
                 return allKeys.find(addrToKey(signedBy), CLAIM_SIGNER_KEY);
-            } else
-            if (issuer.doesContractImplementInterface(ERC725ID())) {
+            } else if (issuer.doesContractImplementInterface(ERC725ID())) {
                 // Issuer is an Identity contract
                 // It should hold the key with which the above message was signed.
                 // If the key is not present anymore, the claim SHOULD be treated as invalid.
@@ -309,12 +307,9 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         // solhint-disable-next-line no-empty-blocks
         if (_managementOrSelf()) {
             // Valid
-        } else
-        // solhint-disable-next-line no-empty-blocks
-        if (msg.sender == issuer) {
+        } else if (msg.sender == issuer) {
             // MUST only be done by the issuer of the claim
-        } else
-        if (issuer.doesContractImplementInterface(ERC725ID())) {
+        } else if (issuer.doesContractImplementInterface(ERC725ID())) {
             // Issuer is another Identity contract, is this an action key?
             require(ERC725(issuer).keyHasPurpose(addrToKey(msg.sender), ACTION_KEY));
         } else {

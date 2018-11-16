@@ -15,7 +15,7 @@ const Registry = artifacts.require('Registry.sol')
 const MetaIdentity = artifacts.require('MetaIdentity.sol');
 
 
-contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, proxy2, user1, user2]) {
+contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, proxy2, user1, user2, issuerKey]) {
     const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
     const defaultGas = 8000000;
     const defaultGasPrice = 10;
@@ -36,7 +36,7 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
 
         });
 
-        it.only('create Meta ID and add self claim(issuer == managementkey)', async function () {
+        it('create Meta ID and add self claim(issuer == managementkey)', async function () {
             //uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
             let _topic = 1 // MetaID_TOPIC
             let _scheme = 1 // ECDSA_SCHEME
@@ -64,6 +64,7 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
             console.log(`_scheme: ${_scheme}`)
             
             console.log(`metaId: ${metaId}`)
+            console.log(`metaId: ${metaIds[0]}`)
 
             console.log(`signing Data before sha3: ${signingData}`)
 
@@ -91,7 +92,6 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
 
 
         });
-
         it('create Meta ID and add self claim(issuer == metaId)', async function () {
             //uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
             let _topic = 1 // MetaID_TOPIC

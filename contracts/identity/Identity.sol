@@ -110,8 +110,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
                 _addKey(_keys[i], _purposes[i], ECDSA_TYPE);
                 if (_purposes[i] == MANAGEMENT_KEY) {
                     managementCount++;
-                } else
-                if (_purposes[i] == ACTION_KEY) {
+                } else if (_purposes[i] == ACTION_KEY) {
                     actionCount++;
                 }
             }

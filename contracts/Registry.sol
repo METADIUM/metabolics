@@ -9,7 +9,7 @@ import "./openzeppelin-solidity/contracts/ownership/Ownable.sol";
  * Not only contract address but also general address can be set in this contract.
  * Owner should set domain and permission.
  */
-contract Registry is Ownable{
+contract Registry is Ownable {
     
     mapping(bytes32=>address) public contracts;
     mapping(bytes32=>mapping(address=>bool)) public permissions;
@@ -25,8 +25,8 @@ contract Registry is Ownable{
     * @param _addr address
     * @return A boolean that indicates if the operation was successful.
     */
-    function setContractDomain(bytes32 _name, address _addr) onlyOwner public returns (bool success){
-        require(_addr != address(0x0));
+    function setContractDomain(bytes32 _name, address _addr) public onlyOwner returns (bool success) {
+        require(_addr != address(0x0), "address should be non-zero");
         contracts[_name] = _addr;
 
         emit SetContractDomain(msg.sender, _name, _addr);
@@ -43,7 +43,7 @@ contract Registry is Ownable{
     * @return An address of the _name
     */
     function getContractAddress(bytes32 _name) public view returns(address addr) {
-        require(contracts[_name] != address(0x0));
+        require(contracts[_name] != address(0x0), "address should be non-zero");
         return contracts[_name];
     }
     /**
@@ -55,8 +55,8 @@ contract Registry is Ownable{
     * @param _status true = can use, false = cannot use. default is false
     * @return A boolean that indicates if the operation was successful.
     */
-    function setPermission(bytes32 _contract, address _granted, bool _status) onlyOwner public returns(bool success) {
-        require(_granted != address(0x0));
+    function setPermission(bytes32 _contract, address _granted, bool _status) public onlyOwner returns(bool success) {
+        require(_granted != address(0x0), "address should be non-zero");
         permissions[_contract][_granted] = _status;
 
         emit SetPermission(_contract, _granted, _status);

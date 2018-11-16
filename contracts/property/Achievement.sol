@@ -16,7 +16,7 @@ contract Achievement is ERC721Token, RegistryUser {
     bool public transferEnabled = false;
 
     modifier isTradable() {
-        require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender));
+        require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender), "Transfer not enabled");
         _;
     }
     
@@ -35,7 +35,7 @@ contract Achievement is ERC721Token, RegistryUser {
      * @param _uri the metaID that the newly minted token would get.
      * @return A boolean that indicates if the operation was successful.
      */
-    function mint(address _to, uint256 _tokenId, string _uri) permissioned public returns (bool success) {
+    function mint(address _to, uint256 _tokenId, string _uri) public permissioned returns (bool success) {
         super._mint(_to, _tokenId);
         super._setTokenURI(_tokenId, _uri);
         emit Mint(_to, _tokenId);
@@ -47,18 +47,18 @@ contract Achievement is ERC721Token, RegistryUser {
      * @param _tokenId the token index of burning token.
      * @return A boolean that indicates if the operation was successful.
      */
-    function burn(uint256 _tokenId) permissioned public returns (bool success){
+    function burn(uint256 _tokenId) public permissioned returns (bool success) {
         super._burn(ownerOf(_tokenId), _tokenId);
         emit Burn(ownerOf(_tokenId), _tokenId);
         return true;
     }
 
-    function enableTransfer() permissioned public returns (bool success) {
+    function enableTransfer() public permissioned returns (bool success) {
         transferEnabled = true;
         return true;
     }
 
-    function disableTransfer() permissioned public returns (bool success) {
+    function disableTransfer() public permissioned returns (bool success) {
         transferEnabled = false;
         return true;
     }
@@ -67,29 +67,29 @@ contract Achievement is ERC721Token, RegistryUser {
      * @dev Throws if the token ID does not exist. May return an empty string.
      * @param _tokenId uint256 ID of the token to query
      */
-    function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes URI) {
-        require(exists(_tokenId));
+    function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes uri) {
+        require(exists(_tokenId), "Token ID cannot be found");
         return bytes(tokenURIs[_tokenId]);
     }
 
-    function transferFrom(address _from, address _to, uint256 _tokenId) isTradable public {
+    function transferFrom(address _from, address _to, uint256 _tokenId) public isTradable {
         super.transferFrom(_from, _to, _tokenId);
     }
 
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId) isTradable public {
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) public isTradable {
         super.safeTransferFrom(_from, _to, _tokenId);
     }
 
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) isTradable public {
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) public isTradable {
         super.safeTransferFrom(_from, _to, _tokenId, _data);
     }
     
 
-    function approve(address _to, uint256 _tokenId) isTradable public{
+    function approve(address _to, uint256 _tokenId) public isTradable {
         super.approve(_to, _tokenId);
     }
 
-    function setApprovalForAll(address _operator, bool _approved) isTradable public {
+    function setApprovalForAll(address _operator, bool _approved) public isTradable {
         super.setApprovalForAll(_operator, _approved);
     }
 }

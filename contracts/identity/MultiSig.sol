@@ -50,7 +50,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
             } else {
                 // Only management keys can operate on this contract
                 // addKey function Signautre == 0x1d381240
-                if(
+                if (
                     allKeys.find(addrToKey(_sender), MANAGEMENT_KEY) ||
                     allKeys.find(addrToKey(_sender), RESTORE_KEY) && getFunctionSignature(_data) == bytes4(0x1d381240)
                 ){
@@ -66,13 +66,13 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                 threshold = actionThreshold;
             } else {
                 // Action keys can operate on other addresses
-                if(
+                if (
                     allKeys.find(addrToKey(_sender), ACTION_KEY) ||
-                    allKeys.find(addrToKey(_sender), DELEGATE_KEY) ||
+                    allKeys.find(addrToKey(_sender), DELEGATE_KEY) || 
                     allKeys.find(addrToKey(_sender), CUSTOM_KEY) && allKeys.keyData[addrToKey(_sender)].func[_to][getFunctionSignature(_data)]
                 ){
                     threshold = actionThreshold - 1;
-                }else{
+                } else {
                     revert();
                 }
             }

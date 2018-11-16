@@ -41,7 +41,7 @@ contract ProxyIdentityManager is RegistryUser {
         return true;
 
     }
-
+    
     function getDeployedMetaIds() public view returns(address[] addrs) {
         return metaIds;
     }

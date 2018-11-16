@@ -14,6 +14,7 @@ const fs = require('fs');
 const proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
 const selfClaimAddress = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF'
 
+//TODO deploy script clean up
 async function deploy(deployer, network, accounts) {
     let reg, mim, tr, am, ar, achiv
     const args = process.argv.slice()

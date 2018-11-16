@@ -22,7 +22,7 @@ contract RegistryUser is Ownable {
     }
     
     modifier permissioned() {
-        require(isPermitted(msg.sender));
+        require(isPermitted(msg.sender), "No Permission");
         _;
     }
 
