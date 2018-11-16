@@ -203,7 +203,7 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
 
             let addClaimData = await metaId.contract.addClaim.getData(_topic, _scheme, _issuer, _signature, _data, _uri)
             console.log(`addClaimData : ${addClaimData}`)
-            let _nonce = 0
+            let _nonce = 1
             let noncePacked = "000000000000000000000000000000000000000000000000000000000000000" + _nonce
             let valuePacked = "0000000000000000000000000000000000000000000000000000000000000000"
             let managementKeySigningData = "0x" + metaIds[0].slice(2) + valuePacked + addClaimData.slice(2) + noncePacked

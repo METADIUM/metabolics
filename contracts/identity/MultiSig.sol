@@ -103,46 +103,37 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
 
     function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig) public  whenNotPaused returns (uint256 executionId) {
         // check nonce
-        //require(_nonce == nonce,"nonce mismatch");
+        require(_nonce == nonce,"nonce mismatch");
 
         // sinature verify
         address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_to, _value, _data, _nonce)), _sig);
         return preExecute(signedBy, _to, _value, _data);
+    
     }
 
-    function delegatedApprove(uint256 _id, bool _approve, uint256 _nonce, bytes _sig) public  whenNotPaused returns (bool success) {
+    function approve(uint256 _id, bool _approve) public whenNotPaused returns (bool success) {
+        return preApprove(msg.sender, _id, _approve);
+    }
+
+    function delegatedApprove(uint256 _id, bool _approve, uint256 _nonce, bytes _sig) public whenNotPaused returns (bool success) {
+        
         // check nonce
-        //require(_nonce == nonce,"nonce mismatch");
+        require(_nonce == nonce, "nonce mismatch");
 
         // sinature verify
         address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_id, _approve, _nonce)), _sig);
 
-        return preExecute(signedBy, _to, _value, _data);
+        return preApprove(signedBy, _id, _approve);
     }
     
-
-
-    /// @dev Approves an execution. If the execution is being approved multiple times,
-    ///  it will throw an error. Disapproving multiple times will work i.e. not do anything.
-    ///  The approval could potentially trigger an execution (if the threshold is met).
-    /// @param _id Execution ID
-    /// @param _approve `true` if it's an approval, `false` if it's a disapproval
-    /// @return `false` if it's a disapproval and there's no previous approval from the sender OR
-    ///  if it's an approval that triggered a failed execution. `true` if it's a disapproval that
-    ///  undos a previous approval from the sender OR if it's an approval that succeded OR
-    ///  if it's an approval that triggered a succesful execution
-    function approve(uint256 _id, bool _approve)
-        public
-        whenNotPaused
-        returns (bool success)
-    {
+    function preApprove(address _sender, uint256 _id, bool _approve) internal returns (bool success) {
         require(_id != 0);
         Execution storage e = execution[_id];
         // Must exist
         require(e.to != 0);
 
         // Must be approved with the right key
-        hasPermission(msg.sender, e.to, e.data);
+        hasPermission(_sender, e.to, e.data);
 
         emit Approved(_id, _approve);
 
@@ -150,7 +141,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         if (!_approve) {
             // Find in approvals
             for (uint i = 0; i < approvals.length; i++) {
-                if (approvals[i] == msg.sender) {
+                if (approvals[i] == _sender) {
                     // Undo approval
                     approvals[i] = approvals[approvals.length - 1];
                     delete approvals[approvals.length - 1];
@@ -163,11 +154,11 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         } else {
             // Only approve once
             for (i = 0; i < approvals.length; i++) {
-                require(approvals[i] != msg.sender);
+                require(approvals[i] != _sender);
             }
 
             // Approve
-            approvals.push(msg.sender);
+            approvals.push(_sender);
             e.needsApprove -= 1;
 
             // Do we need more approvals?
@@ -177,6 +168,64 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
             return true;
         }
     }
+
+    
+
+    /// @dev Approves an execution. If the execution is being approved multiple times,
+    ///  it will throw an error. Disapproving multiple times will work i.e. not do anything.
+    ///  The approval could potentially trigger an execution (if the threshold is met).
+    /// @param _id Execution ID
+    /// @param _approve `true` if it's an approval, `false` if it's a disapproval
+    /// @return `false` if it's a disapproval and there's no previous approval from the sender OR
+    ///  if it's an approval that triggered a failed execution. `true` if it's a disapproval that
+    ///  undos a previous approval from the sender OR if it's an approval that succeded OR
+    ///  if it's an approval that triggered a succesful execution
+    // function approve(uint256 _id, bool _approve)
+    //     public
+    //     whenNotPaused
+    //     returns (bool success)
+    // {
+    //     require(_id != 0);
+    //     Execution storage e = execution[_id];
+    //     // Must exist
+    //     require(e.to != 0);
+
+    //     // Must be approved with the right key
+    //     hasPermission(msg.sender, e.to, e.data);
+
+    //     emit Approved(_id, _approve);
+
+    //     address[] storage approvals = approved[_id];
+    //     if (!_approve) {
+    //         // Find in approvals
+    //         for (uint i = 0; i < approvals.length; i++) {
+    //             if (approvals[i] == msg.sender) {
+    //                 // Undo approval
+    //                 approvals[i] = approvals[approvals.length - 1];
+    //                 delete approvals[approvals.length - 1];
+    //                 approvals.length--;
+    //                 e.needsApprove += 1;
+    //                 return true;
+    //             }
+    //         }
+    //         return false;
+    //     } else {
+    //         // Only approve once
+    //         for (i = 0; i < approvals.length; i++) {
+    //             require(approvals[i] != msg.sender);
+    //         }
+
+    //         // Approve
+    //         approvals.push(msg.sender);
+    //         e.needsApprove -= 1;
+
+    //         // Do we need more approvals?
+    //         if (e.needsApprove == 0) {
+    //             return _execute(_id, e, true);
+    //         }
+    //         return true;
+    //     }
+    // }
 
     /// @dev Change multi-sig threshold for MANAGEMENT_KEY
     /// @param threshold New threshold to change it to (will throw if 0 or larger than available keys)
