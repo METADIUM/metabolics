@@ -277,7 +277,7 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
                 approveSigningData = web3.sha3(approveSigningData, { encoding: 'hex' })
                 _signature = web3.eth.sign(user1, approveSigningData)
 
-                await metaId.delegatedApprove("0x"+idhex, "true", _nonce, _signature)
+                await metaId.delegatedApprove("0x"+idhex, "true", _nonce, _signature, {from : proxy1})
 
                 nClaims = await metaId.numClaims();
                 assert.equal(nClaims, 1)
