@@ -225,13 +225,13 @@ async function registerSystemTopics(accounts, reg, mim, tr, am, ar, achiv) {
 async function writeToContractsJson(reg, mim, tr, am, ar, achiv, metaHand) {
     console.log(`Writing Contract Address To contracts.json`)
     let contractData = {}
-    contractData["Registry"] = reg.address
-    contractData["IdentityManager"] = mim.address
-    contractData["AchievementManager"] = am.address
-    contractData["Achievement"] = achiv.address
-    contractData["TopicRegistry"] = tr.address
-    contractData["AttestationAgencyRegistry"] = ar.address
-    contractData["MetaHand"] = metaHand
+    contractData["REGISTRY_ADDRESS"] = reg.address
+    contractData["IDENTITY_MANAGER_ADDRESS"] = mim.address
+    contractData["ACHIEVEMENT_MANAGER_ADDRESS"] = am.address
+    contractData["ACHIEVEMENT_ADDRESS"] = achiv.address
+    contractData["TOPIC_REGISTRY_ADDRESS"] = tr.address
+    contractData["ATTESTATION_AGENCY_REGISTRY_ADDRESS"] = ar.address
+    contractData["METAHAND_ADDRESS"] = metaHand
 
     fs.writeFile('contracts.json', JSON.stringify(contractData), 'utf-8', function (e) {
         if (e) {

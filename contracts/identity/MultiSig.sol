@@ -122,7 +122,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
 
         // sinature verify
         address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_id, _approve, _nonce)), _sig);
-
+        //return true;
         return preApprove(signedBy, _id, _approve);
     }
     
@@ -131,13 +131,14 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         Execution storage e = execution[_id];
         // Must exist
         require(e.to != 0);
-
+        
         // Must be approved with the right key
         hasPermission(_sender, e.to, e.data);
 
         emit Approved(_id, _approve);
 
         address[] storage approvals = approved[_id];
+        
         if (!_approve) {
             // Find in approvals
             for (uint i = 0; i < approvals.length; i++) {
@@ -167,6 +168,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
             }
             return true;
         }
+        
     }
 
     
@@ -269,7 +271,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         bytes _data,
         uint _nonce
     )
-        private
+        public
         pure
         returns (uint256)
     {

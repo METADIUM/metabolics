@@ -15,7 +15,7 @@ const Registry = artifacts.require('Registry.sol')
 const MetaIdentity = artifacts.require('MetaIdentity.sol');
 
 
-contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, proxy2, user1, user2, issuerKey]) {
+contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, proxy2, user1, user2, issuerKey, aa1]) {
     const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
     const defaultGas = 8000000;
     const defaultGasPrice = 10;
@@ -228,71 +228,65 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
             
 
         });
-/*
-        it.only('test test create Meta ID and addClaim by DelegatedExcute', async function () {
-            //uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
-            // mgt addr : 0x961c20596e7EC441723FBb168461f4B51371D8aA
-            // mgt private key : 01b149603ca8f537bbb4e45d22e77df9054e50d826bb5f0a34e9ce460432b596
-            // meta id addr : 0xe052cb04e4fe4d3ca69d247b4eff2aff35613b0e
 
+        describe('various addClaim -> approve', async function () {
+            //uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
             let _topic = 1 // MetaID_TOPIC
             let _scheme = 1// ECDSA_SCHEME
-            let _issuer = user1
+            let _issuer = aa1
             let _data = "0x1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc" // metaID
             let _uri = "MetaPrint"
 
             //abi.encodePacked(subject, topic, data) -> topic with uint256 packed 32bytes
             let topicPacked = "0000000000000000000000000000000000000000000000000000000000000001"
             let signingData = topicPacked+"1b442640e0333cb03054940e3cda07da982d2b57af68c3df8d0557b47a77d0bc"
-            
-            await this.identityManager.createMetaId(user1, { from: proxy1, gas: defaultGas })
+            let metaId, metaIds
 
-            let metaIds = await this.identityManager.getDeployedMetaIds()
-            let metaId = await MetaIdentity.at(metaIds[0])
-            console.log(`user1 : ${JSON.stringify(user1)}`)
-            console.log(`metaId[0] : 0xe052cb04e4fe4d3ca69d247b4eff2aff35613b0e}`)
-            console.log(`_topic : ${_topic}`)
-            console.log(`_scheme : ${_scheme}`)
-            console.log(`_issuer : ${_issuer}`)
-            console.log(`_data : ${_data}`)
-            console.log(`_uri : ${_uri}`)
+            beforeEach(async function () {
+                await this.identityManager.createMetaId(user1, { from: proxy1, gas: defaultGas })
+                metaIds = await this.identityManager.getDeployedMetaIds()
+                metaId = await MetaIdentity.at(metaIds[0])
+            });
 
+            it.only('direct addClaim on the user1 identity from AA(key) -> DelegateApprove', async function () {
+                signingData = metaIds[0] + signingData
+                signingData = web3.sha3(signingData, { encoding: 'hex' })
 
-            signingData = '0xe052cb04e4fe4d3ca69d247b4eff2aff35613b0e' + signingData
-            console.log(`signingData before hash : ${signingData}`)
-            signingData = web3.sha3(signingData, { encoding: 'hex' })
-            console.log(`signingData after hash : ${signingData}`)
-            let _signature = web3.eth.sign('01b149603ca8f537bbb4e45d22e77df9054e50d826bb5f0a34e9ce460432b596', signingData)
-            console.log(`_signature : ${_signature}`)
+                // direct call to addClaim on the user identity By AA
+                let _signature = web3.eth.sign(aa1, signingData)
+                //let d = await metaId.getSignatureAddress(signingData, _signature)
+                //console.log(_issuer)
+                //console.log(aa1)
+                
+                await metaId.addClaim(_topic, _scheme, _issuer, _signature, _data, _uri, {from:aa1})
+                
+                let nClaims = await metaId.numClaims();
+                assert.equal(nClaims, 0)
 
-            let addClaimData = await metaId.contract.addClaim.getData(_topic, _scheme, _issuer, _signature, _data, _uri)
-            console.log(`addClaimData : ${addClaimData}`)
-            let _nonce = 0
-            let noncePacked = "000000000000000000000000000000000000000000000000000000000000000" + _nonce
-            let valuePacked = "0000000000000000000000000000000000000000000000000000000000000000"
-            let managementKeySigningData = '0xe052cb04e4fe4d3ca69d247b4eff2aff35613b0e' + valuePacked + addClaimData.slice(2) + noncePacked
+                // delegatedApprove by User
+                let _nonce = 2
+                let noncePacked = "000000000000000000000000000000000000000000000000000000000000000" + _nonce
+                let addClaimData = await metaId.contract.addClaim.getData(_topic, _scheme, _issuer, _signature, _data, _uri)
+                
+                //function getExecutionId( address self,address _to, uint256 _value, bytes _data, uint _nonce)
+                let _id = await metaId.getExecutionId(metaIds[0], metaIds[0], 0, addClaimData, 1)
+                let idhex = _id.toString(16)
 
-            console.log(`managementKeySigningData : ${managementKeySigningData}`)
-            
-            //In solidity, abi.encodePacked(string) -> byte encodeing("ab" -> 0x6162)
-            // managementKeySigningData += Buffer.from(_uri, 'utf8').toString('hex')
-            managementKeySigningData = web3.sha3(managementKeySigningData, { encoding: 'hex' })
+                // (_id to hex convert) + approve(bool) + _nonce pack
+                let approveSigningData = "0x" + idhex + "01" + noncePacked
+                approveSigningData = web3.sha3(approveSigningData, { encoding: 'hex' })
+                _signature = web3.eth.sign(user1, approveSigningData)
 
-            console.log(`managementKeySigningData Sha3 Hashed : ${managementKeySigningData}`)
+                await metaId.delegatedApprove("0x"+idhex, "true", _nonce, _signature)
 
-            let managementKeySignature = web3.eth.sign('01b149603ca8f537bbb4e45d22e77df9054e50d826bb5f0a34e9ce460432b596', managementKeySigningData)
+                nClaims = await metaId.numClaims();
+                assert.equal(nClaims, 1)
+                
+    
+            });
+        })
+        
 
-            console.log(`managementKeySignature : ${managementKeySignature}`)
-
-            //await metaId.delegatedExecute(metaIds[0], 0, addClaimData, _nonce, managementKeySignature, {from:user2})
-            //delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig)  
-
-            // let nClaims = await metaId.numClaims();
-            // assert.equal(nClaims, 1)
-            
-
-        });
-*/
     });
 
 });
