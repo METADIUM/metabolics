@@ -27,7 +27,7 @@ contract AchievementManager is RegistryUser {
     event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri, uint256 createdAt);
     event UpdateAchievement(bytes32 indexed achievementId, uint256 reward, uint256 charge);
     event DeleteAchievement(bytes32 indexed achievementId, uint256 refund);
-    event RequestAchievement(bytes32 indexed achievementId, address indexed receiver, uint256 reward);
+    event RequestAchievement(bytes32 indexed achievementId, address indexed receiver, uint256 reward, address rewarded);
 
     struct Achievement {
         bytes32 id;
@@ -186,16 +186,21 @@ contract AchievementManager is RegistryUser {
 
         }
         
-        // give reward to msg.sender(identity contract)
+        // give reward to msg.sender(identity contract)'s 0th managementKey
         require(balance[_achievementId] >= achievements[_achievementId].reward, "reward is not enough");
         balance[_achievementId] = balance[_achievementId].sub(achievements[_achievementId].reward);
-        msg.sender.transfer(achievements[_achievementId].reward);
+
+        bytes32[] memory managementKeys = ERC725(msg.sender).getKeysByPurpose(1); // 1 : MANAGEMENT KEY
+        address(managementKeys[0]).transfer(achievements[_achievementId].reward); // reward goes to the 0th management key
+        // msg.sender.transfer(achievements[_achievementId].reward);
+        
+        
 
         // mint achievement erc721 to msg.sender;
         IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
         require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, _achievementId))), string(abi.encodePacked(block.timestamp,achievements[_achievementId].uri))), "achievement cannot be minted");
         
-        emit RequestAchievement(_achievementId, msg.sender, achievements[_achievementId].reward);
+        emit RequestAchievement(_achievementId, msg.sender, achievements[_achievementId].reward, address(managementKeys[0]));
 
         return true;
     }

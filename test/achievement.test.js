@@ -149,13 +149,19 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
         });
 
         it('user with enough claim can request achievement', async () => {
-            await metaIdentity.execute(achievementManager.address, 0, _requestData, { from: identity1 })
+            let IdentityBal = await web3.eth.getBalance(identity1)
+            
+            let r = await metaIdentity.execute(achievementManager.address, 0, _requestData, { from: identity1 })
 
             let achiBal = await achievement.balanceOf(metaIdentity.address)
             assert.equal(achiBal, 1)
 
-            let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
-            assert.equal(IdentityBal, _reward)
+            var gasPrice = await web3.eth.getTransaction(r.tx).gasPrice.toNumber();
+            
+            // when the reward goes to the identity's 0th management key
+            let expectedBal = IdentityBal - (gasPrice * r.receipt.gasUsed) + _reward
+            IdentityBal = await web3.eth.getBalance(identity1)
+            assert.equal(IdentityBal, expectedBal)
         });
 
         
