@@ -50,7 +50,6 @@ contract("ClaimManager", async (accounts) => {
 
     describe("ERC165", () => {
         it.skip("supports ERC165, ERC725, ERC735", async () => {
-            console.log(`greatly done`)
             // ERC165
             assert.isFalse(await identity.supportsInterface("0xffffffff"));
             assert.isTrue(await identity.supportsInterface("0x01ffc9a7"));

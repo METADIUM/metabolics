@@ -80,7 +80,7 @@ contract('MetaIdUsingLib', function ([deployer, identity1, aa1, user1, user2, is
 
         });
 
-        it.only('user who has enough claims can get achievement(all topics not registered and above 1024)', async () => {
+        it.skip('user who has enough claims can get achievement(all topics not registered and above 1024)', async () => {
 
             //system register AA to AA registry
             await aaRegistry.registerAttestationAgency(aa1, 'metadiumAA', 'metadiumAADes', { from: proxy1 })

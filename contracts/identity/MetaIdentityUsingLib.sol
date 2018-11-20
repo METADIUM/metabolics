@@ -12,7 +12,6 @@ contract MetaIdentityUsingLib {
     //ERC165
     mapping(bytes4 => bool) internal supportedInterfaces;
 
-
     //KeyBase
 
     //uint256 public constant MANAGEMENT_KEY = 1;
@@ -27,7 +26,19 @@ contract MetaIdentityUsingLib {
     
     // Pausable
     bool public paused = false;
+    // MultiSig
 
+    uint256 public nonce = 1;
+
+    struct Execution {
+        address to;
+        uint256 value;
+        bytes data;
+        uint256 needsApprove;
+    }
+
+    mapping (uint256 => Execution) public execution;
+    mapping (uint256 => address[]) public approved;
     // ClaimManager
 
     bytes constant internal ETH_PREFIX = "\x19Ethereum Signed Message:\n32";
@@ -45,21 +56,6 @@ contract MetaIdentityUsingLib {
     mapping(uint256 => bytes32[]) internal claimsByTopic;
     uint256 public numClaims;
 
-    // MultiSig
-
-    uint256 public nonce = 1;
-
-    struct Execution {
-        address to;
-        uint256 value;
-        bytes data;
-        uint256 needsApprove;
-    }
-
-    mapping (uint256 => Execution) public execution;
-    mapping (uint256 => address[]) public approved;
-
-
     //Proxy Only
     address internal libImplementation;
 
@@ -73,18 +69,6 @@ contract MetaIdentityUsingLib {
         return libImplementation;
     }
 
-    function getNonceUsingLib() public view returns(uint256 _nonce) {
-        return nonce;
-    }
-    function getNonceUsingLib2() public view returns(uint256) {
-        return nonce;
-    }
-    function getNumClaimsUsingLib() public view returns(uint256 _num) {
-        return numClaims;
-    }
-    function setNumClaimsUsingLib(uint256 num) public returns(bool) {
-        numClaims = num;
-    }
     /**
     * @dev Tells the type of proxy (EIP 897)
     * @return Type of proxy, 2 for upgradeable proxy

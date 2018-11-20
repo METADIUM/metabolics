@@ -225,8 +225,8 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     // // Measure gas usage
     // await measureTx(identity.transactionHash);
 
-    console.log(`meta id address : ${identity.address}`)
-    console.log(`meta id library address : ${metaIdLib.address}`)
+    // console.log(`meta id address : ${identity.address}`)
+    // console.log(`meta id library address : ${metaIdLib.address}`)
     
     // // Check init keys
     let contractKeys = await identity.numKeys();
@@ -234,8 +234,10 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     
     // Check init claims
     // let contractClaims = await identity.numClaims();
-    let contractClaims = await identity.getNumClaims();
-    console.log(`num Claims : ${contractClaims}`)
+    let contractClaims = await identity.numClaims();
+    let nonce = await identity.nonce();
+    // console.log(`num Claims : ${contractClaims}`)
+    // console.log(`nonce : ${nonce}`)
     contractClaims.should.be.bignumber.equal(claims.length);
 
     getAndClearGas();
