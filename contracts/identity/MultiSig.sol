@@ -22,9 +22,11 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         uint256 needsApprove;
     }
 
+    // mapping (uint256 => Execution) public execution;
+    // mapping (uint256 => address[]) public approved;
     mapping (uint256 => Execution) public execution;
     mapping (uint256 => address[]) public approved;
-
+    
        /// @dev Generate a unique ID for an execution request
     /// @param _to address being called (msg.sender)
     /// @param _value ether being sent (msg.value)
@@ -42,7 +44,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         
     }
 
-    function hasPermission(address _sender, address _to, bytes _data) view internal returns(uint256 threshold) { 
+    function hasPermission(address _sender, address _to, bytes _data) internal view returns(uint256 threshold) { 
         if (_to == address(this)) {
             if (_sender == address(this)) {
                 // Contract calling itself to act on itself
@@ -66,8 +68,8 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                 threshold = actionThreshold;
             } else {
                 // Action keys can operate on other addresses
-                if (
-                    allKeys.find(addrToKey(_sender), ACTION_KEY) ||
+                
+                if (allKeys.find(addrToKey(_sender), ACTION_KEY) ||
                     allKeys.find(addrToKey(_sender), DELEGATE_KEY) || 
                     allKeys.find(addrToKey(_sender), CUSTOM_KEY) && allKeys.keyData[addrToKey(_sender)].func[_to][getFunctionSignature(_data)]
                 ){
@@ -310,9 +312,8 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         delete approved[_id];
         return true;
     }
-    function getTransactionCount() public view returns(uint256) {
-        return nonce;
-    }
+    
+    
     function getFunctionSignature(bytes b) public pure returns(bytes4) {
         bytes4 out;
 
@@ -320,5 +321,13 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
             out |= bytes4(b[i] & 0xFF) >> (i * 8);
         }
         return out;
+    }
+
+    function getNonce() public view returns(uint256) {
+        return nonce;
+    }
+
+    function getTransactionCount() public view returns(uint256) {
+        return nonce;
     }
 }

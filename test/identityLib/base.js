@@ -233,7 +233,9 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     contractKeys.should.be.bignumber.equal(initSum);
     
     // Check init claims
-    let contractClaims = await identity.numClaims();
+    // let contractClaims = await identity.numClaims();
+    let contractClaims = await identity.getNumClaims();
+    console.log(`num Claims : ${contractClaims}`)
     contractClaims.should.be.bignumber.equal(claims.length);
 
     getAndClearGas();

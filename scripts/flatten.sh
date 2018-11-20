@@ -10,3 +10,4 @@ flatten contracts/identity/MetaIdentity.sol --output tmp/MetaIdentity.sol
 flatten contracts/property/AchievementManager.sol --output tmp/AchievementManager.sol
 flatten contracts/registry/AttestationAgencyRegistry.sol --output tmp/AttestationAgencyRegistry.sol
 flatten contracts/registry/TopicRegistry.sol --output tmp/TopicRegistry.sol
+flatten contracts/identity/MetaIdentityLib.sol --output tmp/MetaIdentityLib.sol

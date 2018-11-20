@@ -21,7 +21,7 @@ contract("ClaimManager", async (accounts) => {
 
     const assertClaims = async (_total, _types) => {
         // Check total
-        let total = await identity.numClaims();
+        let total = await identity.getNumClaims();
         total.should.be.bignumber.equal(_total);
 
         // Check per type
@@ -75,13 +75,13 @@ contract("ClaimManager", async (accounts) => {
             assert.equal(signedBy, addr.manager[0]);
         });
 
-        it.only("can add self-claim as manager", async () => {
+        it("can add self-claim as manager", async () => {
             let uri = "https://twitter.com/mirceap";
             // Claim hash
             let toSign = await identity.claimToSign(identity.address, Topic.PROFILE, uri);
             // Sign using CLAIM_SIGNER_KEY
             let signature = web3.eth.sign(addr.claim[0], toSign);
-
+            
             // Add self-claim as manager
             await assertOkTx(identity.addClaim(Topic.PROFILE, Scheme.ECDSA, identity.address, signature, uri, uri, {from: addr.manager[0]}));
 

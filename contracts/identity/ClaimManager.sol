@@ -30,7 +30,10 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
     mapping(uint256 => bytes32[]) internal claimsByTopic;
     uint256 public numClaims;
 
-
+    function getNumClaims() public view returns(uint256 num) {
+        return numClaims;
+    }
+    
   /// @dev Requests the ADDITION or the CHANGE of a claim from an issuer.
     ///  Claims can requested to be added by anybody, including the claim holder itself (self issued).
     /// @param _topic Type of claim
@@ -341,7 +344,8 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         // New claim
         claims[_claimId] = Claim(_topic, _scheme, issuer, _signature, _data, _uri);
         claimsByTopic[_topic].push(_claimId);
-        numClaims++;
+        //numClaims++;
+        numClaims = numClaims + 1;
         emit ClaimAdded(_claimId, _topic, _scheme, issuer, _signature, _data, _uri);
     }
 

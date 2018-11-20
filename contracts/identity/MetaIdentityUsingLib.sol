@@ -12,50 +12,6 @@ contract MetaIdentityUsingLib {
     //ERC165
     mapping(bytes4 => bool) internal supportedInterfaces;
 
-    //ERC165Query
-    bytes4 constant internal INVALID_ID = 0xffffffff;
-    bytes4 constant internal ERC165_ID = 0x01ffc9a7;
-
-    //ERC725
-    // Purpose
-    // 1: MANAGEMENT keys, which can manage the identity
-    uint256 public constant MANAGEMENT_KEY = 1;
-    // 2: ACTION keys, which perform actions in this identities name (signing, logins, transactions, etc.)
-    uint256 public constant ACTION_KEY = 2;
-    // 3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.
-    uint256 public constant CLAIM_SIGNER_KEY = 3;
-    // 4: ENCRYPTION keys, used to encrypt data e.g. hold in claims.
-    uint256 public constant ENCRYPTION_KEY = 4;
-    // 5: ASSIST keys, used to authenticate.
-    uint256 public constant ASSIST_KEY = 5;
-    // 6: DELEGATE keys, used to encrypt data e.g. hold in claims.
-    uint256 public constant DELEGATE_KEY = 6;
-    // 7: RESTORE keys, used to encrypt data e.g. hold in claims.
-    uint256 public constant RESTORE_KEY = 7;
-    // 8: CUSTOM keys, used to encrypt data e.g. hold in claims.
-    uint256 public constant CUSTOM_KEY = 8;
-    
-    // KeyType
-    uint256 public constant ECDSA_TYPE = 1;
-    // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51
-    uint256 public constant RSA_TYPE = 2;
-
-    //ERC735
-    // Topic
-    //uint256 public constant BIOMETRIC_TOPIC = 1; // you're a person and not a business
-    uint256 public constant METAID_TOPIC = 1; // TODO: real name, business name, nick name, brand name, alias, etc.
-    uint256 public constant RESIDENCE_TOPIC = 2; // you have a physical address or reference point
-    uint256 public constant REGISTRY_TOPIC = 3;
-    uint256 public constant PROFILE_TOPIC = 4; // TODO: social media profiles, blogs, etc.
-    uint256 public constant LABEL_TOPIC = 5; // TODO: real name, business name, nick name, brand name, alias, etc.
-
-    // Scheme
-    uint256 public constant ECDSA_SCHEME = 1;
-    // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51
-    uint256 public constant RSA_SCHEME = 2;
-    // 3 is contract verification, where the data will be call data, and the issuer a contract address to call
-    uint256 public constant CONTRACT_SCHEME = 3;
-
 
     //KeyBase
 
@@ -117,7 +73,18 @@ contract MetaIdentityUsingLib {
         return libImplementation;
     }
 
-
+    function getNonceUsingLib() public view returns(uint256 _nonce) {
+        return nonce;
+    }
+    function getNonceUsingLib2() public view returns(uint256) {
+        return nonce;
+    }
+    function getNumClaimsUsingLib() public view returns(uint256 _num) {
+        return numClaims;
+    }
+    function setNumClaimsUsingLib(uint256 num) public returns(bool) {
+        numClaims = num;
+    }
     /**
     * @dev Tells the type of proxy (EIP 897)
     * @return Type of proxy, 2 for upgradeable proxy

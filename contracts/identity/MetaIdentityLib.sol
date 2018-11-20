@@ -15,6 +15,12 @@ import "./Slice.sol";
 contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetters {
     using Slice for bytes;
     using Slice for string;
+    
+    // Fallback function accepts Ether transactions
+    // solhint-disable-next-line no-empty-blocks
+    function () external payable {
+    
+    }
 
     function init(address _managementKey) public {
         bytes32 senderKey = addrToKey(_managementKey);
@@ -30,9 +36,6 @@ contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, Ke
         // Supports both ERC 725 & 735
         supportedInterfaces[ERC725ID() ^ ERC735ID()] = true;
     }
-    // Fallback function accepts Ether transactions
-    // solhint-disable-next-line no-empty-blocks
-    function () external payable {
-    }
+    
 
 }

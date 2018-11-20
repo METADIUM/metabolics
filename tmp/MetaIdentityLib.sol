@@ -1243,15 +1243,17 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
     }
 }
 
-contract MetaIdentity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetters {
+contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetters {
     using Slice for bytes;
     using Slice for string;
+    
+    // Fallback function accepts Ether transactions
+    // solhint-disable-next-line no-empty-blocks
+    function () external payable {
+    
+    }
 
-    /// @dev Constructor for Identity contract. If no initial keys are passed then
-    ///  `msg.sender` is used as an initial MANAGEMENT_KEY, ACTION_KEY and CLAIM_SIGNER_KEY
-    constructor(address _managementKey)
-    public {
-
+    function init(address _managementKey) public {
         bytes32 senderKey = addrToKey(_managementKey);
         
         // Add key that deployed the contract for MANAGEMENT, ACTION, CLAIM
@@ -1265,11 +1267,7 @@ contract MetaIdentity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGe
         // Supports both ERC 725 & 735
         supportedInterfaces[ERC725ID() ^ ERC735ID()] = true;
     }
-
-    // Fallback function accepts Ether transactions
-    // solhint-disable-next-line no-empty-blocks
-    function () external payable {
-    }
+    
 
 }
 
@@ -1374,197 +1372,5 @@ library ECRecovery {
       hash
     );
   }
-}
-
-contract Ownable {
-  address public owner;
-
-
-  event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-
-
-  /**
-   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
-   * account.
-   */
-  function Ownable() public {
-    owner = msg.sender;
-  }
-
-  /**
-   * @dev Throws if called by any account other than the owner.
-   */
-  modifier onlyOwner() {
-    require(msg.sender == owner);
-    _;
-  }
-
-  /**
-   * @dev Allows the current owner to transfer control of the contract to a newOwner.
-   * @param newOwner The address to transfer ownership to.
-   */
-  function transferOwnership(address newOwner) public onlyOwner {
-    require(newOwner != address(0));
-    emit OwnershipTransferred(owner, newOwner);
-    owner = newOwner;
-  }
-
-}
-
-contract Registry is Ownable {
-    
-    mapping(bytes32=>address) public contracts;
-    mapping(bytes32=>mapping(address=>bool)) public permissions;
-
-    event SetContractDomain(address setter, bytes32 indexed name, address indexed addr);
-    event SetPermission(bytes32 indexed _contract, address indexed granted, bool status);
-
-
-    /**
-    * @dev Function to set contract(can be general address) domain
-    * Only owner can use this function
-    * @param _name name
-    * @param _addr address
-    * @return A boolean that indicates if the operation was successful.
-    */
-    function setContractDomain(bytes32 _name, address _addr) public onlyOwner returns (bool success) {
-        require(_addr != address(0x0), "address should be non-zero");
-        contracts[_name] = _addr;
-
-        emit SetContractDomain(msg.sender, _name, _addr);
-
-        return true;
-        //TODO should decide whether to set 0x00 to destoryed contract or not
-        
-
-    }
-    /**
-    * @dev Function to get contract(can be general address) address
-    * Anyone can use this function
-    * @param _name _name
-    * @return An address of the _name
-    */
-    function getContractAddress(bytes32 _name) public view returns(address addr) {
-        require(contracts[_name] != address(0x0), "address should be non-zero");
-        return contracts[_name];
-    }
-    /**
-    * @dev Function to set permission on contract
-    * contract using modifier 'permissioned' references mapping variable 'permissions'
-    * Only owner can use this function
-    * @param _contract contract name
-    * @param _granted granted address
-    * @param _status true = can use, false = cannot use. default is false
-    * @return A boolean that indicates if the operation was successful.
-    */
-    function setPermission(bytes32 _contract, address _granted, bool _status) public onlyOwner returns(bool success) {
-        require(_granted != address(0x0), "address should be non-zero");
-        permissions[_contract][_granted] = _status;
-
-        emit SetPermission(_contract, _granted, _status);
-        
-        return true;
-    }
-
-    /**
-    * @dev Function to get permission on contract
-    * contract using modifier 'permissioned' references mapping variable 'permissions'
-    * @param _contract contract name
-    * @param _granted granted address
-    * @return permission result
-    */
-    function getPermission(bytes32 _contract, address _granted) public view returns(bool found) {
-        return permissions[_contract][_granted];
-    }
-    
-}
-
-contract RegistryUser is Ownable {
-    
-    Registry public REG;
-    bytes32 public THIS_NAME;
-
-    /**
-     * @dev Function to set registry address. Contract that wants to use registry should setRegistry first.
-     * @param _addr address of registry
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function setRegistry(address _addr) public onlyOwner {
-        REG = Registry(_addr);
-    }
-    
-    modifier permissioned() {
-        require(isPermitted(msg.sender), "No Permission");
-        _;
-    }
-
-    /**
-     * @dev Function to check the permission
-     * @param _addr address of sender to check the permission
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function isPermitted(address _addr) public view returns(bool found) {
-        return REG.getPermission(THIS_NAME, _addr);
-    }
-    
-}
-
-contract IdentityManager is RegistryUser {
-    //Hold the list of MetaIds
-    //CreateMetaId
-    
-    address[] public metaIds;
-    mapping(address=>bool) metaIdExistence;
-
-    event CreateMetaId(address indexed managementKey, address metaId);
-    
-    constructor() public {
-        THIS_NAME = "IdentityManager";
-    }
-
-
-    /**
-     * @dev Create Metadium Identity which is based upon erc725-735 
-     * @param _managementKey basic managementKey to use
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function createMetaId(address _managementKey) public permissioned returns (bool success) {
-        require(_managementKey != address(0), "address is 0x0");
-
-        address newMetaId = new MetaIdentity(_managementKey);
-        metaIds.push(newMetaId);
-        metaIdExistence[newMetaId] = true;
-
-        emit CreateMetaId(_managementKey, newMetaId);
-
-        return true;
-
-    }
-    /**
-     * @dev Add MetaId to the list. This function is for migration.
-     * @param _metaId meta id address
-     * @return A boolean that indicates if the operation was successful.
-     */
-    function addMetaId(address _metaId, address _managementKey) public permissioned returns (bool success) {
-        metaIds.push(_metaId);
-        metaIdExistence[_metaId] = true;
-
-        emit CreateMetaId(_managementKey, _metaId);
-        
-        return true;
-    }
-
-    function getDeployedMetaIds() public view returns(address[] addrs) {
-        return metaIds;
-    }
-
-    function isMetaId(address _addr) public view returns(bool found) {
-        return metaIdExistence[_addr];
-    }
-
-    function getLengthOfMetaIds() public view returns(uint256 length) {
-        return metaIds.length;
-    }
-
 }
 
