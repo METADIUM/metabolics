@@ -179,11 +179,8 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
             let achiBal = await achievement.balanceOf(metaIdentity.address)
             assert.equal(achiBal, 1)
 
-            let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
-            assert.equal(IdentityBal, _reward)
-
-            let Identity2Bal = await web3.eth.getBalance(metaIdentity2.address)
-            assert.equal(Identity2Bal, 0)
+            let achiBal2 = await achievement.balanceOf(metaIdentity2.address)
+            assert.equal(achiBal2, 0)
 
         });
 
@@ -193,9 +190,6 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
 
             let achiBal = await achievement.balanceOf(metaIdentity.address)
             assert.equal(achiBal, 1)
-
-            let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
-            assert.equal(IdentityBal, _reward)
 
             
             //this request fails but, not revert. ExcutionFail event emitted
@@ -246,8 +240,8 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
             let achiBal = await achievement.balanceOf(metaIdentity.address)
             assert.equal(achiBal, 1)
 
-            let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
-            assert.equal(IdentityBal, _reward)
+            // let IdentityBal = await web3.eth.getBalance(metaIdentity.address)
+            // assert.equal(IdentityBal, _reward)
         });
     })
 
