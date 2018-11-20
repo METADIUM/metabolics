@@ -14,6 +14,7 @@ const fs = require('fs');
 const proxy1 = '0x084f8293F1b047D3A217025B24cd7b5aCe8fC657'; //node3 account[1]
 const selfClaimAddress = '0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF'
 
+let metaHand
 //TODO deploy script clean up
 async function deploy(deployer, network, accounts) {
     let reg, mim, tr, am, ar, achiv
@@ -23,8 +24,8 @@ async function deploy(deployer, network, accounts) {
         deployer.then(async () => {
             [reg, mim, tr, am, ar, achiv] = await deployContracts(deployer, network, accounts)
             await basicRegistrySetup(deployer, network, accounts, reg, mim, tr, am, ar, achiv)
-            let metaHand = await defaultAASetup(accounts, reg, mim, tr, am, ar, achiv)
-            await defaultAchievementSetup(accounts, reg, mim, tr, am, ar, achiv)
+            metaHand = await defaultAASetup(accounts, reg, mim, tr, am, ar, achiv)
+            // await defaultAchievementSetup(accounts, reg, mim, tr, am, ar, achiv)
             await registerSystemTopics(accounts, reg, mim, tr, am, ar, achiv)
             await writeToContractsJson(reg, mim, tr, am, ar, achiv, metaHand)
 
@@ -198,7 +199,7 @@ async function registerSystemTopics(accounts, reg, mim, tr, am, ar, achiv) {
 
     console.log('Registering achievements with system topics......')
     let _topics = [10, 11, 20, 30]
-    let _issuers = [selfClaimAddress, selfClaimAddress, accounts[0], accounts[0]]
+    let _issuers = [selfClaimAddress, selfClaimAddress, metaHand, metaHand]
     let _achievementtitle = 'Basic Profile'
     let _achievementExplanation = 'Name/Phone/Email'
     let _reward = 0.1 * 10 ** 18
