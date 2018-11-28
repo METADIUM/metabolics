@@ -26,6 +26,7 @@ contract AchievementManager is RegistryUser {
 
     event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri, uint256 createdAt);
     event UpdateAchievement(bytes32 indexed achievementId, uint256 reward, uint256 charge);
+    event FundAchievement(bytes32 indexed achievementId, uint256 charge);
     event DeleteAchievement(bytes32 indexed achievementId, uint256 refund);
     event RequestAchievement(bytes32 indexed achievementId, address indexed receiver, uint256 reward, address rewarded);
 
@@ -131,6 +132,17 @@ contract AchievementManager is RegistryUser {
         achievements[_achievementId].reward = _reward;
         balance[_achievementId] = balance[_achievementId].add(msg.value);
         emit UpdateAchievement(_achievementId, _reward, msg.value);
+        return true;
+    }
+
+    /**
+     * @dev fund Achievement. Anyone can fund the achievement.
+     * @param _achievementId achievementId
+     * @return A boolean that indicates if the operation was successful.
+     */
+    function fundAchievement(bytes32 _achievementId) public payable returns (bool success) {
+        balance[_achievementId] = balance[_achievementId].add(msg.value);
+        emit FundAchievement(_achievementId, msg.value);
         return true;
     }
 
