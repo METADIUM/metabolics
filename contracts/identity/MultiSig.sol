@@ -108,6 +108,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         require(_nonce == nonce,"nonce mismatch");
 
         // sinature verify
+        //TODO : 'this' should be addded
         address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_to, _value, _data, _nonce)), _sig);
         return preExecute(signedBy, _to, _value, _data);
     
@@ -123,6 +124,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         require(_nonce == nonce, "nonce mismatch");
 
         // sinature verify
+        //TODO : 'this' should be addded
         address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_id, _approve, _nonce)), _sig);
         //return true;
         return preApprove(signedBy, _id, _approve);

@@ -129,7 +129,7 @@ contract AchievementManager is RegistryUser {
         require(achievements[_achievementId].creator == msg.sender, "sender is not creator");
 
         achievements[_achievementId].reward = _reward;
-        balance[_achievementId] = msg.value;
+        balance[_achievementId] = balance[_achievementId].add(msg.value);
         emit UpdateAchievement(_achievementId, _reward, msg.value);
         return true;
     }
