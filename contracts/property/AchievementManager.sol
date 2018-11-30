@@ -126,7 +126,7 @@ contract AchievementManager is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool success) {
-        //Only creator can charge fund
+        //Only creator can charge fund in update
         require(achievements[_achievementId].creator == msg.sender, "sender is not creator");
 
         achievements[_achievementId].reward = _reward;
