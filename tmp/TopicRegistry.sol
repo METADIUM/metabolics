@@ -263,7 +263,7 @@ contract TopicRegistry is RegistryUser {
     view
     returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
     {
-        require(_to>_from, "from to mismatch");
+        require(_to >= _from, "from to mismatch");
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sexplans = new bytes32[](_to-_from+1);
         uint256[] memory screateds = new uint256[](_to-_from+1);

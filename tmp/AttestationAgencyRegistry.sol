@@ -230,7 +230,7 @@ contract AttestationAgencyRegistry is RegistryUser {
     returns(address[] addrs, bytes32[] titles, bytes32[] descs, uint256[] createds)
     {
         
-        require(_to<attestationAgencyNum && _from < _to, "from to mismatch");
+        require(_to<attestationAgencyNum && _from <= _to, "from to mismatch");
         
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sdescs = new bytes32[](_to-_from+1);

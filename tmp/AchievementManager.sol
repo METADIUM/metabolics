@@ -331,6 +331,7 @@ contract AchievementManager is RegistryUser {
 
     event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri, uint256 createdAt);
     event UpdateAchievement(bytes32 indexed achievementId, uint256 reward, uint256 charge);
+    event FundAchievement(bytes32 indexed achievementId, uint256 charge);
     event DeleteAchievement(bytes32 indexed achievementId, uint256 refund);
     event RequestAchievement(bytes32 indexed achievementId, address indexed receiver, uint256 reward, address rewarded);
 
@@ -430,12 +431,23 @@ contract AchievementManager is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function updateAchievement(bytes32 _achievementId, uint256 _reward) public payable returns (bool success) {
-        //Only creator can charge fund
+        //Only creator can charge fund in update
         require(achievements[_achievementId].creator == msg.sender, "sender is not creator");
 
         achievements[_achievementId].reward = _reward;
-        balance[_achievementId] = msg.value;
+        balance[_achievementId] = balance[_achievementId].add(msg.value);
         emit UpdateAchievement(_achievementId, _reward, msg.value);
+        return true;
+    }
+
+    /**
+     * @dev fund Achievement. Anyone can fund the achievement.
+     * @param _achievementId achievementId
+     * @return A boolean that indicates if the operation was successful.
+     */
+    function fundAchievement(bytes32 _achievementId) public payable returns (bool success) {
+        balance[_achievementId] = balance[_achievementId].add(msg.value);
+        emit FundAchievement(_achievementId, msg.value);
         return true;
     }
 
@@ -719,7 +731,7 @@ contract TopicRegistry is RegistryUser {
     view
     returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
     {
-        require(_to>_from, "from to mismatch");
+        require(_to >= _from, "from to mismatch");
         address[] memory saddrs = new address[](_to-_from+1);
         bytes32[] memory sexplans = new bytes32[](_to-_from+1);
         uint256[] memory screateds = new uint256[](_to-_from+1);
