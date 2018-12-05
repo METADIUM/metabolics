@@ -1,10 +1,30 @@
 {
-  "contractName": "KeyStore",
-  "abi": [],
-  "bytecode": "0x604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820bf67074d1b7450bb5bab3c050f1686c69fbc54bd20137037b37ab6acb6bb085d0029",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820bf67074d1b7450bb5bab3c050f1686c69fbc54bd20137037b37ab6acb6bb085d0029",
-  "sourceMap": "3493:3347:17:-;;132:2:-1;166:7;155:9;146:7;137:37;252:7;246:14;243:1;238:23;232:4;229:33;270:1;265:20;;;;222:63;;265:20;274:9;222:63;;298:9;295:1;288:20;328:4;319:7;311:22;352:7;343;336:24",
-  "deployedSourceMap": "3493:3347:17:-;;;;;;;;",
+  "contractName": "IReg",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_name",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getContractAddress",
+      "outputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.24;\n\n/**\n * @title MetaIdentityUsingLib\n * @dev Interface for MetaIdentityUsingLib\n */\ncontract MetaIdentityUsingLib {\n    // Line All the MetaIdentity variables up.\n    // For delegate call, contract storage layout must be same.\n    // Line up order is following the solidity inheritance logic(python like)\n    \n    //ERC165\n    mapping(bytes4 => bool) internal supportedInterfaces;\n\n    //KeyBase\n\n    //uint256 public constant MANAGEMENT_KEY = 1;\n\n    // For multi-sig\n    uint256 public managementThreshold = 1;\n    uint256 public actionThreshold = 1;\n\n    // Key storage\n    using KeyStore for KeyStore.Keys;\n    KeyStore.Keys internal allKeys;\n    \n    // Pausable\n    bool public paused = false;\n    // MultiSig\n\n    uint256 public nonce = 1;\n\n    struct Execution {\n        address to;\n        uint256 value;\n        bytes data;\n        uint256 needsApprove;\n    }\n\n    mapping (uint256 => Execution) public execution;\n    mapping (uint256 => address[]) public approved;\n    // ClaimManager\n\n    bytes constant internal ETH_PREFIX = \"\\x19Ethereum Signed Message:\\n32\";\n\n    struct Claim {\n        uint256 topic;\n        uint256 scheme;\n        address issuer; // msg.sender\n        bytes signature; // this.address + topic + data\n        bytes data;\n        string uri;\n    }\n\n    mapping(bytes32 => Claim) internal claims;\n    mapping(uint256 => bytes32[]) internal claimsByTopic;\n    uint256 public numClaims;\n\n    //Proxy Only\n    address internal libImplementation;\n    address REG;\n\n    function setImplementation(address _newImple) public returns (bool) {\n        require(allKeys.find(bytes32(msg.sender), 1),\"not a management key\");\n        libImplementation = _newImple;\n        return true;\n    }\n\n    function implementation() public view returns (address) {\n        return libImplementation;\n    }\n\n    constructor(address _implementation, address _managementKey) public {\n        \n        bytes4 sig = bytes4(keccak256(\"init(address)\"));\n        libImplementation = _implementation;\n\n        // two 32bytes for call data\n        address target = _implementation;\n        uint256 argsize = 32;\n        bool suc;\n\n        assembly {\n            // Add the signature first to memory\n            mstore(0x0, sig)\n            // Add the call data, which is at the end of the\n            // code\n            codecopy(0x4,  sub(codesize, argsize), argsize)\n            // Delegate call to the library\n            suc := delegatecall(sub(gas, 10000), target, 0x0, add(argsize, 0x4), 0x0, 0x0)\n        }\n    }\n    \n    /**\n    * @dev Tells the type of proxy (EIP 897)\n    * @return Type of proxy, 2 for upgradeable proxy\n    */\n    function proxyType() public pure returns (uint256 proxyTypeId) {\n        return 2;\n    }\n    \n\n    /**\n     * @dev Fallback function for delegate call. This function will return whatever the implementaion call returns\n     */\n    function () payable public {\n        address _impl = implementation();\n        require(_impl != address(0));\n\n        assembly {\n            let ptr := mload(0x40)\n            calldatacopy(ptr, 0, calldatasize)\n\n            let result := delegatecall(gas, _impl, ptr, calldatasize, 0, 0)\n            let size := returndatasize\n            returndatacopy(ptr, 0, size)\n\n            switch result\n            case 0 { revert(ptr, size) }\n            default { return(ptr, size) }\n\n        }\n    }\n}\ncontract IReg {\n    function getContractAddress(bytes32 _name) public view returns(address addr);\n}\n\n\nlibrary KeyStore {\n    struct Key {\n        uint256[] purposes; //e.g., MANAGEMENT_KEY = 1, ACTION_KEY = 2, etc.\n        uint256 keyType; // e.g. 1 = ECDSA, 2 = RSA, etc.\n        bytes32 key; // for non-hex and long keys, its the Keccak256 hash of the key\n        mapping(address=>mapping(bytes4=>bool)) func;\n    }\n\n    struct Keys {\n        mapping (bytes32 => Key) keyData;\n        mapping (uint256 => bytes32[]) keysByPurpose;\n        uint numKeys;\n    }\n\n    /// @dev Find a key + purpose tuple\n    /// @param key Key bytes to find\n    /// @param purpose Purpose to find\n    /// @return `true` if key + purpose tuple if found\n    function find(Keys storage self, bytes32 key, uint256 purpose)\n        internal\n        view\n        returns (bool found)\n    {\n        Key memory k = self.keyData[key];\n        if (k.key == 0) {\n            return false;\n        }\n        for (uint i = 0; i < k.purposes.length; i++) {\n            if (k.purposes[i] == purpose) {\n                found = true;\n                return;\n            }\n        }\n    }\n\n    function isExist(Keys storage self, bytes32 key)\n        internal\n        view\n        returns (bool found)\n    {\n        Key memory k = self.keyData[key];\n        return (k.key != 0);\n    }\n\n    /// @dev Add a Key\n    /// @param key Key bytes to add\n    /// @param purpose Purpose to add\n    /// @param keyType Key type to add\n    function add(Keys storage self, bytes32 key, uint256 purpose, uint256 keyType)\n        internal\n    {\n        Key storage k = self.keyData[key];\n        k.purposes.push(purpose);\n        if (k.key == 0) {\n            k.key = key;\n            k.keyType = keyType;\n        }\n        self.keysByPurpose[purpose].push(key);\n        self.numKeys++;\n    }\n\n    /// @dev Remove Key\n    /// @param key Key bytes to remove\n    /// @param purpose Purpose to remove\n    /// @return Key type of the key that was removed\n    function remove(Keys storage self, bytes32 key, uint256 purpose)\n        internal\n        returns (uint256 keyType)\n    {\n        keyType = self.keyData[key].keyType;\n\n        uint256[] storage p = self.keyData[key].purposes;\n        // Delete purpose from keyData\n        for (uint i = 0; i < p.length; i++) {\n            if (p[i] == purpose) {\n                p[i] = p[p.length - 1];\n                delete p[p.length - 1];\n                p.length--;\n                self.numKeys--;\n                break;\n            }\n        }\n        // No more purposes\n        if (p.length == 0) {\n            delete self.keyData[key];\n        }\n\n        // Delete key from keysByPurpose\n        bytes32[] storage k = self.keysByPurpose[purpose];\n        for (i = 0; i < k.length; i++) {\n            if (k[i] == key) {\n                k[i] = k[k.length - 1];\n                delete k[k.length - 1];\n                k.length--;\n            }\n        }\n    }\n\n    /// @dev Set function that the specific key can excute\n    /// @param key Key to use\n    /// @param to smart contract address at which this key can be used\n    /// @param func function to use\n    /// @param executable is executable\n    function setFunc(Keys storage self, bytes32 key, address to, bytes4 func, bool executable)\n        internal returns (bool set)\n    {\n        Key storage k = self.keyData[key];\n        k.func[to][func] = executable;\n        \n        return executable;\n    }\n}",
   "sourcePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/MetaIdentityUsingLib.sol",
   "ast": {
@@ -12977,5 +12997,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-05T10:46:35.315Z"
+  "updatedAt": "2018-12-05T10:46:35.268Z"
 }

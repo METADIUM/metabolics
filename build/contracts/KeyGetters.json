@@ -183,14 +183,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyGetters.sol",
     "exportedSymbols": {
       "KeyGetters": [
-        2528
+        2555
       ]
     },
-    "id": 2529,
+    "id": 2556,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2435,
+        "id": 2462,
         "literals": [
           "solidity",
           "^",
@@ -203,10 +203,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyBase.sol",
         "file": "./KeyBase.sol",
-        "id": 2436,
+        "id": 2463,
         "nodeType": "ImportDirective",
-        "scope": 2529,
-        "sourceUnit": 2434,
+        "scope": 2556,
+        "sourceUnit": 2461,
         "src": "26:23:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -217,68 +217,68 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2437,
+              "id": 2464,
               "name": "KeyBase",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2433,
+              "referencedDeclaration": 2460,
               "src": "222:7:12",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_KeyBase_$2433",
+                "typeIdentifier": "t_contract$_KeyBase_$2460",
                 "typeString": "contract KeyBase"
               }
             },
-            "id": 2438,
+            "id": 2465,
             "nodeType": "InheritanceSpecifier",
             "src": "222:7:12"
           }
         ],
         "contractDependencies": [
-          2433
+          2460
         ],
         "contractKind": "contract",
         "documentation": "@title KeyGetters\n @author genie\n @notice Implement getter functions from ERC725 spec\n @dev Key data is stored using KeyStore library",
         "fullyImplemented": true,
-        "id": 2528,
+        "id": 2555,
         "linearizedBaseContracts": [
-          2528,
-          2433
+          2555,
+          2460
         ],
         "name": "KeyGetters",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 2474,
+              "id": 2501,
               "nodeType": "Block",
               "src": "539:143:12",
               "statements": [
                 {
                   "assignments": [
-                    2453
+                    2480
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 2453,
+                      "id": 2480,
                       "name": "k",
                       "nodeType": "VariableDeclaration",
-                      "scope": 2475,
+                      "scope": 2502,
                       "src": "549:21:12",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                        "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                         "typeString": "struct KeyStore.Key"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 2452,
+                        "id": 2479,
                         "name": "KeyStore.Key",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 2686,
+                        "referencedDeclaration": 2713,
                         "src": "549:12:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_storage_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_storage_ptr",
                           "typeString": "struct KeyStore.Key"
                         }
                       },
@@ -286,46 +286,46 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 2458,
+                  "id": 2485,
                   "initialValue": {
                     "argumentTypes": null,
                     "baseExpression": {
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2454,
+                        "id": 2481,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2371,
+                        "referencedDeclaration": 2398,
                         "src": "573:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2725_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2455,
+                      "id": 2482,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "keyData",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2690,
+                      "referencedDeclaration": 2717,
                       "src": "573:15:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2686_storage_$",
+                        "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2713_storage_$",
                         "typeString": "mapping(bytes32 => struct KeyStore.Key storage ref)"
                       }
                     },
-                    "id": 2457,
+                    "id": 2484,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2456,
+                      "id": 2483,
                       "name": "_key",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2440,
+                      "referencedDeclaration": 2467,
                       "src": "589:4:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -339,7 +339,7 @@
                     "nodeType": "IndexAccess",
                     "src": "573:21:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Key_$2686_storage",
+                      "typeIdentifier": "t_struct$_Key_$2713_storage",
                       "typeString": "struct KeyStore.Key storage ref"
                     }
                   },
@@ -349,18 +349,18 @@
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 2462,
+                    "id": 2489,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 2459,
+                      "id": 2486,
                       "name": "purposes",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2444,
+                      "referencedDeclaration": 2471,
                       "src": "604:8:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
@@ -373,25 +373,25 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2460,
+                        "id": 2487,
                         "name": "k",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2453,
+                        "referencedDeclaration": 2480,
                         "src": "615:1:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                           "typeString": "struct KeyStore.Key memory"
                         }
                       },
-                      "id": 2461,
+                      "id": 2488,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "purposes",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2675,
+                      "referencedDeclaration": 2702,
                       "src": "615:10:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory",
@@ -404,25 +404,25 @@
                       "typeString": "uint256[] memory"
                     }
                   },
-                  "id": 2463,
+                  "id": 2490,
                   "nodeType": "ExpressionStatement",
                   "src": "604:21:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 2467,
+                    "id": 2494,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 2464,
+                      "id": 2491,
                       "name": "keyType",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2446,
+                      "referencedDeclaration": 2473,
                       "src": "635:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -435,25 +435,25 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2465,
+                        "id": 2492,
                         "name": "k",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2453,
+                        "referencedDeclaration": 2480,
                         "src": "645:1:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                           "typeString": "struct KeyStore.Key memory"
                         }
                       },
-                      "id": 2466,
+                      "id": 2493,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "keyType",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2677,
+                      "referencedDeclaration": 2704,
                       "src": "645:9:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -466,25 +466,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 2468,
+                  "id": 2495,
                   "nodeType": "ExpressionStatement",
                   "src": "635:19:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 2472,
+                    "id": 2499,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 2469,
+                      "id": 2496,
                       "name": "key",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2448,
+                      "referencedDeclaration": 2475,
                       "src": "664:3:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -497,25 +497,25 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2470,
+                        "id": 2497,
                         "name": "k",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2453,
+                        "referencedDeclaration": 2480,
                         "src": "670:1:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                           "typeString": "struct KeyStore.Key memory"
                         }
                       },
-                      "id": 2471,
+                      "id": 2498,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "key",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2679,
+                      "referencedDeclaration": 2706,
                       "src": "670:5:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -528,14 +528,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 2473,
+                  "id": 2500,
                   "nodeType": "ExpressionStatement",
                   "src": "664:11:12"
                 }
               ]
             },
             "documentation": "@dev Find the key data, if held by the identity\n @param _key Key bytes to find\n @return `(purposes, keyType, key)` tuple if the key exists",
-            "id": 2475,
+            "id": 2502,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -543,15 +543,15 @@
             "name": "getKey",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2441,
+              "id": 2468,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2440,
+                  "id": 2467,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "422:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -560,7 +560,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2439,
+                    "id": 2466,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "422:7:12",
@@ -577,15 +577,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2449,
+              "id": 2476,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2444,
+                  "id": 2471,
                   "name": "purposes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "485:18:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -595,7 +595,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2442,
+                      "id": 2469,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "485:7:12",
@@ -604,7 +604,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 2443,
+                    "id": 2470,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "485:9:12",
@@ -618,10 +618,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2446,
+                  "id": 2473,
                   "name": "keyType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "505:15:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -630,7 +630,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2445,
+                    "id": 2472,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "505:7:12",
@@ -644,10 +644,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2448,
+                  "id": 2475,
                   "name": "key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "522:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -656,7 +656,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2447,
+                    "id": 2474,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "522:7:12",
@@ -671,15 +671,15 @@
               ],
               "src": "484:50:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "397:285:12",
             "stateMutability": "view",
-            "superFunction": 1592,
+            "superFunction": 1619,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 2490,
+              "id": 2517,
               "nodeType": "Block",
               "src": "1035:51:12",
               "statements": [
@@ -689,11 +689,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2486,
+                        "id": 2513,
                         "name": "_key",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2477,
+                        "referencedDeclaration": 2504,
                         "src": "1065:4:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -702,11 +702,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2487,
+                        "id": 2514,
                         "name": "purpose",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2479,
+                        "referencedDeclaration": 2506,
                         "src": "1071:7:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -727,32 +727,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2484,
+                        "id": 2511,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2371,
+                        "referencedDeclaration": 2398,
                         "src": "1052:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2725_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2485,
+                      "id": 2512,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2752,
+                      "referencedDeclaration": 2779,
                       "src": "1052:12:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2698_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2698_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2725_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2725_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
-                    "id": 2488,
+                    "id": 2515,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -766,15 +766,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 2483,
-                  "id": 2489,
+                  "functionReturnParameters": 2510,
+                  "id": 2516,
                   "nodeType": "Return",
                   "src": "1045:34:12"
                 }
               ]
             },
             "documentation": "@dev Find if a key has is present and has the given purpose\n @param _key Key bytes to find\n @param purpose Purpose to find\n @return Boolean indicating whether the key exists or not",
-            "id": 2491,
+            "id": 2518,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -782,15 +782,15 @@
             "name": "keyHasPurpose",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2480,
+              "id": 2507,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2477,
+                  "id": 2504,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2491,
+                  "scope": 2518,
                   "src": "930:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -799,7 +799,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2476,
+                    "id": 2503,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "930:7:12",
@@ -813,10 +813,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2479,
+                  "id": 2506,
                   "name": "purpose",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2491,
+                  "scope": 2518,
                   "src": "952:15:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -825,7 +825,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2478,
+                    "id": 2505,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "952:7:12",
@@ -842,15 +842,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2483,
+              "id": 2510,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2482,
+                  "id": 2509,
                   "name": "exists",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2491,
+                  "scope": 2518,
                   "src": "1018:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -859,7 +859,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2481,
+                    "id": 2508,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1018:4:12",
@@ -874,15 +874,15 @@
               ],
               "src": "1017:13:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "898:188:12",
             "stateMutability": "view",
-            "superFunction": 1601,
+            "superFunction": 1628,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 2504,
+              "id": 2531,
               "nodeType": "Block",
               "src": "1383:55:12",
               "statements": [
@@ -893,39 +893,39 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2499,
+                        "id": 2526,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2371,
+                        "referencedDeclaration": 2398,
                         "src": "1400:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2725_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2500,
+                      "id": 2527,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "keysByPurpose",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2695,
+                      "referencedDeclaration": 2722,
                       "src": "1400:21:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_uint256_$_t_array$_t_bytes32_$dyn_storage_$",
                         "typeString": "mapping(uint256 => bytes32[] storage ref)"
                       }
                     },
-                    "id": 2502,
+                    "id": 2529,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2501,
+                      "id": 2528,
                       "name": "_purpose",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2493,
+                      "referencedDeclaration": 2520,
                       "src": "1422:8:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -943,15 +943,15 @@
                       "typeString": "bytes32[] storage ref"
                     }
                   },
-                  "functionReturnParameters": 2498,
-                  "id": 2503,
+                  "functionReturnParameters": 2525,
+                  "id": 2530,
                   "nodeType": "Return",
                   "src": "1393:38:12"
                 }
               ]
             },
             "documentation": "@dev Find all the keys held by this identity for a given purpose\n @param _purpose Purpose to find\n @return Array with key bytes for that purpose (empty if none)",
-            "id": 2505,
+            "id": 2532,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -959,15 +959,15 @@
             "name": "getKeysByPurpose",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2494,
+              "id": 2521,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2493,
+                  "id": 2520,
                   "name": "_purpose",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2505,
+                  "scope": 2532,
                   "src": "1301:16:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -976,7 +976,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2492,
+                    "id": 2519,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1301:7:12",
@@ -993,15 +993,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2498,
+              "id": 2525,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2497,
+                  "id": 2524,
                   "name": "keys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2505,
+                  "scope": 2532,
                   "src": "1363:14:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1011,7 +1011,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2495,
+                      "id": 2522,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "1363:7:12",
@@ -1020,7 +1020,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 2496,
+                    "id": 2523,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1363:9:12",
@@ -1035,15 +1035,15 @@
               ],
               "src": "1362:16:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "1275:163:12",
             "stateMutability": "view",
-            "superFunction": 1609,
+            "superFunction": 1636,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 2526,
+              "id": 2553,
               "nodeType": "Block",
               "src": "1577:157:12",
               "statements": [
@@ -1060,39 +1060,39 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 2516,
+                              "id": 2543,
                               "name": "allKeys",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 2371,
+                              "referencedDeclaration": 2398,
                               "src": "1689:7:12",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                                "typeIdentifier": "t_struct$_Keys_$2725_storage",
                                 "typeString": "struct KeyStore.Keys storage ref"
                               }
                             },
-                            "id": 2517,
+                            "id": 2544,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "keyData",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 2690,
+                            "referencedDeclaration": 2717,
                             "src": "1689:15:12",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2686_storage_$",
+                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2713_storage_$",
                               "typeString": "mapping(bytes32 => struct KeyStore.Key storage ref)"
                             }
                           },
-                          "id": 2519,
+                          "id": 2546,
                           "indexExpression": {
                             "argumentTypes": null,
-                            "id": 2518,
+                            "id": 2545,
                             "name": "_key",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2507,
+                            "referencedDeclaration": 2534,
                             "src": "1705:4:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
@@ -1106,32 +1106,32 @@
                           "nodeType": "IndexAccess",
                           "src": "1689:21:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Key_$2686_storage",
+                            "typeIdentifier": "t_struct$_Key_$2713_storage",
                             "typeString": "struct KeyStore.Key storage ref"
                           }
                         },
-                        "id": 2520,
+                        "id": 2547,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "func",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2685,
+                        "referencedDeclaration": 2712,
                         "src": "1689:26:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_bytes4_$_t_bool_$_$",
                           "typeString": "mapping(address => mapping(bytes4 => bool))"
                         }
                       },
-                      "id": 2522,
+                      "id": 2549,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 2521,
+                        "id": 2548,
                         "name": "_to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2509,
+                        "referencedDeclaration": 2536,
                         "src": "1716:3:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -1149,14 +1149,14 @@
                         "typeString": "mapping(bytes4 => bool)"
                       }
                     },
-                    "id": 2524,
+                    "id": 2551,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2523,
+                      "id": 2550,
                       "name": "_func",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2511,
+                      "referencedDeclaration": 2538,
                       "src": "1721:5:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes4",
@@ -1174,15 +1174,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 2515,
-                  "id": 2525,
+                  "functionReturnParameters": 2542,
+                  "id": 2552,
                   "nodeType": "Return",
                   "src": "1682:45:12"
                 }
               ]
             },
             "documentation": null,
-            "id": 2527,
+            "id": 2554,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1190,15 +1190,15 @@
             "name": "keyCanExecute",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2512,
+              "id": 2539,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2507,
+                  "id": 2534,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1471:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1207,7 +1207,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2506,
+                    "id": 2533,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1471:7:12",
@@ -1221,10 +1221,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2509,
+                  "id": 2536,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1485:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1233,7 +1233,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2508,
+                    "id": 2535,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1485:7:12",
@@ -1247,10 +1247,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2511,
+                  "id": 2538,
                   "name": "_func",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1498:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1259,7 +1259,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 2510,
+                    "id": 2537,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "1498:6:12",
@@ -1276,15 +1276,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2515,
+              "id": 2542,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2514,
+                  "id": 2541,
                   "name": "executable",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1556:15:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1293,7 +1293,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2513,
+                    "id": 2540,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1556:4:12",
@@ -1308,14 +1308,14 @@
               ],
               "src": "1555:17:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "1448:286:12",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2529,
+        "scope": 2556,
         "src": "199:1537:12"
       }
     ],
@@ -1325,14 +1325,14 @@
     "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyGetters.sol",
     "exportedSymbols": {
       "KeyGetters": [
-        2528
+        2555
       ]
     },
-    "id": 2529,
+    "id": 2556,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2435,
+        "id": 2462,
         "literals": [
           "solidity",
           "^",
@@ -1345,10 +1345,10 @@
       {
         "absolutePath": "/Users/coinplug/BangGijin/metabolics2.0/contracts/identity/KeyBase.sol",
         "file": "./KeyBase.sol",
-        "id": 2436,
+        "id": 2463,
         "nodeType": "ImportDirective",
-        "scope": 2529,
-        "sourceUnit": 2434,
+        "scope": 2556,
+        "sourceUnit": 2461,
         "src": "26:23:12",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1359,68 +1359,68 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2437,
+              "id": 2464,
               "name": "KeyBase",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 2433,
+              "referencedDeclaration": 2460,
               "src": "222:7:12",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_KeyBase_$2433",
+                "typeIdentifier": "t_contract$_KeyBase_$2460",
                 "typeString": "contract KeyBase"
               }
             },
-            "id": 2438,
+            "id": 2465,
             "nodeType": "InheritanceSpecifier",
             "src": "222:7:12"
           }
         ],
         "contractDependencies": [
-          2433
+          2460
         ],
         "contractKind": "contract",
         "documentation": "@title KeyGetters\n @author genie\n @notice Implement getter functions from ERC725 spec\n @dev Key data is stored using KeyStore library",
         "fullyImplemented": true,
-        "id": 2528,
+        "id": 2555,
         "linearizedBaseContracts": [
-          2528,
-          2433
+          2555,
+          2460
         ],
         "name": "KeyGetters",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 2474,
+              "id": 2501,
               "nodeType": "Block",
               "src": "539:143:12",
               "statements": [
                 {
                   "assignments": [
-                    2453
+                    2480
                   ],
                   "declarations": [
                     {
                       "constant": false,
-                      "id": 2453,
+                      "id": 2480,
                       "name": "k",
                       "nodeType": "VariableDeclaration",
-                      "scope": 2475,
+                      "scope": 2502,
                       "src": "549:21:12",
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                        "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                         "typeString": "struct KeyStore.Key"
                       },
                       "typeName": {
                         "contractScope": null,
-                        "id": 2452,
+                        "id": 2479,
                         "name": "KeyStore.Key",
                         "nodeType": "UserDefinedTypeName",
-                        "referencedDeclaration": 2686,
+                        "referencedDeclaration": 2713,
                         "src": "549:12:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_storage_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_storage_ptr",
                           "typeString": "struct KeyStore.Key"
                         }
                       },
@@ -1428,46 +1428,46 @@
                       "visibility": "internal"
                     }
                   ],
-                  "id": 2458,
+                  "id": 2485,
                   "initialValue": {
                     "argumentTypes": null,
                     "baseExpression": {
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2454,
+                        "id": 2481,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2371,
+                        "referencedDeclaration": 2398,
                         "src": "573:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2725_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2455,
+                      "id": 2482,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "keyData",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2690,
+                      "referencedDeclaration": 2717,
                       "src": "573:15:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2686_storage_$",
+                        "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2713_storage_$",
                         "typeString": "mapping(bytes32 => struct KeyStore.Key storage ref)"
                       }
                     },
-                    "id": 2457,
+                    "id": 2484,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2456,
+                      "id": 2483,
                       "name": "_key",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2440,
+                      "referencedDeclaration": 2467,
                       "src": "589:4:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1481,7 +1481,7 @@
                     "nodeType": "IndexAccess",
                     "src": "573:21:12",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Key_$2686_storage",
+                      "typeIdentifier": "t_struct$_Key_$2713_storage",
                       "typeString": "struct KeyStore.Key storage ref"
                     }
                   },
@@ -1491,18 +1491,18 @@
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 2462,
+                    "id": 2489,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 2459,
+                      "id": 2486,
                       "name": "purposes",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2444,
+                      "referencedDeclaration": 2471,
                       "src": "604:8:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
@@ -1515,25 +1515,25 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2460,
+                        "id": 2487,
                         "name": "k",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2453,
+                        "referencedDeclaration": 2480,
                         "src": "615:1:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                           "typeString": "struct KeyStore.Key memory"
                         }
                       },
-                      "id": 2461,
+                      "id": 2488,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "purposes",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2675,
+                      "referencedDeclaration": 2702,
                       "src": "615:10:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_array$_t_uint256_$dyn_memory",
@@ -1546,25 +1546,25 @@
                       "typeString": "uint256[] memory"
                     }
                   },
-                  "id": 2463,
+                  "id": 2490,
                   "nodeType": "ExpressionStatement",
                   "src": "604:21:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 2467,
+                    "id": 2494,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 2464,
+                      "id": 2491,
                       "name": "keyType",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2446,
+                      "referencedDeclaration": 2473,
                       "src": "635:7:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1577,25 +1577,25 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2465,
+                        "id": 2492,
                         "name": "k",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2453,
+                        "referencedDeclaration": 2480,
                         "src": "645:1:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                           "typeString": "struct KeyStore.Key memory"
                         }
                       },
-                      "id": 2466,
+                      "id": 2493,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "keyType",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2677,
+                      "referencedDeclaration": 2704,
                       "src": "645:9:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -1608,25 +1608,25 @@
                       "typeString": "uint256"
                     }
                   },
-                  "id": 2468,
+                  "id": 2495,
                   "nodeType": "ExpressionStatement",
                   "src": "635:19:12"
                 },
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 2472,
+                    "id": 2499,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
                     "lValueRequested": false,
                     "leftHandSide": {
                       "argumentTypes": null,
-                      "id": 2469,
+                      "id": 2496,
                       "name": "key",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2448,
+                      "referencedDeclaration": 2475,
                       "src": "664:3:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1639,25 +1639,25 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2470,
+                        "id": 2497,
                         "name": "k",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2453,
+                        "referencedDeclaration": 2480,
                         "src": "670:1:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Key_$2686_memory_ptr",
+                          "typeIdentifier": "t_struct$_Key_$2713_memory_ptr",
                           "typeString": "struct KeyStore.Key memory"
                         }
                       },
-                      "id": 2471,
+                      "id": 2498,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "key",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2679,
+                      "referencedDeclaration": 2706,
                       "src": "670:5:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes32",
@@ -1670,14 +1670,14 @@
                       "typeString": "bytes32"
                     }
                   },
-                  "id": 2473,
+                  "id": 2500,
                   "nodeType": "ExpressionStatement",
                   "src": "664:11:12"
                 }
               ]
             },
             "documentation": "@dev Find the key data, if held by the identity\n @param _key Key bytes to find\n @return `(purposes, keyType, key)` tuple if the key exists",
-            "id": 2475,
+            "id": 2502,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1685,15 +1685,15 @@
             "name": "getKey",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2441,
+              "id": 2468,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2440,
+                  "id": 2467,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "422:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1702,7 +1702,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2439,
+                    "id": 2466,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "422:7:12",
@@ -1719,15 +1719,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2449,
+              "id": 2476,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2444,
+                  "id": 2471,
                   "name": "purposes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "485:18:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1737,7 +1737,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2442,
+                      "id": 2469,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "485:7:12",
@@ -1746,7 +1746,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 2443,
+                    "id": 2470,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "485:9:12",
@@ -1760,10 +1760,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2446,
+                  "id": 2473,
                   "name": "keyType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "505:15:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1772,7 +1772,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2445,
+                    "id": 2472,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "505:7:12",
@@ -1786,10 +1786,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2448,
+                  "id": 2475,
                   "name": "key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2475,
+                  "scope": 2502,
                   "src": "522:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1798,7 +1798,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2447,
+                    "id": 2474,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "522:7:12",
@@ -1813,15 +1813,15 @@
               ],
               "src": "484:50:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "397:285:12",
             "stateMutability": "view",
-            "superFunction": 1592,
+            "superFunction": 1619,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 2490,
+              "id": 2517,
               "nodeType": "Block",
               "src": "1035:51:12",
               "statements": [
@@ -1831,11 +1831,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2486,
+                        "id": 2513,
                         "name": "_key",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2477,
+                        "referencedDeclaration": 2504,
                         "src": "1065:4:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_bytes32",
@@ -1844,11 +1844,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2487,
+                        "id": 2514,
                         "name": "purpose",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2479,
+                        "referencedDeclaration": 2506,
                         "src": "1071:7:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -1869,32 +1869,32 @@
                       ],
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2484,
+                        "id": 2511,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2371,
+                        "referencedDeclaration": 2398,
                         "src": "1052:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2725_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2485,
+                      "id": 2512,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "find",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2752,
+                      "referencedDeclaration": 2779,
                       "src": "1052:12:12",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2698_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2698_storage_ptr_$",
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Keys_$2725_storage_ptr_$_t_bytes32_$_t_uint256_$returns$_t_bool_$bound_to$_t_struct$_Keys_$2725_storage_ptr_$",
                         "typeString": "function (struct KeyStore.Keys storage pointer,bytes32,uint256) view returns (bool)"
                       }
                     },
-                    "id": 2488,
+                    "id": 2515,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -1908,15 +1908,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 2483,
-                  "id": 2489,
+                  "functionReturnParameters": 2510,
+                  "id": 2516,
                   "nodeType": "Return",
                   "src": "1045:34:12"
                 }
               ]
             },
             "documentation": "@dev Find if a key has is present and has the given purpose\n @param _key Key bytes to find\n @param purpose Purpose to find\n @return Boolean indicating whether the key exists or not",
-            "id": 2491,
+            "id": 2518,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1924,15 +1924,15 @@
             "name": "keyHasPurpose",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2480,
+              "id": 2507,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2477,
+                  "id": 2504,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2491,
+                  "scope": 2518,
                   "src": "930:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1941,7 +1941,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2476,
+                    "id": 2503,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "930:7:12",
@@ -1955,10 +1955,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2479,
+                  "id": 2506,
                   "name": "purpose",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2491,
+                  "scope": 2518,
                   "src": "952:15:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -1967,7 +1967,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2478,
+                    "id": 2505,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "952:7:12",
@@ -1984,15 +1984,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2483,
+              "id": 2510,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2482,
+                  "id": 2509,
                   "name": "exists",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2491,
+                  "scope": 2518,
                   "src": "1018:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2001,7 +2001,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2481,
+                    "id": 2508,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1018:4:12",
@@ -2016,15 +2016,15 @@
               ],
               "src": "1017:13:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "898:188:12",
             "stateMutability": "view",
-            "superFunction": 1601,
+            "superFunction": 1628,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 2504,
+              "id": 2531,
               "nodeType": "Block",
               "src": "1383:55:12",
               "statements": [
@@ -2035,39 +2035,39 @@
                       "argumentTypes": null,
                       "expression": {
                         "argumentTypes": null,
-                        "id": 2499,
+                        "id": 2526,
                         "name": "allKeys",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2371,
+                        "referencedDeclaration": 2398,
                         "src": "1400:7:12",
                         "typeDescriptions": {
-                          "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                          "typeIdentifier": "t_struct$_Keys_$2725_storage",
                           "typeString": "struct KeyStore.Keys storage ref"
                         }
                       },
-                      "id": 2500,
+                      "id": 2527,
                       "isConstant": false,
                       "isLValue": true,
                       "isPure": false,
                       "lValueRequested": false,
                       "memberName": "keysByPurpose",
                       "nodeType": "MemberAccess",
-                      "referencedDeclaration": 2695,
+                      "referencedDeclaration": 2722,
                       "src": "1400:21:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_mapping$_t_uint256_$_t_array$_t_bytes32_$dyn_storage_$",
                         "typeString": "mapping(uint256 => bytes32[] storage ref)"
                       }
                     },
-                    "id": 2502,
+                    "id": 2529,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2501,
+                      "id": 2528,
                       "name": "_purpose",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2493,
+                      "referencedDeclaration": 2520,
                       "src": "1422:8:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -2085,15 +2085,15 @@
                       "typeString": "bytes32[] storage ref"
                     }
                   },
-                  "functionReturnParameters": 2498,
-                  "id": 2503,
+                  "functionReturnParameters": 2525,
+                  "id": 2530,
                   "nodeType": "Return",
                   "src": "1393:38:12"
                 }
               ]
             },
             "documentation": "@dev Find all the keys held by this identity for a given purpose\n @param _purpose Purpose to find\n @return Array with key bytes for that purpose (empty if none)",
-            "id": 2505,
+            "id": 2532,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2101,15 +2101,15 @@
             "name": "getKeysByPurpose",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2494,
+              "id": 2521,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2493,
+                  "id": 2520,
                   "name": "_purpose",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2505,
+                  "scope": 2532,
                   "src": "1301:16:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2118,7 +2118,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2492,
+                    "id": 2519,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "1301:7:12",
@@ -2135,15 +2135,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2498,
+              "id": 2525,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2497,
+                  "id": 2524,
                   "name": "keys",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2505,
+                  "scope": 2532,
                   "src": "1363:14:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2153,7 +2153,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2495,
+                      "id": 2522,
                       "name": "bytes32",
                       "nodeType": "ElementaryTypeName",
                       "src": "1363:7:12",
@@ -2162,7 +2162,7 @@
                         "typeString": "bytes32"
                       }
                     },
-                    "id": 2496,
+                    "id": 2523,
                     "length": null,
                     "nodeType": "ArrayTypeName",
                     "src": "1363:9:12",
@@ -2177,15 +2177,15 @@
               ],
               "src": "1362:16:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "1275:163:12",
             "stateMutability": "view",
-            "superFunction": 1609,
+            "superFunction": 1636,
             "visibility": "public"
           },
           {
             "body": {
-              "id": 2526,
+              "id": 2553,
               "nodeType": "Block",
               "src": "1577:157:12",
               "statements": [
@@ -2202,39 +2202,39 @@
                             "argumentTypes": null,
                             "expression": {
                               "argumentTypes": null,
-                              "id": 2516,
+                              "id": 2543,
                               "name": "allKeys",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 2371,
+                              "referencedDeclaration": 2398,
                               "src": "1689:7:12",
                               "typeDescriptions": {
-                                "typeIdentifier": "t_struct$_Keys_$2698_storage",
+                                "typeIdentifier": "t_struct$_Keys_$2725_storage",
                                 "typeString": "struct KeyStore.Keys storage ref"
                               }
                             },
-                            "id": 2517,
+                            "id": 2544,
                             "isConstant": false,
                             "isLValue": true,
                             "isPure": false,
                             "lValueRequested": false,
                             "memberName": "keyData",
                             "nodeType": "MemberAccess",
-                            "referencedDeclaration": 2690,
+                            "referencedDeclaration": 2717,
                             "src": "1689:15:12",
                             "typeDescriptions": {
-                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2686_storage_$",
+                              "typeIdentifier": "t_mapping$_t_bytes32_$_t_struct$_Key_$2713_storage_$",
                               "typeString": "mapping(bytes32 => struct KeyStore.Key storage ref)"
                             }
                           },
-                          "id": 2519,
+                          "id": 2546,
                           "indexExpression": {
                             "argumentTypes": null,
-                            "id": 2518,
+                            "id": 2545,
                             "name": "_key",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 2507,
+                            "referencedDeclaration": 2534,
                             "src": "1705:4:12",
                             "typeDescriptions": {
                               "typeIdentifier": "t_bytes32",
@@ -2248,32 +2248,32 @@
                           "nodeType": "IndexAccess",
                           "src": "1689:21:12",
                           "typeDescriptions": {
-                            "typeIdentifier": "t_struct$_Key_$2686_storage",
+                            "typeIdentifier": "t_struct$_Key_$2713_storage",
                             "typeString": "struct KeyStore.Key storage ref"
                           }
                         },
-                        "id": 2520,
+                        "id": 2547,
                         "isConstant": false,
                         "isLValue": true,
                         "isPure": false,
                         "lValueRequested": false,
                         "memberName": "func",
                         "nodeType": "MemberAccess",
-                        "referencedDeclaration": 2685,
+                        "referencedDeclaration": 2712,
                         "src": "1689:26:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_mapping$_t_address_$_t_mapping$_t_bytes4_$_t_bool_$_$",
                           "typeString": "mapping(address => mapping(bytes4 => bool))"
                         }
                       },
-                      "id": 2522,
+                      "id": 2549,
                       "indexExpression": {
                         "argumentTypes": null,
-                        "id": 2521,
+                        "id": 2548,
                         "name": "_to",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2509,
+                        "referencedDeclaration": 2536,
                         "src": "1716:3:12",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -2291,14 +2291,14 @@
                         "typeString": "mapping(bytes4 => bool)"
                       }
                     },
-                    "id": 2524,
+                    "id": 2551,
                     "indexExpression": {
                       "argumentTypes": null,
-                      "id": 2523,
+                      "id": 2550,
                       "name": "_func",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 2511,
+                      "referencedDeclaration": 2538,
                       "src": "1721:5:12",
                       "typeDescriptions": {
                         "typeIdentifier": "t_bytes4",
@@ -2316,15 +2316,15 @@
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 2515,
-                  "id": 2525,
+                  "functionReturnParameters": 2542,
+                  "id": 2552,
                   "nodeType": "Return",
                   "src": "1682:45:12"
                 }
               ]
             },
             "documentation": null,
-            "id": 2527,
+            "id": 2554,
             "implemented": true,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2332,15 +2332,15 @@
             "name": "keyCanExecute",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2512,
+              "id": 2539,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2507,
+                  "id": 2534,
                   "name": "_key",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1471:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2349,7 +2349,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 2506,
+                    "id": 2533,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "1471:7:12",
@@ -2363,10 +2363,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2509,
+                  "id": 2536,
                   "name": "_to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1485:11:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2375,7 +2375,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2508,
+                    "id": 2535,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "1485:7:12",
@@ -2389,10 +2389,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2511,
+                  "id": 2538,
                   "name": "_func",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1498:12:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2401,7 +2401,7 @@
                     "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 2510,
+                    "id": 2537,
                     "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
                     "src": "1498:6:12",
@@ -2418,15 +2418,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2515,
+              "id": 2542,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2514,
+                  "id": 2541,
                   "name": "executable",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2527,
+                  "scope": 2554,
                   "src": "1556:15:12",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -2435,7 +2435,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2513,
+                    "id": 2540,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "1556:4:12",
@@ -2450,14 +2450,14 @@
               ],
               "src": "1555:17:12"
             },
-            "scope": 2528,
+            "scope": 2555,
             "src": "1448:286:12",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2529,
+        "scope": 2556,
         "src": "199:1537:12"
       }
     ],
@@ -2469,5 +2469,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-12-05T09:00:16.307Z"
+  "updatedAt": "2018-12-05T10:46:35.297Z"
 }

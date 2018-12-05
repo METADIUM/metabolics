@@ -58,9 +58,10 @@ contract MetaIdentityUsingLib {
 
     //Proxy Only
     address internal libImplementation;
-
+    address REG;
 
     function setImplementation(address _newImple) public returns (bool) {
+        require(allKeys.find(bytes32(msg.sender), 1),"not a management key");
         libImplementation = _newImple;
         return true;
     }
@@ -68,11 +69,28 @@ contract MetaIdentityUsingLib {
     function implementation() public view returns (address) {
         return libImplementation;
     }
-/*
-    constructor(address _implementation) public {
+
+    constructor(address _implementation, address _managementKey) public {
         
+        bytes4 sig = bytes4(keccak256("init(address)"));
+        libImplementation = _implementation;
+
+        // two 32bytes for call data
+        address target = _implementation;
+        uint256 argsize = 32;
+        bool suc;
+
+        assembly {
+            // Add the signature first to memory
+            mstore(0x0, sig)
+            // Add the call data, which is at the end of the
+            // code
+            codecopy(0x4,  sub(codesize, argsize), argsize)
+            // Delegate call to the library
+            suc := delegatecall(sub(gas, 10000), target, 0x0, add(argsize, 0x4), 0x0, 0x0)
+        }
     }
-    */
+    
     /**
     * @dev Tells the type of proxy (EIP 897)
     * @return Type of proxy, 2 for upgradeable proxy
@@ -104,6 +122,10 @@ contract MetaIdentityUsingLib {
         }
     }
 }
+contract IReg {
+    function getContractAddress(bytes32 _name) public view returns(address addr);
+}
+
 
 library KeyStore {
     struct Key {

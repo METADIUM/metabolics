@@ -14,6 +14,7 @@ contract ProxyIdentityManager is RegistryUser {
     //Hold the list of MetaIds
     //CreateMetaId
     
+    address libImplementaion;
     address[] public metaIds;
     mapping(address=>bool) metaIdExistence;
 
@@ -32,7 +33,7 @@ contract ProxyIdentityManager is RegistryUser {
     function createMetaId(address _managementKey) public permissioned returns (bool success) {
         require(_managementKey != address(0), "address is 0x0");
 
-        address newMetaId = new MetaIdentityUsingLib();
+        address newMetaId = new MetaIdentityUsingLib(libImplementaion, _managementKey);
         metaIds.push(newMetaId);
         metaIdExistence[newMetaId] = true;
 
@@ -41,7 +42,13 @@ contract ProxyIdentityManager is RegistryUser {
         return true;
 
     }
-    
+
+    function setMetaIdLibImplementaion(address _newImple) public returns(bool success) {
+        require(_newImple != address(0), "zero address");
+        libImplementaion = _newImple;
+        return true;
+    }
+
     function getDeployedMetaIds() public view returns(address[] addrs) {
         return metaIds;
     }
