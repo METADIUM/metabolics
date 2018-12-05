@@ -68,7 +68,11 @@ contract MetaIdentityUsingLib {
     function implementation() public view returns (address) {
         return libImplementation;
     }
-
+/*
+    constructor(address _implementation) public {
+        
+    }
+    */
     /**
     * @dev Tells the type of proxy (EIP 897)
     * @return Type of proxy, 2 for upgradeable proxy
