@@ -58,25 +58,30 @@ contract MetaIdentityUsingLib {
 
     //Proxy Only
     address internal libImplementation;
-    address REG;
-
+    IReg REG;
+/*
     function setImplementation(address _newImple) public returns (bool) {
         require(allKeys.find(bytes32(msg.sender), 1),"not a management key");
         libImplementation = _newImple;
         return true;
     }
-
+*/
     function implementation() public view returns (address) {
-        return libImplementation;
+        return REG.getContractAddress("MetaIdLibraryV1");
     }
 
-    constructor(address _implementation, address _managementKey) public {
+    function setRegistry(address _addr) public returns (bool) {
+        require(allKeys.find(bytes32(msg.sender), 1),"not a management key");
+        REG = IReg(_addr);
+        return true;
+    }
+    constructor(address _registry, address _managementKey) public {
         
         bytes4 sig = bytes4(keccak256("init(address)"));
-        libImplementation = _implementation;
+        REG = IReg(_registry);
 
         // two 32bytes for call data
-        address target = _implementation;
+        address target = implementation();
         uint256 argsize = 32;
         bool suc;
 

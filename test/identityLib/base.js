@@ -2,6 +2,7 @@ const Identity = artifacts.require("Identity");
 const MetaIdentityLib = artifacts.require('MetaIdentityLib.sol')
 const MetaIdentityUsingLib = artifacts.require('MetaIdentityUsingLib.sol')
 const ProxyIdentityManager = artifacts.require('ProxyIdentityManager.sol')
+const Registry = artifacts.require('Registry.sol')
 
 
 import colors from 'colors';
@@ -94,6 +95,9 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
 
     //deploy metaIdLib, metaIdUsingLib
     let metaIdLib = await MetaIdentityLib.new()
+    let registry = await Registry.new()
+    
+    await registry.setContractDomain("MetaIdLibraryV1", metaIdLib.address)
 
     // Init self-claims to be sent in constructor
     let willDeployAt //= contractAddress(addr.manager[0]); 
@@ -105,7 +109,7 @@ export const setupTest = async (accounts, init, total, claims = [], managementTh
     for (const [i, k] of initKeys.entries()) {
         if (initPurposes[i] == 1) {
             firstMgmt = i
-            metaId = await MetaIdentityUsingLib.new(metaIdLib.address, initKeys[i])
+            metaId = await MetaIdentityUsingLib.new(registry.address, initKeys[i])
             metaIdUsingLib = await MetaIdentityLib.at(metaId.address)
             willDeployAt = metaId.address
             //metaId basically register first key as management, action and claim key
