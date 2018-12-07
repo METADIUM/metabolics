@@ -15,8 +15,9 @@ Achievement Manager : [0x95ba0154ed7b037a4770b1bf12b9ac9f8ba268ff](https://testn
 ## Test
 
 ```
+$ npm install
 $ npm install -g ganache-cli
-$ ganache-cli -d -m 'hello' -l 10000000
+$ ganache-cli -l 10000000
 $ truffle test
 ```
 
@@ -41,5 +42,5 @@ $ ./node_modules/solium/bin/solium.js -d ./contracts --fix
 
 
 # Reference
-* [Original ERC725-735 by mirceapasoi](https://github.com/mirceapasoi/erc725-735)
+* [Original Work : ERC725-735 by mirceapasoi](https://github.com/mirceapasoi/erc725-735)
 * [Origin Protocal](https://github.com/OriginProtocol)
