@@ -41,17 +41,8 @@ async function deploy(deployer, network, accounts) {
             await mim.setRegistry(reg.address)
 
         })
-        // deploy contract
-        // setContractDomain
-        // setRegistry
-
 
     } else if (args[3] == 'updateAttestationAgencyRegistry') {
-
-        // for(var propName in Registry) {
-        //     propValue = Registry[propName]
-        //     console.log(`${propName} : ${propValue}`)
-        // }
 
         return deployer.deploy(AARegistry).then(async (ar) => {
             console.log('Change Attestation Agency Registry')
@@ -211,7 +202,7 @@ async function registerSystemTopics(accounts, reg, mim, tr, am, ar, achiv) {
     await am.createAchievement(_topics, _issuers, _achievementtitle, _achievementExplanation, _reward, _uri, { value: '0x8AC7230489E80000' })
 
     //Birth Info
-    await am.createAchievement([3,4], [selfClaimAddress, selfClaimAddress], 'Birth Info', 'Date Of Birth And Gender', _reward, 'You have birth and gender!', { value: '0x8AC7230489E80000' })
+    await am.createAchievement([3,4], [selfClaimAddress, selfClaimAddress], 'Birth Info', 'Date of Birth And Gender', _reward, 'You have birth and gender!', { value: '0x8AC7230489E80000' })
 
     //Nationality
     await am.createAchievement([70, 80], [selfClaimAddress, selfClaimAddress], 'Nationality', 'Nationality And Language', _reward, 'You have Nationality and Language', { value: '0x8AC7230489E80000' })
