@@ -248,7 +248,7 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
                 metaId = await MetaIdentity.at(metaIds[0])
             });
 
-            it.only('direct addClaim on the user1 identity from AA(key) -> DelegateApprove', async function () {
+            it('direct addClaim on the user1 identity from AA(key) -> DelegateApprove', async function () {
                 signingData = metaIds[0] + signingData
                 signingData = web3.sha3(signingData, { encoding: 'hex' })
 
