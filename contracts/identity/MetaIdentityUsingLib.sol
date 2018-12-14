@@ -75,6 +75,7 @@ contract MetaIdentityUsingLib {
         REG = IReg(_addr);
         return true;
     }
+    
     constructor(address _registry, address _managementKey) public {
         
         bytes4 sig = bytes4(keccak256("init(address)"));

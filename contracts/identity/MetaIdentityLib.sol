@@ -25,6 +25,8 @@ contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, Ke
     function init(address _managementKey) public {
         bytes32 senderKey = addrToKey(_managementKey);
         
+        require(getKeysByPurpose(MANAGEMENT_KEY).length == 0, "Already initiated");
+
         // Add key that deployed the contract for MANAGEMENT, ACTION, CLAIM
         _addKey(senderKey, MANAGEMENT_KEY, ECDSA_TYPE);
         _addKey(senderKey, ACTION_KEY, ECDSA_TYPE);
@@ -36,6 +38,5 @@ contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, Ke
         // Supports both ERC 725 & 735
         supportedInterfaces[ERC725ID() ^ ERC735ID()] = true;
     }
-    
 
 }
