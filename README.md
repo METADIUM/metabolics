@@ -39,7 +39,7 @@ $ ./node_modules/solium/bin/solium.js -d ./contracts --fix
 ```
 
 ## Misc
-
+* Important : When you use MetaIdentityLib, **YOU MUST INIT YOUR MetaIdentityLib FIRST**!
 
 # Reference
 * [Original Work : ERC725-735 by mirceapasoi](https://github.com/mirceapasoi/erc725-735)
