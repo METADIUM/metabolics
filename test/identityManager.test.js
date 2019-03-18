@@ -1,13 +1,6 @@
-// deploy registry
-// deploy identity manager
-// deploy identity using identity manager
-// add self claim
-import assertRevert from './helpers/assertRevert';
-import EVMRevert from './helpers/EVMRevert';
-
-const BigNumber = web3.BigNumber;
-
-require('chai').use(require('chai-as-promised')).use(require('chai-bignumber')(BigNumber)).should();
+require('chai')
+  .use(require('chai-bignumber')(web3.BigNumber))
+  .should();
 
 const IdentityManager = artifacts.require('IdentityManager.sol');
 const Registry = artifacts.require('Registry.sol');
@@ -15,7 +8,6 @@ const MetaIdentity = artifacts.require('MetaIdentity.sol');
 
 contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2, user1, user2]) {
   let identityManager, registry;
-  const defaultGas = 8000000;
 
   beforeEach(async function () {
     identityManager = await IdentityManager.new();
@@ -27,10 +19,6 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
   });
 
   describe('Create MetaID', function () {
-    beforeEach(async function () {
-
-    });
-
     it('basic Meta ID creation and add self claim(issuer == managementkey)', async function () {
       // uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
       const _topic = 1; // MetaID_TOPIC

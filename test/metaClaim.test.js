@@ -1,22 +1,13 @@
-// deploy registry
-// deploy identity manager
-// deploy identity using identity manager
-// add self claim
-import assertRevert from './helpers/assertRevert';
-import EVMRevert from './helpers/EVMRevert';
-
-const BigNumber = web3.BigNumber;
-
-require('chai').use(require('chai-as-promised')).use(require('chai-bignumber')(BigNumber)).should();
+require('chai')
+  .use(require('chai-bignumber')(web3.BigNumber))
+  .should();
 
 const IdentityManager = artifacts.require('IdentityManager.sol');
 const Registry = artifacts.require('Registry.sol');
 const MetaIdentity = artifacts.require('MetaIdentity.sol');
 
 contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, proxy2, user1, user2, issuerKey, aa1]) {
-  const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const defaultGas = 8000000;
-  const defaultGasPrice = 10;
 
   beforeEach(async function () {
     this.identityManager = await IdentityManager.new();
@@ -28,10 +19,6 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
   });
 
   describe('Create MetaID', function () {
-    beforeEach(async function () {
-
-    });
-
     it('create Meta ID and add self claim(issuer == managementkey)', async function () {
       // uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
       const _topic = 1; // MetaID_TOPIC
@@ -84,6 +71,7 @@ contract('Metadium Identity Meta Claim', function ([deployer, owner, proxy1, pro
       // let _nonce = await metaId.nonce();
       // console.log(JSON.stringify(_nonce));
     });
+
     it('create Meta ID and add self claim(issuer == metaId)', async function () {
       // uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri
       const _topic = 1; // MetaID_TOPIC

@@ -5,14 +5,11 @@ require('chai')
   .should();
 
 const MetaIdentity = artifacts.require('MetaIdentity.sol');
-
 const Registry = artifacts.require('Registry.sol');
 const TopicRegistry = artifacts.require('TopicRegistry.sol');
 const AttestationAgencyRegistry = artifacts.require('AttestationAgencyRegistry.sol');
-
 const AchievementManager = artifacts.require('AchievementManager.sol');
 const Achievement = artifacts.require('Achievement.sol');
-
 const IdentityManager = artifacts.require('IdentityManager.sol');
 
 contract('Achievement Manager', function ([deployer, identity1, aa1, user1, identity2, issuer1, issuer2, issuer3, proxy1]) {
@@ -125,7 +122,7 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
   });
 
   describe('Request achievement', function () {
-    let _achievementId, _requestData;
+    let achivId, _achievementId, _requestData;
 
     beforeEach(async () => {
       await registerTopics();
@@ -408,45 +405,3 @@ contract('Achievement Manager', function ([deployer, identity1, aa1, user1, iden
     await _metaIdentity.addClaim(_topics[2], _scheme, _issuers[2], _signatures[2], _datas[2], _uris[2], { from: _identity });
   }
 });
-
-/*
-
-create Achievement
- aa with enough balance can create achievement
- aa with not enough balance cannot create achievement
-
- aa can create with not registered topic
- aa cannot create with not registered topic
-
- aa cannot create achievement withs same achievementId
-
-update achievement
- achievement creator can charge the fund and change the reward
- other users cannot charge the fund and cannot change the reward
-
-request Achievement
- user with enough claim can request achievement
- user without metaId cannot reqeust achievement
- user with self-claim can get achievement
- user cannot get achievement if there is no balance for that achievement
- user cannot request same achievement twice
-
-delete achievement
- creator can refund the rest
- other users cannot refund the rest
-
-basic functions
- contract can make achievementId by the protocol
-
-*/
-
-// ganache-cli -d -m 'hello' -l 10000000
-// aa create achievement -> register to topic, register to aa
-// ask achievement -> mint achievement erc721
-// update achievement
-// delete achievement
-
-// deploy registry
-// deploy identity manager
-// deploy identity using identity manager
-// add self claim
