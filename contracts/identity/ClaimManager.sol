@@ -1,18 +1,18 @@
 pragma solidity ^0.4.24;
 
-import "../openzeppelin-solidity/contracts/ECRecovery.sol";
+import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "./Pausable.sol";
 import "./ERC725.sol";
 import "./ERC735.sol";
 import "./ERC165Query.sol";
 
+
 /// @title ClaimManager
 /// @author genie
 /// @notice Implement functions from ERC735 spec
 /// @dev  Key data is stored using KeyStore library. Inheriting ERC725 for the getters
-
 contract ClaimManager is Pausable, ERC725, ERC735 {
-    using ECRecovery for bytes32;
+    using ECDSA for bytes32;
     using ERC165Query for address;
 
     bytes constant internal ETH_PREFIX = "\x19Ethereum Signed Message:\n32";

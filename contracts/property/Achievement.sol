@@ -1,32 +1,32 @@
 pragma solidity ^0.4.24;
 
-import "../openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
-import "../openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../RegistryUser.sol";
+
 
 /**
  * @title MetaID
  * This provides a public mint and burn functions for testing purposes,
  * and a public setter for metadata URI
  */
-contract Achievement is ERC721Token, RegistryUser {
+contract Achievement is ERC721Full, RegistryUser {
     event Mint(address indexed owner, uint256 indexed metaID);
     event Burn(address indexed owner, uint256 indexed metaID);
     
     bool public transferEnabled = false;
+
+    // Optional mapping for token URIs
+    mapping(uint256 => string) internal tokenURIs;
 
     modifier isTradable() {
         require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender), "Transfer not enabled");
         _;
     }
     
-    constructor(string name, string symbol) public ERC721Token(name, symbol){
+    constructor(string name, string symbol) public ERC721Full(name, symbol) {
         THIS_NAME = "Achievement";
     }
-
-    // function Achievement(string name, string symbol) public ERC721Token(name, symbol){
-    //     THIS_NAME = "Achievement";
-    // }
 
     /**
      * @dev Function to mint ERC721 Token.
@@ -68,7 +68,7 @@ contract Achievement is ERC721Token, RegistryUser {
      * @param _tokenId uint256 ID of the token to query
      */
     function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes uri) {
-        require(exists(_tokenId), "Token ID cannot be found");
+        require(_exists(_tokenId), "Token ID cannot be found");
         return bytes(tokenURIs[_tokenId]);
     }
 

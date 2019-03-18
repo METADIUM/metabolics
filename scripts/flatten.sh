@@ -3,7 +3,7 @@
 rm -rf tmp
 mkdir -p tmp
 
-alias flatten="solidity_flattener --solc-paths=\"../=/Users/coinplug/BangGijin/metabolics2.0/contracts/\""
+alias flatten="solidity_flattener --solc-paths=\"openzeppelin-solidity=/metadium/node_modules/openzeppelin-solidity ../=/metadium/contracts/\""
 
 flatten contracts/IdentityManager.sol --output tmp/IdentityManager.sol
 flatten contracts/identity/MetaIdentity.sol --output tmp/MetaIdentity.sol
