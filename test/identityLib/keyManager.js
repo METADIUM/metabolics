@@ -80,15 +80,9 @@ contract('KeyManager', async (accounts) => {
       await assertOkTx(identity.removeKey(keys.action[0], Purpose.ACTION, { from: addr.action[0] }));
       await assertKeyCount(identity, Purpose.ACTION, 1);
 
-      // Remove ACTION as MANAGEMENT
-      await assertOkTx(identity.removeKey(keys.action[0], Purpose.MANAGEMENT, { from: addr.action[0] }));
-      await assertKeyCount(identity, Purpose.MANAGEMENT, 0);
-
-      // Storage is clean
-      const [purposes, keyType, key] = await identity.getKey(keys.action[0]);
-      keyType.should.be.bignumber.equal(0);
-      key.should.be.bignumber.equal(0);
-      assert.equal(purposes.length, 0);
+      // Cannot remove management key under threshould
+      await reverting(identity.removeKey(keys.action[0], Purpose.MANAGEMENT, { from: addr.action[0] }));
+      await assertKeyCount(identity, Purpose.MANAGEMENT, 1);
     });
 
     it('should remove existing key', async () => {
@@ -99,12 +93,8 @@ contract('KeyManager', async (accounts) => {
       await assertOkTx(identity.removeKey(keys.manager[1], Purpose.MANAGEMENT, { from: addr.manager[0] }));
       await assertKeyCount(identity, Purpose.MANAGEMENT, 1);
 
-      // Remove self
-      await assertOkTx(identity.removeKey(keys.manager[0], Purpose.MANAGEMENT, { from: addr.manager[0] }));
-      await assertKeyCount(identity, Purpose.MANAGEMENT, 0);
-
       const total = await identity.numKeys();
-      total.should.be.bignumber.equal(2);
+      total.should.be.bignumber.equal(3);
     });
 
     it('should remove only for management keys', async () => {

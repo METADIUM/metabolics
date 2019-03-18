@@ -3,11 +3,11 @@ pragma solidity ^0.4.24;
 import "./Pausable.sol";
 import "./ERC725.sol";
 
+
 /// @title KeyManager
 /// @author genie
 /// @notice Implement add/remove functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events
-
 contract KeyManager is Pausable, ERC725 {
     /// @dev Add key data to the identity if key + purpose tuple doesn't already exist
     /// @param _key Key bytes to add
@@ -44,6 +44,9 @@ contract KeyManager is Pausable, ERC725 {
         whenNotPaused
         returns (bool success)
     {
+        if (_purpose == MANAGEMENT_KEY) {
+            require(managementThreshold < allKeys.numKeysByPurpose(MANAGEMENT_KEY));
+        }
         if (!allKeys.find(_key, _purpose)) {
             return false;
         }
@@ -85,9 +88,7 @@ contract KeyManager is Pausable, ERC725 {
         returns (bool success)
     {
         require(allKeys.isExist(_key));
-        allKeys.setFunc(_key, _to, _func, _executable);
-        
+        allKeys.setFunc(_key, _to, _func, _executable);   
         return true;
     }
-
 }

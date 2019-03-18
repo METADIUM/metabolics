@@ -39,6 +39,11 @@ library KeyStore {
         }
     }
 
+    function numKeysByPurpose(Keys storage self, uint256 purpose) internal view returns (uint) {
+        return self.keysByPurpose[purpose].length;
+    }
+
+
     function isExist(Keys storage self, bytes32 key)
         internal
         view

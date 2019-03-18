@@ -2,11 +2,11 @@ pragma solidity ^0.4.24;
 
 import "./KeyStore.sol";
 
+
 /// @title KeyBase
 /// @author genie
 /// @notice Abstract contract for ERC725 implementation
 /// @dev Key data is stored using KeyStore library
-
 contract KeyBase {
     uint256 public constant MANAGEMENT_KEY = 1;
 
