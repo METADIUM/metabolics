@@ -1,5 +1,4 @@
-import assertRevert from '../helpers/assertRevert';
-import { setupTest, Purpose, KeyType, Topic } from './base';
+import { setupTest, Purpose, Topic } from './base';
 import { assertOkTx, printTestGas } from '../util';
 
 const TestContract = artifacts.require('TestContract');

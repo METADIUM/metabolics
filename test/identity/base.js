@@ -1,5 +1,5 @@
-import colors from 'colors';
-import { assertOkTx, getAndClearGas, measureTx, contractAddress, assertBlockGasLimit } from '../util';
+import { getAndClearGas, measureTx, contractAddress, assertBlockGasLimit } from '../util';
+
 const Identity = artifacts.require('Identity');
 
 // Constants

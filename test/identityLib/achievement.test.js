@@ -1,22 +1,15 @@
-import assertRevert from '../helpers/assertRevert';
-import EVMRevert from '../helpers/EVMRevert';
+const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
 
-const BigNumber = web3.BigNumber;
-
-require('chai').use(require('chai-as-promised')).use(require('chai-bignumber')(BigNumber)).should();
-
-const MetaIdentity = artifacts.require('MetaIdentity.sol');
+require('chai')
+  .use(require('chai-bignumber')(web3.BigNumber))
+  .should();
 
 const Registry = artifacts.require('Registry.sol');
 const TopicRegistry = artifacts.require('TopicRegistry.sol');
 const AttestationAgencyRegistry = artifacts.require('AttestationAgencyRegistry.sol');
-
 const AchievementManager = artifacts.require('AchievementManager.sol');
 const Achievement = artifacts.require('Achievement.sol');
-
-const IdentityManager = artifacts.require('IdentityManager.sol');
 const MetaIdentityLib = artifacts.require('MetaIdentityLib.sol');
-const MetaIdentityUsingLib = artifacts.require('MetaIdentityUsingLib.sol');
 const ProxyIdentityManager = artifacts.require('ProxyIdentityManager.sol');
 
 contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, aa1, user1, identity2, issuer1, issuer2, issuer3, proxy1]) {
@@ -28,7 +21,6 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
 
   beforeEach(async () => {
     // deploy all
-
     registry = await Registry.new();
     aaRegistry = await AttestationAgencyRegistry.new();
     topicRegistry = await TopicRegistry.new();
@@ -88,27 +80,27 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
     });
 
     it('AA with not enough balance cannot create achievement', async () => {
-      await assertRevert(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: 10000 }));
+      await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: 10000 }));
     });
 
     it('AA cannot create with not registered topic', async () => {
       _topics = [1025, 1026, 1029];
-      await assertRevert(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
+      await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
     });
 
     it('AA cannot create achievement withs same achievementId(same topic-issuers-creator)', async () => {
       _topics = [1025, 1025, 1026];
       _issuers = [issuer1, issuer1, issuer3];
-      await assertRevert(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
+      await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
     });
 
     it('non-AA cannot create achievement', async () => {
-      await assertRevert(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: user1, value: ether1 }));
+      await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: user1, value: ether1 }));
     });
 
     it('topics should be ascending order', async () => {
       _topics = [1025, 1027, 1026];
-      await assertRevert(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
+      await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
     });
   });
 
@@ -135,7 +127,7 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
     });
 
     it('other users cannot charge the fund and cannot change the reward', async () => {
-      await assertRevert(achievementManager.updateAchievement(achivId, ether1, { from: user1, value: ether1 }));
+      await reverting(achievementManager.updateAchievement(achivId, ether1, { from: user1, value: ether1 }));
     });
   });
 
@@ -172,7 +164,7 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
     });
 
     it('user without metaId cannot request achievement', async () => {
-      await assertRevert(metaIdentity.execute(achievementManager.address, 0, _requestData, { from: user1 }));
+      await reverting(metaIdentity.execute(achievementManager.address, 0, _requestData, { from: user1 }));
     });
 
     it('user cannot get achievement if there is no balance for that achievement', async () => {
@@ -264,7 +256,7 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
     });
 
     it('other users cannot refund the rest', async () => {
-      await assertRevert(achievementManager.deleteAchievement(achivId, { from: user1 }));
+      await reverting(achievementManager.deleteAchievement(achivId, { from: user1 }));
     });
   });
 
@@ -421,45 +413,3 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
     await _metaIdentity.addClaim(_topics[2], _scheme, _issuers[2], _signatures[2], _datas[2], _uris[2], { from: _identity });
   }
 });
-
-/*
-
-create Achievement
- aa with enough balance can create achievement
- aa with not enough balance cannot create achievement
-
- aa can create with not registered topic
- aa cannot create with not registered topic
-
- aa cannot create achievement withs same achievementId
-
-update achievement
- achievement creator can charge the fund and change the reward
- other users cannot charge the fund and cannot change the reward
-
-request Achievement
- user with enough claim can request achievement
- user without metaId cannot reqeust achievement
- user with self-claim can get achievement
- user cannot get achievement if there is no balance for that achievement
- user cannot request same achievement twice
-
-delete achievement
- creator can refund the rest
- other users cannot refund the rest
-
-basic functions
- contract can make achievementId by the protocol
-
-*/
-
-// ganache-cli -d -m 'hello' -l 10000000
-// aa create achievement -> register to topic, register to aa
-// ask achievement -> mint achievement erc721
-// update achievement
-// delete achievement
-
-// deploy registry
-// deploy identity manager
-// deploy identity using identity manager
-// add self claim

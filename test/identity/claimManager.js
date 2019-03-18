@@ -1,5 +1,6 @@
-import assertRevert from '../helpers/assertRevert';
-import { setupTest, assertKeyCount, Purpose, KeyType, Topic, Scheme } from './base';
+const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
+
+import { setupTest, Purpose, Topic, Scheme } from './base';
 import { printTestGas, assertOkTx } from '../util';
 
 contract('ClaimManager', async (accounts) => {
@@ -98,11 +99,11 @@ contract('ClaimManager', async (accounts) => {
       const invalidSignature = web3.sha3(toSign);
 
       // Try to add self-claim as manager
-      await assertRevert(identity.addClaim(Topic.PROFILE, Scheme.ECDSA, identity.address, invalidSignature, uri, uri, { from: addr.manager[0] }));
+      await reverting(identity.addClaim(Topic.PROFILE, Scheme.ECDSA, identity.address, invalidSignature, uri, uri, { from: addr.manager[0] }));
 
       // Claim doesn't exist
       const claimId = await identity.getClaimId(identity.address, Topic.PROFILE);
-      await assertRevert(identity.getClaim(claimId));
+      await reverting(identity.getClaim(claimId));
     });
 
     it('can add self-claim with manager approval', async () => {
@@ -118,7 +119,7 @@ contract('ClaimManager', async (accounts) => {
 
       // Claim doesn't exist yet
       const claimId = await identity.getClaimId(identity.address, Topic.PROFILE);
-      await assertRevert(identity.getClaim(claimId));
+      await reverting(identity.getClaim(claimId));
 
       // Approve
       await assertOkTx(identity.approve(claimRequestId, true, { from: addr.manager[0] }));
@@ -186,7 +187,7 @@ contract('ClaimManager', async (accounts) => {
       const invalidSignature = web3.sha3(toSign);
 
       // Try to update self-claim as manager
-      await assertRevert(identity.addClaim(Topic.LABEL, Scheme.ECDSA, identity.address, invalidSignature, label, newUri, { from: addr.manager[1] }));
+      await reverting(identity.addClaim(Topic.LABEL, Scheme.ECDSA, identity.address, invalidSignature, label, newUri, { from: addr.manager[1] }));
 
       // Claim is unchanged
       await assertClaim(Topic.LABEL, identity.address, signature, label, uri);
@@ -253,7 +254,7 @@ contract('ClaimManager', async (accounts) => {
       await assertOkTx(identity.removeClaim(claimId, { from: addr.manager[0] }));
 
       // Check claim no longer exists
-      await assertRevert(identity.getClaim(claimId));
+      await reverting(identity.getClaim(claimId));
 
       await assertClaims(1, { [Topic.LABEL]: 1 });
     });
@@ -267,7 +268,7 @@ contract('ClaimManager', async (accounts) => {
       await assertOkTx(otherIdentity.execute(identity.address, 0, data, { from: addr.other }));
 
       // Check claim no longer exists
-      await assertRevert(identity.getClaim(claimId));
+      await reverting(identity.getClaim(claimId));
 
       await assertClaims(1, { [Topic.LABEL]: 1 });
     });
@@ -281,7 +282,7 @@ contract('ClaimManager', async (accounts) => {
       await assertOkTx(identity.removeClaim(claimId, { from: addr.other }));
 
       // Check claim no longer exists
-      await assertRevert(identity.getClaim(claimId));
+      await reverting(identity.getClaim(claimId));
 
       await assertClaims(1, { [Topic.LABEL]: 1 });
     });

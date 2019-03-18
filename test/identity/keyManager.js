@@ -1,4 +1,5 @@
-import assertRevert from '../helpers/assertRevert';
+const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
+
 import { setupTest, assertKeyCount, Purpose, KeyType } from './base';
 import { printTestGas, assertOkTx } from '../util';
 
@@ -30,8 +31,8 @@ contract('KeyManager', async (accounts) => {
       // Start with 2
       await assertKeyCount(identity, Purpose.ACTION, 2);
 
-      await assertRevert(identity.addKey(keys.action[2], Purpose.ACTION, KeyType.ECDSA, { from: addr.action[0] }));
-      await assertRevert(identity.addKey(keys.action[2], Purpose.ACTION, KeyType.ECDSA, { from: addr.action[1] }));
+      await reverting(identity.addKey(keys.action[2], Purpose.ACTION, KeyType.ECDSA, { from: addr.action[0] }));
+      await reverting(identity.addKey(keys.action[2], Purpose.ACTION, KeyType.ECDSA, { from: addr.action[1] }));
 
       // End with 2
       await assertKeyCount(identity, Purpose.ACTION, 2);
@@ -110,8 +111,8 @@ contract('KeyManager', async (accounts) => {
       // Start with 2
       await assertKeyCount(identity, Purpose.MANAGEMENT, 2);
 
-      await assertRevert(identity.removeKey(keys.manager[0], Purpose.MANAGEMENT, { from: addr.action[0] }));
-      await assertRevert(identity.removeKey(keys.manager[1], Purpose.MANAGEMENT, { from: addr.action[1] }));
+      await reverting(identity.removeKey(keys.manager[0], Purpose.MANAGEMENT, { from: addr.action[0] }));
+      await reverting(identity.removeKey(keys.manager[1], Purpose.MANAGEMENT, { from: addr.action[1] }));
 
       // End with 2
       await assertKeyCount(identity, Purpose.MANAGEMENT, 2);
@@ -136,7 +137,7 @@ contract('KeyManager', async (accounts) => {
     it('should not add func only if key doesn\'t exist', async () => {
       // Start with 2
       await assertKeyCount(identity, Purpose.ACTION, 2);
-      await assertRevert(identity.setFunc(keys.action[2], addr.manager[0], '0xabcd1234', 'true', { from: addr.manager[0] }));
+      await reverting(identity.setFunc(keys.action[2], addr.manager[0], '0xabcd1234', 'true', { from: addr.manager[0] }));
     });
 
     it('should add func only when key exist', async () => {

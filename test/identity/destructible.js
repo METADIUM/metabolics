@@ -1,5 +1,6 @@
-import assertRevert from '../helpers/assertRevert';
-import { setupTest, Purpose, KeyType } from './base';
+const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
+
+import { setupTest } from './base';
 import { assertOkTx, printTestGas } from '../util';
 
 contract('Destructible', async (accounts) => {
@@ -18,6 +19,6 @@ contract('Destructible', async (accounts) => {
   });
 
   it('should not be killed by others', async () => {
-    await assertRevert(identity.destroyAndSend(addr.action[0], { from: addr.action[0] }));
+    await reverting(identity.destroyAndSend(addr.action[0], { from: addr.action[0] }));
   });
 });

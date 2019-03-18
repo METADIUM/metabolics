@@ -1,4 +1,5 @@
-import assertRevert from '../helpers/assertRevert';
+const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
+
 import { setupTest, Purpose, KeyType } from './base';
 import { assertOkTx, printTestGas } from '../util';
 
@@ -14,11 +15,11 @@ contract('Pausable', async (accounts) => {
   it('should be paused/unpaused by management keys', async () => {
     await assertOkTx(identity.pause({ from: addr.manager[0] }));
     // Can't add key
-    await assertRevert(identity.addKey(keys.action[2], Purpose.ACTION, KeyType.ECDSA, { from: addr.manager[0] }));
+    await reverting(identity.addKey(keys.action[2], Purpose.ACTION, KeyType.ECDSA, { from: addr.manager[0] }));
     await assertOkTx(identity.unpause({ from: addr.manager[1] }));
   });
 
   it('should not be paused by others', async () => {
-    await assertRevert(identity.pause({ from: addr.action[0] }));
+    await reverting(identity.pause({ from: addr.action[0] }));
   });
 });

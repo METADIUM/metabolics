@@ -1,6 +1,6 @@
-// Big numbers
-const BigNumber = web3.BigNumber;
-require('chai').use(require('chai-bignumber')(BigNumber)).should();
+require('chai')
+  .use(require('chai-bignumber')(web3.BigNumber))
+  .should();
 
 // Track gas
 let gasUsed = 0;
