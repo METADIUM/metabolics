@@ -1,13 +1,14 @@
 pragma solidity ^0.4.24;
 
-import "../openzeppelin-solidity/contracts/ECRecovery.sol";
+import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
+
 
 /// @title SignatureVerifier
 /// @author genie
 /// @notice Implement signature verifying logic
 /// @dev almost all of the data need to be verified would use this logic
 contract SignatureVerifier {
-    using ECRecovery for bytes32;
+    using ECDSA for bytes32;
     bytes constant internal ETH_PREFIX = "\x19Ethereum Signed Message:\n32";
 
     /// @dev Recover address used to sign a claim

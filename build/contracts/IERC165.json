@@ -1,19 +1,19 @@
 {
-  "contractName": "IAttestationAgencyRegistry",
+  "contractName": "IERC165",
   "abi": [
     {
       "constant": true,
       "inputs": [
         {
-          "name": "_addr",
-          "type": "address"
+          "name": "interfaceId",
+          "type": "bytes4"
         }
       ],
-      "name": "isRegistered",
+      "name": "supportsInterface",
       "outputs": [
         {
           "name": "",
-          "type": "uint256"
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -25,20 +25,20 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\n\n/**\n * @title IAttestationAgencyRegistry\n * @dev Interface for AttestationAgencyRegistry\n */\ncontract IAttestationAgencyRegistry {\n    function isRegistered(address _addr) view public returns(uint256);\n\n}",
-  "sourcePath": "/Users/hexoul/Documents/Metadium/metabolics/contracts/interface/IAttestationAgencyRegistry.sol",
+  "source": "pragma solidity ^0.4.24;\n\n/**\n * @title IERC165\n * @dev https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md\n */\ninterface IERC165 {\n\n  /**\n   * @notice Query if a contract implements an interface\n   * @param interfaceId The interface identifier, as specified in ERC-165\n   * @dev Interface identification is specified in ERC-165. This function\n   * uses less than 30,000 gas.\n   */\n  function supportsInterface(bytes4 interfaceId)\n    external\n    view\n    returns (bool);\n}\n",
+  "sourcePath": "openzeppelin-solidity/contracts/introspection/IERC165.sol",
   "ast": {
-    "absolutePath": "/Users/hexoul/Documents/Metadium/metabolics/contracts/interface/IAttestationAgencyRegistry.sol",
+    "absolutePath": "openzeppelin-solidity/contracts/introspection/IERC165.sol",
     "exportedSymbols": {
-      "IAttestationAgencyRegistry": [
-        4839
+      "IERC165": [
+        7127
       ]
     },
-    "id": 4840,
+    "id": 7128,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4831,
+        "id": 7119,
         "literals": [
           "solidity",
           "^",
@@ -46,123 +46,123 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:26"
+        "src": "0:24:34"
       },
       {
         "baseContracts": [],
         "contractDependencies": [],
-        "contractKind": "contract",
-        "documentation": "@title IAttestationAgencyRegistry\n@dev Interface for AttestationAgencyRegistry",
+        "contractKind": "interface",
+        "documentation": "@title IERC165\n@dev https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md",
         "fullyImplemented": false,
-        "id": 4839,
+        "id": 7127,
         "linearizedBaseContracts": [
-          4839
+          7127
         ],
-        "name": "IAttestationAgencyRegistry",
+        "name": "IERC165",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": null,
-            "documentation": null,
-            "id": 4838,
+            "documentation": "@notice Query if a contract implements an interface\n@param interfaceId The interface identifier, as specified in ERC-165\n@dev Interface identification is specified in ERC-165. This function\nuses less than 30,000 gas.",
+            "id": 7126,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
             "modifiers": [],
-            "name": "isRegistered",
+            "name": "supportsInterface",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4834,
+              "id": 7122,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4833,
-                  "name": "_addr",
+                  "id": 7121,
+                  "name": "interfaceId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4838,
-                  "src": "183:13:26",
+                  "scope": 7126,
+                  "src": "420:18:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 4832,
-                    "name": "address",
+                    "id": 7120,
+                    "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
-                    "src": "183:7:26",
+                    "src": "420:6:34",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
                     }
                   },
                   "value": null,
                   "visibility": "internal"
                 }
               ],
-              "src": "182:15:26"
+              "src": "419:20:34"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4837,
+              "id": 7125,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4836,
+                  "id": 7124,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4838,
-                  "src": "218:7:26",
+                  "scope": 7126,
+                  "src": "475:4:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 4835,
-                    "name": "uint256",
+                    "id": 7123,
+                    "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "218:7:26",
+                    "src": "475:4:34",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
                     }
                   },
                   "value": null,
                   "visibility": "internal"
                 }
               ],
-              "src": "217:9:26"
+              "src": "474:6:34"
             },
-            "scope": 4839,
-            "src": "161:66:26",
+            "scope": 7127,
+            "src": "393:88:34",
             "stateMutability": "view",
             "superFunction": null,
-            "visibility": "public"
+            "visibility": "external"
           }
         ],
-        "scope": 4840,
-        "src": "119:111:26"
+        "scope": 7128,
+        "src": "121:362:34"
       }
     ],
-    "src": "0:230:26"
+    "src": "0:484:34"
   },
   "legacyAST": {
-    "absolutePath": "/Users/hexoul/Documents/Metadium/metabolics/contracts/interface/IAttestationAgencyRegistry.sol",
+    "absolutePath": "openzeppelin-solidity/contracts/introspection/IERC165.sol",
     "exportedSymbols": {
-      "IAttestationAgencyRegistry": [
-        4839
+      "IERC165": [
+        7127
       ]
     },
-    "id": 4840,
+    "id": 7128,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 4831,
+        "id": 7119,
         "literals": [
           "solidity",
           "^",
@@ -170,110 +170,110 @@
           ".24"
         ],
         "nodeType": "PragmaDirective",
-        "src": "0:24:26"
+        "src": "0:24:34"
       },
       {
         "baseContracts": [],
         "contractDependencies": [],
-        "contractKind": "contract",
-        "documentation": "@title IAttestationAgencyRegistry\n@dev Interface for AttestationAgencyRegistry",
+        "contractKind": "interface",
+        "documentation": "@title IERC165\n@dev https://github.com/ethereum/EIPs/blob/master/EIPS/eip-165.md",
         "fullyImplemented": false,
-        "id": 4839,
+        "id": 7127,
         "linearizedBaseContracts": [
-          4839
+          7127
         ],
-        "name": "IAttestationAgencyRegistry",
+        "name": "IERC165",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": null,
-            "documentation": null,
-            "id": 4838,
+            "documentation": "@notice Query if a contract implements an interface\n@param interfaceId The interface identifier, as specified in ERC-165\n@dev Interface identification is specified in ERC-165. This function\nuses less than 30,000 gas.",
+            "id": 7126,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
             "modifiers": [],
-            "name": "isRegistered",
+            "name": "supportsInterface",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 4834,
+              "id": 7122,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4833,
-                  "name": "_addr",
+                  "id": 7121,
+                  "name": "interfaceId",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4838,
-                  "src": "183:13:26",
+                  "scope": 7126,
+                  "src": "420:18:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
+                    "typeIdentifier": "t_bytes4",
+                    "typeString": "bytes4"
                   },
                   "typeName": {
-                    "id": 4832,
-                    "name": "address",
+                    "id": 7120,
+                    "name": "bytes4",
                     "nodeType": "ElementaryTypeName",
-                    "src": "183:7:26",
+                    "src": "420:6:34",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
+                      "typeIdentifier": "t_bytes4",
+                      "typeString": "bytes4"
                     }
                   },
                   "value": null,
                   "visibility": "internal"
                 }
               ],
-              "src": "182:15:26"
+              "src": "419:20:34"
             },
             "payable": false,
             "returnParameters": {
-              "id": 4837,
+              "id": 7125,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 4836,
+                  "id": 7124,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 4838,
-                  "src": "218:7:26",
+                  "scope": 7126,
+                  "src": "475:4:34",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 4835,
-                    "name": "uint256",
+                    "id": 7123,
+                    "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "218:7:26",
+                    "src": "475:4:34",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
                     }
                   },
                   "value": null,
                   "visibility": "internal"
                 }
               ],
-              "src": "217:9:26"
+              "src": "474:6:34"
             },
-            "scope": 4839,
-            "src": "161:66:26",
+            "scope": 7127,
+            "src": "393:88:34",
             "stateMutability": "view",
             "superFunction": null,
-            "visibility": "public"
+            "visibility": "external"
           }
         ],
-        "scope": 4840,
-        "src": "119:111:26"
+        "scope": 7128,
+        "src": "121:362:34"
       }
     ],
-    "src": "0:230:26"
+    "src": "0:484:34"
   },
   "compiler": {
     "name": "solc",
@@ -281,5 +281,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-03-18T02:49:08.368Z"
+  "updatedAt": "2019-03-18T02:49:08.382Z"
 }

@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "../openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../identity/ERC735.sol";
 import "../identity/ERC725.sol";
 import "../RegistryUser.sol";

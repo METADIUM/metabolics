@@ -1,5 +1,4 @@
-#!/bin/sh
-
-rm -rf build
-./node_modules/.bin/solidity-coverage
-cat coverage/lcov.info | ./node_modules/.bin/coveralls
+#!/usr/bin/env bash
+#./node_modules/.bin/solidity-coverage
+touch allFiredEvents
+SOLIDITY_COVERAGE=true scripts/test.sh

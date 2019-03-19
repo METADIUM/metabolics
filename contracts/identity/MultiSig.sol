@@ -2,16 +2,16 @@ pragma solidity ^0.4.24;
 
 import "./Pausable.sol";
 import "./ERC725.sol";
-import "../openzeppelin-solidity/contracts/ECRecovery.sol";
+import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "./SignatureVerifier.sol";
+
 
 /// @title MultiSig
 /// @author genie
 /// @notice Implement execute and multi-sig functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the getters
-
 contract MultiSig is Pausable, ERC725, SignatureVerifier {
-    using ECRecovery for bytes32;
+    using ECDSA for bytes32;
 
     uint256 public nonce = 1;
 

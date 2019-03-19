@@ -3,10 +3,10 @@ pragma solidity ^0.4.24;
 import "./ERC165Query.sol";
 import "./ERC735.sol";
 
+
 /// @title TestContract
 /// @author Mircea Pasoi
 /// @dev Contract used in unit tests
-
 contract TestContract {
     // Implements ERC165
     using ERC165Query for address;
