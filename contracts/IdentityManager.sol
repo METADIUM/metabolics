@@ -23,7 +23,6 @@ contract IdentityManager is RegistryUser {
         THIS_NAME = "IdentityManager";
     }
 
-
     /**
      * @dev Create Metadium Identity which is based upon erc725-735 
      * @param _managementKey basic managementKey to use
@@ -41,6 +40,7 @@ contract IdentityManager is RegistryUser {
         return true;
 
     }
+
     /**
      * @dev Add MetaId to the list. This function is for migration.
      * @param _metaId meta id address
@@ -66,5 +66,4 @@ contract IdentityManager is RegistryUser {
     function getLengthOfMetaIds() public view returns(uint256 length) {
         return metaIds.length;
     }
-
 }
