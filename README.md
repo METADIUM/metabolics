@@ -1,6 +1,7 @@
 ![meta logo](./miscs/Metadium_Logo_Vertical_PNG.png)
 # Metabolics - Metadium System Smart Contracts
-[![Generic badge](https://img.shields.io/badge/build-passing-green.svg)](https://shields.io/)    [![Generic badge](https://img.shields.io/badge/licence-MIT-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/build-passing-green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/licence-MIT-blue.svg)](https://shields.io/)
 
 Metadium 2.0 Smart Contract.
 
@@ -31,16 +32,10 @@ $ npm run flatten
 ```
 $ truffle compile
 ```
-## Lint
-Install [solium](https://www.npmjs.com/package/solium)
-
-```
-$ ./node_modules/solium/bin/solium.js -d ./contracts --fix
-```
 
 ## Misc
 * Important : When you use MetaIdentityLib, **YOU MUST INIT YOUR MetaIdentityLib FIRST**!
 
-# Reference
+## Reference
 * [Original Work : ERC725-735 by mirceapasoi](https://github.com/mirceapasoi/erc725-735)
 * [Origin Protocal](https://github.com/OriginProtocol)

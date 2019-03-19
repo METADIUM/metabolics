@@ -2,10 +2,10 @@ pragma solidity ^0.4.24;
 
 import "./ERC165.sol";
 
+
 /// @title ERC725
 /// @author Mircea Pasoi
 /// @notice Abstract contract for ERC725
-
 contract ERC725 is ERC165 {
     /// @dev Constructor that adds ERC725 as a supported interface
     constructor() internal {

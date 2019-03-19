@@ -510,7 +510,7 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.24;\n\nimport \"./ERC165.sol\";\n\n/// @title ERC725\n/// @author Mircea Pasoi\n/// @notice Abstract contract for ERC725\n\ncontract ERC725 is ERC165 {\n    /// @dev Constructor that adds ERC725 as a supported interface\n    constructor() internal {\n        supportedInterfaces[ERC725ID()] = true;\n    }\n\n    /// @dev ID for ERC165 pseudo-introspection\n    /// @return ID for ERC725 interface\n    // solhint-disable-next-line func-name-mixedcase\n    function ERC725ID() public pure returns (bytes4) {\n        return (\n            this.getKey.selector ^ this.keyHasPurpose.selector ^ this.getKeysByPurpose.selector ^\n            this.addKey.selector ^ this.execute.selector ^ this.approve.selector ^ this.removeKey.selector\n        );\n    }\n\n    // Purpose\n    // 1: MANAGEMENT keys, which can manage the identity\n    uint256 public constant MANAGEMENT_KEY = 1;\n    // 2: ACTION keys, which perform actions in this identities name (signing, logins, transactions, etc.)\n    uint256 public constant ACTION_KEY = 2;\n    // 3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.\n    uint256 public constant CLAIM_SIGNER_KEY = 3;\n    // 4: ENCRYPTION keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant ENCRYPTION_KEY = 4;\n    // 5: ASSIST keys, used to authenticate.\n    uint256 public constant ASSIST_KEY = 5;\n    // 6: DELEGATE keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant DELEGATE_KEY = 6;\n    // 7: RESTORE keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant RESTORE_KEY = 7;\n    // 8: CUSTOM keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant CUSTOM_KEY = 8;\n    \n    // KeyType\n    uint256 public constant ECDSA_TYPE = 1;\n    // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51\n    uint256 public constant RSA_TYPE = 2;\n\n    // Events\n    event KeyAdded(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);\n    event KeyRemoved(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);\n    event ExecutionRequested(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);\n    event Executed(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);\n    event Approved(uint256 indexed executionId, bool approved);\n    // TODO: Extra event, not part of the standard\n    event ExecutionFailed(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);\n\n    // Functions\n    function getKey(bytes32 _key) public view returns(uint256[] purposes, uint256 keyType, bytes32 key);\n    function keyHasPurpose(bytes32 _key, uint256 purpose) public view returns(bool exists);\n    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys);\n    function addKey(bytes32 _key, uint256 _purpose, uint256 _keyType) public returns (bool success);\n    function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId);\n    function approve(uint256 _id, bool _approve) public returns (bool success);\n    function removeKey(bytes32 _key, uint256 _purpose) public returns (bool success);\n}",
+  "source": "pragma solidity ^0.4.24;\n\nimport \"./ERC165.sol\";\n\n\n/// @title ERC725\n/// @author Mircea Pasoi\n/// @notice Abstract contract for ERC725\ncontract ERC725 is ERC165 {\n    /// @dev Constructor that adds ERC725 as a supported interface\n    constructor() internal {\n        supportedInterfaces[ERC725ID()] = true;\n    }\n\n    /// @dev ID for ERC165 pseudo-introspection\n    /// @return ID for ERC725 interface\n    // solhint-disable-next-line func-name-mixedcase\n    function ERC725ID() public pure returns (bytes4) {\n        return (\n            this.getKey.selector ^ this.keyHasPurpose.selector ^ this.getKeysByPurpose.selector ^\n            this.addKey.selector ^ this.execute.selector ^ this.approve.selector ^ this.removeKey.selector\n        );\n    }\n\n    // Purpose\n    // 1: MANAGEMENT keys, which can manage the identity\n    uint256 public constant MANAGEMENT_KEY = 1;\n    // 2: ACTION keys, which perform actions in this identities name (signing, logins, transactions, etc.)\n    uint256 public constant ACTION_KEY = 2;\n    // 3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.\n    uint256 public constant CLAIM_SIGNER_KEY = 3;\n    // 4: ENCRYPTION keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant ENCRYPTION_KEY = 4;\n    // 5: ASSIST keys, used to authenticate.\n    uint256 public constant ASSIST_KEY = 5;\n    // 6: DELEGATE keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant DELEGATE_KEY = 6;\n    // 7: RESTORE keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant RESTORE_KEY = 7;\n    // 8: CUSTOM keys, used to encrypt data e.g. hold in claims.\n    uint256 public constant CUSTOM_KEY = 8;\n    \n    // KeyType\n    uint256 public constant ECDSA_TYPE = 1;\n    // https://medium.com/@alexberegszaszi/lets-bring-the-70s-to-ethereum-48daa16a4b51\n    uint256 public constant RSA_TYPE = 2;\n\n    // Events\n    event KeyAdded(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);\n    event KeyRemoved(bytes32 indexed key, uint256 indexed purpose, uint256 indexed keyType);\n    event ExecutionRequested(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);\n    event Executed(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);\n    event Approved(uint256 indexed executionId, bool approved);\n    // TODO: Extra event, not part of the standard\n    event ExecutionFailed(uint256 indexed executionId, address indexed to, uint256 indexed value, bytes data);\n\n    // Functions\n    function getKey(bytes32 _key) public view returns(uint256[] purposes, uint256 keyType, bytes32 key);\n    function keyHasPurpose(bytes32 _key, uint256 purpose) public view returns(bool exists);\n    function getKeysByPurpose(uint256 _purpose) public view returns(bytes32[] keys);\n    function addKey(bytes32 _key, uint256 _purpose, uint256 _keyType) public returns (bool success);\n    function execute(address _to, uint256 _value, bytes _data) public returns (uint256 executionId);\n    function approve(uint256 _id, bool _approve) public returns (bool success);\n    function removeKey(bytes32 _key, uint256 _purpose) public returns (bool success);\n}",
   "sourcePath": "/Users/hexoul/Documents/Metadium/metabolics/contracts/identity/ERC725.sol",
   "ast": {
     "absolutePath": "/Users/hexoul/Documents/Metadium/metabolics/contracts/identity/ERC725.sol",
@@ -795,7 +795,7 @@
                                         "name": "this",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 8575,
+                                        "referencedDeclaration": 8605,
                                         "src": "539:4:9",
                                         "typeDescriptions": {
                                           "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -842,7 +842,7 @@
                                         "name": "this",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 8575,
+                                        "referencedDeclaration": 8605,
                                         "src": "562:4:9",
                                         "typeDescriptions": {
                                           "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -895,7 +895,7 @@
                                       "name": "this",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 8575,
+                                      "referencedDeclaration": 8605,
                                       "src": "592:4:9",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -948,7 +948,7 @@
                                     "name": "this",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 8575,
+                                    "referencedDeclaration": 8605,
                                     "src": "637:4:9",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -1001,7 +1001,7 @@
                                   "name": "this",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 8575,
+                                  "referencedDeclaration": 8605,
                                   "src": "660:4:9",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -1054,7 +1054,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8575,
+                                "referencedDeclaration": 8605,
                                 "src": "684:4:9",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -1107,7 +1107,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8575,
+                              "referencedDeclaration": 8605,
                               "src": "708:4:9",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3408,7 +3408,7 @@
                                         "name": "this",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 8575,
+                                        "referencedDeclaration": 8605,
                                         "src": "539:4:9",
                                         "typeDescriptions": {
                                           "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3455,7 +3455,7 @@
                                         "name": "this",
                                         "nodeType": "Identifier",
                                         "overloadedDeclarations": [],
-                                        "referencedDeclaration": 8575,
+                                        "referencedDeclaration": 8605,
                                         "src": "562:4:9",
                                         "typeDescriptions": {
                                           "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3508,7 +3508,7 @@
                                       "name": "this",
                                       "nodeType": "Identifier",
                                       "overloadedDeclarations": [],
-                                      "referencedDeclaration": 8575,
+                                      "referencedDeclaration": 8605,
                                       "src": "592:4:9",
                                       "typeDescriptions": {
                                         "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3561,7 +3561,7 @@
                                     "name": "this",
                                     "nodeType": "Identifier",
                                     "overloadedDeclarations": [],
-                                    "referencedDeclaration": 8575,
+                                    "referencedDeclaration": 8605,
                                     "src": "637:4:9",
                                     "typeDescriptions": {
                                       "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3614,7 +3614,7 @@
                                   "name": "this",
                                   "nodeType": "Identifier",
                                   "overloadedDeclarations": [],
-                                  "referencedDeclaration": 8575,
+                                  "referencedDeclaration": 8605,
                                   "src": "660:4:9",
                                   "typeDescriptions": {
                                     "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3667,7 +3667,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 8575,
+                                "referencedDeclaration": 8605,
                                 "src": "684:4:9",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -3720,7 +3720,7 @@
                               "name": "this",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 8575,
+                              "referencedDeclaration": 8605,
                               "src": "708:4:9",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_contract$_ERC725_$1709",
@@ -5744,5 +5744,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2019-03-18T02:49:08.338Z"
+  "updatedAt": "2019-03-18T07:46:38.363Z"
 }

@@ -1,8 +1,8 @@
 pragma solidity ^0.4.24;
 
+import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "./Pausable.sol";
 import "./ERC725.sol";
-import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 import "./SignatureVerifier.sol";
 
 
@@ -22,12 +22,10 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         uint256 needsApprove;
     }
 
-    // mapping (uint256 => Execution) public execution;
-    // mapping (uint256 => address[]) public approved;
     mapping (uint256 => Execution) public execution;
     mapping (uint256 => address[]) public approved;
     
-       /// @dev Generate a unique ID for an execution request
+    /// @dev Generate a unique ID for an execution request
     /// @param _to address being called (msg.sender)
     /// @param _value ether being sent (msg.value)
     /// @param _data ABI encoded call data (msg.data)
@@ -44,7 +42,107 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         
     }
 
-    function hasPermission(address _sender, address _to, bytes _data) internal view returns(uint256 threshold) { 
+    function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig)
+        public
+        whenNotPaused
+        returns (uint256 executionId)
+    {
+        // check nonce
+        require(_nonce == nonce,"nonce mismatch");
+
+        // sinature verify
+        //TODO : 'this' should be addded
+        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_to, _value, _data, _nonce)), _sig);
+        return preExecute(signedBy, _to, _value, _data);
+    
+    }
+
+    function approve(uint256 _id, bool _approve) public whenNotPaused returns (bool success) {
+        return preApprove(msg.sender, _id, _approve);
+    }
+
+    function delegatedApprove(uint256 _id, bool _approve, uint256 _nonce, bytes _sig)
+        public
+        whenNotPaused
+        returns (bool success)
+    {
+        // check nonce
+        require(_nonce == nonce, "nonce mismatch");
+
+        // sinature verify
+        //TODO : 'this' should be addded
+        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_id, _approve, _nonce)), _sig);
+        //return true;
+        return preApprove(signedBy, _id, _approve);
+    }
+
+    /// @dev Change multi-sig threshold for MANAGEMENT_KEY
+    /// @param threshold New threshold to change it to (will throw if 0 or larger than available keys)
+    function changeManagementThreshold(uint threshold)
+        public
+        whenNotPaused
+        onlyManagementOrSelf
+    {
+        require(threshold > 0);
+        // Don't lock yourself out
+        uint numManagementKeys = getKeysByPurpose(MANAGEMENT_KEY).length;
+        require(threshold <= numManagementKeys);
+        managementThreshold = threshold;
+    }
+
+    /// @dev Change multi-sig threshold for ACTION_KEY
+    /// @param threshold New threshold to change it to (will throw if 0 or larger than available keys)
+    function changeActionThreshold(uint threshold)
+        public
+        whenNotPaused
+        onlyManagementOrSelf
+    {
+        require(threshold > 0);
+        // Don't lock yourself out
+        uint numActionKeys = getKeysByPurpose(ACTION_KEY).length;
+        require(threshold <= numActionKeys);
+        actionThreshold = threshold;
+    }
+
+    /// @dev Generate a unique ID for an execution request
+    /// @param self address of identity contract
+    /// @param _to address being called (msg.sender)
+    /// @param _value ether being sent (msg.value)
+    /// @param _data ABI encoded call data (msg.data)
+    /// @param _nonce nonce to prevent replay attacks
+    /// @return Integer ID of execution request
+    function getExecutionId(
+        address self,
+        address _to,
+        uint256 _value,
+        bytes _data,
+        uint _nonce
+    )
+        public
+        pure
+        returns (uint256)
+    {
+        return uint(keccak256(abi.encodePacked(self, _to, _value, _data, _nonce)));
+    }
+    
+    function getFunctionSignature(bytes b) public pure returns (bytes4) {
+        bytes4 out;
+
+        for (uint i = 0; i < 4; i++) {
+            out |= bytes4(b[i] & 0xFF) >> (i * 8);
+        }
+        return out;
+    }
+
+    function getNonce() public view returns (uint256) {
+        return nonce;
+    }
+
+    function getTransactionCount() public view returns (uint256) {
+        return nonce;
+    }
+
+    function hasPermission(address _sender, address _to, bytes _data) internal view returns (uint256 threshold) { 
         if (_to == address(this)) {
             if (_sender == address(this)) {
                 // Contract calling itself to act on itself
@@ -54,10 +152,9 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                 // addKey function Signautre == 0x1d381240
                 if (
                     allKeys.find(addrToKey(_sender), MANAGEMENT_KEY) ||
-                    allKeys.find(addrToKey(_sender), RESTORE_KEY) && getFunctionSignature(_data) == bytes4(0x1d381240)
-                ){
+                    allKeys.find(addrToKey(_sender), RESTORE_KEY) && getFunctionSignature(_data) == bytes4(0x1d381240)) {
                     threshold = managementThreshold - 1;
-                }else {
+                } else {
                     revert();
                 }
             }
@@ -68,18 +165,17 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                 threshold = actionThreshold;
             } else {
                 // Action keys can operate on other addresses
-                
-                if (allKeys.find(addrToKey(_sender), ACTION_KEY) ||
-                    allKeys.find(addrToKey(_sender), DELEGATE_KEY) || 
-                    allKeys.find(addrToKey(_sender), CUSTOM_KEY) && allKeys.keyData[addrToKey(_sender)].func[_to][getFunctionSignature(_data)]
-                ){
+                if (
+                    allKeys.find(addrToKey(_sender), ACTION_KEY) ||
+                    allKeys.find(addrToKey(_sender), DELEGATE_KEY) ||
+                    allKeys.find(addrToKey(_sender), CUSTOM_KEY) &&
+                    allKeys.keyData[addrToKey(_sender)].func[_to][getFunctionSignature(_data)]) {
                     threshold = actionThreshold - 1;
                 } else {
                     revert();
                 }
             }
         }
-
     }
 
     function preExecute(address _sender, address _to, uint256 _value, bytes _data) internal returns (uint256 executionId) {
@@ -101,33 +197,6 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         }
 
         return executionId;
-    }
-
-    function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig) public  whenNotPaused returns (uint256 executionId) {
-        // check nonce
-        require(_nonce == nonce,"nonce mismatch");
-
-        // sinature verify
-        //TODO : 'this' should be addded
-        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_to, _value, _data, _nonce)), _sig);
-        return preExecute(signedBy, _to, _value, _data);
-    
-    }
-
-    function approve(uint256 _id, bool _approve) public whenNotPaused returns (bool success) {
-        return preApprove(msg.sender, _id, _approve);
-    }
-
-    function delegatedApprove(uint256 _id, bool _approve, uint256 _nonce, bytes _sig) public whenNotPaused returns (bool success) {
-        
-        // check nonce
-        require(_nonce == nonce, "nonce mismatch");
-
-        // sinature verify
-        //TODO : 'this' should be addded
-        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_id, _approve, _nonce)), _sig);
-        //return true;
-        return preApprove(signedBy, _id, _approve);
     }
     
     function preApprove(address _sender, uint256 _id, bool _approve) internal returns (bool success) {
@@ -233,55 +302,6 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
     //     }
     // }
 
-    /// @dev Change multi-sig threshold for MANAGEMENT_KEY
-    /// @param threshold New threshold to change it to (will throw if 0 or larger than available keys)
-    function changeManagementThreshold(uint threshold)
-        public
-        whenNotPaused
-        onlyManagementOrSelf
-    {
-        require(threshold > 0);
-        // Don't lock yourself out
-        uint numManagementKeys = getKeysByPurpose(MANAGEMENT_KEY).length;
-        require(threshold <= numManagementKeys);
-        managementThreshold = threshold;
-    }
-
-    /// @dev Change multi-sig threshold for ACTION_KEY
-    /// @param threshold New threshold to change it to (will throw if 0 or larger than available keys)
-    function changeActionThreshold(uint threshold)
-        public
-        whenNotPaused
-        onlyManagementOrSelf
-    {
-        require(threshold > 0);
-        // Don't lock yourself out
-        uint numActionKeys = getKeysByPurpose(ACTION_KEY).length;
-        require(threshold <= numActionKeys);
-        actionThreshold = threshold;
-    }
-
-    /// @dev Generate a unique ID for an execution request
-    /// @param self address of identity contract
-    /// @param _to address being called (msg.sender)
-    /// @param _value ether being sent (msg.value)
-    /// @param _data ABI encoded call data (msg.data)
-    /// @param _nonce nonce to prevent replay attacks
-    /// @return Integer ID of execution request
-    function getExecutionId(
-        address self,
-        address _to,
-        uint256 _value,
-        bytes _data,
-        uint _nonce
-    )
-        public
-        pure
-        returns (uint256)
-    {
-        return uint(keccak256(abi.encodePacked(self, _to, _value, _data, _nonce)));
-    }
-
     /// @dev Executes an action on other contracts, or itself, or a transfer of ether
     /// @param _id Execution ID
     /// @param e Execution data
@@ -313,23 +333,5 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         delete execution[_id];
         delete approved[_id];
         return true;
-    }
-    
-    
-    function getFunctionSignature(bytes b) public pure returns(bytes4) {
-        bytes4 out;
-
-        for (uint i = 0; i < 4; i++) {
-            out |= bytes4(b[i] & 0xFF) >> (i * 8);
-        }
-        return out;
-    }
-
-    function getNonce() public view returns(uint256) {
-        return nonce;
-    }
-
-    function getTransactionCount() public view returns(uint256) {
-        return nonce;
     }
 }

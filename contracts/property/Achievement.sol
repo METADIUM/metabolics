@@ -17,13 +17,13 @@ contract Achievement is ERC721Full, RegistryUser {
     bool public transferEnabled = false;
 
     // Optional mapping for token URIs
-    mapping(uint256 => string) internal tokenURIs;
+    mapping(uint256 => string) private _tokenURIs;
 
     modifier isTradable() {
         require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender), "Transfer not enabled");
         _;
     }
-    
+
     constructor(string name, string symbol) public ERC721Full(name, symbol) {
         THIS_NAME = "Achievement";
     }
@@ -48,8 +48,9 @@ contract Achievement is ERC721Full, RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function burn(uint256 _tokenId) public permissioned returns (bool success) {
-        super._burn(ownerOf(_tokenId), _tokenId);
-        emit Burn(ownerOf(_tokenId), _tokenId);
+        address _from = ownerOf(_tokenId);
+        super._burn(_from, _tokenId);
+        emit Burn(_from, _tokenId);
         return true;
     }
 
@@ -62,6 +63,7 @@ contract Achievement is ERC721Full, RegistryUser {
         transferEnabled = false;
         return true;
     }
+
     /**
      * @dev Returns an URI as bytes for a given token ID
      * @dev Throws if the token ID does not exist. May return an empty string.
@@ -69,7 +71,7 @@ contract Achievement is ERC721Full, RegistryUser {
      */
     function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes uri) {
         require(_exists(_tokenId), "Token ID cannot be found");
-        return bytes(tokenURIs[_tokenId]);
+        return bytes(_tokenURIs[_tokenId]);
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) public isTradable {
