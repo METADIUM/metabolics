@@ -54,9 +54,10 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
     });
 
     it('Add already existing Meta Id', async () => {
-      await identityManager.addMetaId(user2, proxy2, { from: proxy1 });
+      let meta2 = await MetaIdentity.new(proxy2);
+      await identityManager.addMetaId(meta2.address, proxy2, { from: proxy1 });
 
-      const s = await identityManager.isMetaId(user2);
+      const s = await identityManager.isMetaId(meta2.address);
       assert.equal(s, true);
     });
 
