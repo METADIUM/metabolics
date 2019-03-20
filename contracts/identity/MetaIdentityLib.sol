@@ -16,9 +16,6 @@ contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, Ke
     using Slice for bytes;
     using Slice for string;
 
-    constructor() public { 
-        init(msg.sender);
-    }
     // Fallback function accepts Ether transactions
     // solhint-disable-next-line no-empty-blocks
     function () external payable {

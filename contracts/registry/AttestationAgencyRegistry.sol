@@ -47,6 +47,7 @@ contract AttestationAgencyRegistry is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function registerAttestationAgency(address _addr, bytes32 _title, bytes32 _explanation) public permissioned returns (bool success) {
+        require(_addr != address(0), "Address should be non-zero");
         require(isAAregistered[_addr] == 0, "zero address");
         
         attestationAgencies[attestationAgencyNum].addr = _addr;
