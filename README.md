@@ -7,6 +7,12 @@
 
 > Metadium System Smart Contracts
 
+## Compile
+
+```
+$ npm run compile
+```
+
 ## Test
 
 ```
@@ -18,12 +24,6 @@ $ npm run test
 Install [solidity-flattener](https://github.com/BlockCatIO/solidity-flattener)
 ```
 $ npm run flatten
-```
-
-## Compile
-
-```
-$ truffle compile
 ```
 
 ## Misc
