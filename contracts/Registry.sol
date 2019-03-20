@@ -2,6 +2,7 @@ pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
+
 /**
  * @title Registry
  * @dev Registry Contract used to set domain and permission
@@ -10,13 +11,11 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
  * Owner should set domain and permission.
  */
 contract Registry is Ownable {
-    
     mapping(bytes32=>address) public contracts;
     mapping(bytes32=>mapping(address=>bool)) public permissions;
 
     event SetContractDomain(address setter, bytes32 indexed name, address indexed addr);
     event SetPermission(bytes32 indexed _contract, address indexed granted, bool status);
-
 
     /**
     * @dev Function to set contract(can be general address) domain
@@ -33,9 +32,8 @@ contract Registry is Ownable {
 
         return true;
         //TODO should decide whether to set 0x00 to destoryed contract or not
-        
-
     }
+
     /**
     * @dev Function to get contract(can be general address) address
     * Anyone can use this function
@@ -46,6 +44,7 @@ contract Registry is Ownable {
         require(contracts[_name] != address(0x0), "address should be non-zero");
         return contracts[_name];
     }
+
     /**
     * @dev Function to set permission on contract
     * contract using modifier 'permissioned' references mapping variable 'permissions'
@@ -73,6 +72,5 @@ contract Registry is Ownable {
     */
     function getPermission(bytes32 _contract, address _granted) public view returns(bool found) {
         return permissions[_contract][_granted];
-    }
-    
+    }   
 }

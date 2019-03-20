@@ -3,12 +3,12 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./Registry.sol";
 
+
 /**
  * @title RegistryUser
  * @dev RegistryUser Contract that uses Registry contract
  */
 contract RegistryUser is Ownable {
-    
     Registry public REG;
     bytes32 public THIS_NAME;
 
@@ -32,8 +32,7 @@ contract RegistryUser is Ownable {
      * @param _addr address of sender to check the permission
      * @return A boolean that indicates if the operation was successful.
      */
-    function isPermitted(address _addr) public view returns(bool found) {
+    function isPermitted(address _addr) public view returns (bool found) {
         return REG.getPermission(THIS_NAME, _addr);
-    }
-    
+    }   
 }

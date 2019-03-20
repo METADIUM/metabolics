@@ -1,12 +1,12 @@
 const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
 
 import { setupTest, Purpose, Topic, Scheme } from './base';
-import { printTestGas, assertOkTx } from '../util';
+import { assertOkTx, printTestGas } from '../util';
 
 contract('ClaimManager', async (accounts) => {
   let identity, otherIdentity, addr, keys;
 
-  afterEach('print gas', printTestGas);
+  // afterEach('print gas', printTestGas);
 
   const assertClaim = async (_topic, _issuer, _signature, _data, _uri) => {
     const claimId = await identity.getClaimId(_issuer, _topic);

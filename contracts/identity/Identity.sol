@@ -8,10 +8,10 @@ import "./MultiSig.sol";
 import "./ClaimManager.sol";
 import "./Slice.sol";
 
+
 /// @title Identity
 /// @author Mircea Pasoi
 /// @notice Identity contract implementing both ERC 725 and ERC 735
-
 contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetters {
     using Slice for bytes;
     using Slice for string;
@@ -20,7 +20,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
     ///  `msg.sender` is used as an initial MANAGEMENT_KEY, ACTION_KEY and CLAIM_SIGNER_KEY
     /// @param _keys Keys to start contract with, in ascending order; in case of equality, purposes must be ascending
     /// @param _purposes Key purposes (in the same order as _keys)
-    /// @param _issuers Claim issuers to start contract with, in ascending order; in case of equality, topics must be ascending
+    /// @param _issuers Claim issuers to start contract with, in ascending order
     /// @param _managementThreshold Multi-sig threshold for MANAGEMENT_KEY
     /// @param _actionThreshold Multi-sig threshold for ACTION_KEY
     /// @param _topics Claim topics (in the same order as _issuers)
@@ -42,7 +42,8 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         string _uris,
         uint8[] _sizes
     )
-    public {
+        public
+    {
         _validateKeys(_keys, _purposes);
         _validateClaims(_issuers, _topics, _sizes);
 
@@ -66,8 +67,8 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         bytes32[] _keys,
         uint256[] _purposes
     )
-    private
-    pure
+        private
+        pure
     {
         // Validate keys are sorted and unique
         require(_keys.length == _purposes.length);
@@ -92,7 +93,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         uint256 _managementThreshold,
         uint256 _actionThreshold
     )
-    private
+        private
     {
         uint256 actionCount;
         uint256 managementCount;
@@ -125,7 +126,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
     }
 
     /// @dev Validate claims are sorted and unique
-    /// @param _issuers Claim issuers to start contract with, in ascending order; in case of equality, topics must be ascending
+    /// @param _issuers Claim issuers to start contract with, in ascending order
     /// @param _topics Claim topics (in the same order as _issuers)
     /// @param _sizes Triples of signature, claim data, URI sizes (each must be ≤ 256)
     function _validateClaims
@@ -134,8 +135,8 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         uint256[] _topics,
         uint8[] _sizes
     )
-    private
-    pure
+        private
+        pure
     {
         // Validate claims are sorted and unique
         require(_issuers.length == _topics.length);
@@ -149,7 +150,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
     }
 
     /// @dev Add claims to contract without an URI
-    /// @param _issuers Claim issuers to start contract with, in ascending order; in case of equality, topics must be ascending
+    /// @param _issuers Claim issuers to start contract with, in ascending order
     /// @param _topics Claim topics (in the same order as _issuers)
     /// @param _signatures All the initial claim signatures concatenated in one bytes array
     /// @param _datas All the initial claim data concatenated in one bytes array
@@ -164,7 +165,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         string _uris,
         uint8[] _sizes
     )
-    private
+        private
     {
         // Add constructor claims
         uint[3] memory offset;

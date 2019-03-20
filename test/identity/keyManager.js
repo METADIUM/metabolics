@@ -1,12 +1,14 @@
 const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
 
 import { setupTest, assertKeyCount, Purpose, KeyType } from './base';
-import { printTestGas, assertOkTx } from '../util';
+import { assertOkTx, printTestGas } from '../util';
+
+const TestContract = artifacts.require('TestContract');
 
 contract('KeyManager', async (accounts) => {
   let identity, addr, keys;
 
-  afterEach('print gas', printTestGas);
+  // afterEach('print gas', printTestGas);
 
   beforeEach('new contract', async () => {
     ({ identity, addr, keys } = await setupTest(accounts, [2, 2, 0, 0], [3, 3, 1, 1]));
@@ -133,7 +135,8 @@ contract('KeyManager', async (accounts) => {
     it('should add func only when key exist', async () => {
       // Start with 2
       await assertKeyCount(identity, Purpose.ACTION, 2);
-      await assertOkTx(identity.setFunc(keys.action[1], addr.manager[0], '0xabcd1234', 'true', { from: addr.manager[0] }));
+      const testContract = await TestContract.deployed();
+      await assertOkTx(identity.setFunc(keys.action[1], testContract.address, '0xabcd1234', 'true', { from: addr.manager[0] }));
     });
   });
 });

@@ -6,7 +6,7 @@ import { assertOkTx, printTestGas } from '../util';
 contract('Pausable', async (accounts) => {
   let identity, addr, keys;
 
-  afterEach('print gas', printTestGas);
+  // afterEach('print gas', printTestGas);
 
   beforeEach('new contract', async () => {
     ({ identity, addr, keys } = await setupTest(accounts, [2, 2, 0, 0], [3, 3, 0, 0]));

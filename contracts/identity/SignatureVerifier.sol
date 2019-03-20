@@ -21,5 +21,4 @@ contract SignatureVerifier {
     {
         return toSign.toEthSignedMessageHash().recover(signature);
     }
-
 }

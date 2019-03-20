@@ -1,9 +1,9 @@
 pragma solidity ^0.4.24;
 
+
 /// @title KeyStorage
 /// @author genie
 /// @notice Library for managing an arrray of ERC 725 keys
-
 library KeyStore {
     struct Key {
         uint256[] purposes; //e.g., MANAGEMENT_KEY = 1, ACTION_KEY = 2, etc.
@@ -42,7 +42,6 @@ library KeyStore {
     function numKeysByPurpose(Keys storage self, uint256 purpose) internal view returns (uint) {
         return self.keysByPurpose[purpose].length;
     }
-
 
     function isExist(Keys storage self, bytes32 key)
         internal

@@ -85,7 +85,6 @@ contract Achievement is ERC721Full, RegistryUser {
     function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes _data) public isTradable {
         super.safeTransferFrom(_from, _to, _tokenId, _data);
     }
-    
 
     function approve(address _to, uint256 _tokenId) public isTradable {
         super.approve(_to, _tokenId);

@@ -1,5 +1,6 @@
 pragma solidity ^0.4.24;
 
+import "openzeppelin-solidity/contracts/utils/Address.sol";
 import "./Pausable.sol";
 import "./ERC725.sol";
 
@@ -9,6 +10,8 @@ import "./ERC725.sol";
 /// @notice Implement add/remove functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events
 contract KeyManager is Pausable, ERC725 {
+    using Address for address;
+
     /// @dev Add key data to the identity if key + purpose tuple doesn't already exist
     /// @param _key Key bytes to add
     /// @param _purpose Purpose to add
@@ -55,21 +58,6 @@ contract KeyManager is Pausable, ERC725 {
         return true;
     }
 
-    /// @dev Add key data to the identity without checking if it already exists
-    /// @param _key Key bytes to add
-    /// @param _purpose Purpose to add
-    /// @param _keyType Key type to add
-    function _addKey(
-        bytes32 _key,
-        uint256 _purpose,
-        uint256 _keyType
-    )
-        internal
-    {
-        allKeys.add(_key, _purpose, _keyType);
-        emit KeyAdded(_key, _purpose, _keyType);
-    }
-
     /// @dev Add key data to the identity if key + purpose tuple doesn't already exist
     /// @param _key Key to use
     /// @param _to smart contract address at which this key can be used
@@ -88,7 +76,23 @@ contract KeyManager is Pausable, ERC725 {
         returns (bool success)
     {
         require(allKeys.isExist(_key));
-        allKeys.setFunc(_key, _to, _func, _executable);   
+        require(_to.isContract());
+        allKeys.setFunc(_key, _to, _func, _executable);
         return true;
+    }
+
+    /// @dev Add key data to the identity without checking if it already exists
+    /// @param _key Key bytes to add
+    /// @param _purpose Purpose to add
+    /// @param _keyType Key type to add
+    function _addKey(
+        bytes32 _key,
+        uint256 _purpose,
+        uint256 _keyType
+    )
+        internal
+    {
+        allKeys.add(_key, _purpose, _keyType);
+        emit KeyAdded(_key, _purpose, _keyType);
     }
 }

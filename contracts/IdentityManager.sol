@@ -6,6 +6,7 @@ import "./RegistryUser.sol";
 import "./identity/ERC725.sol";
 import "./identity/ERC165Query.sol";
 
+
 /**
  * @title IdentityManager
  * @dev IdentityManager is factory contract to make identity
@@ -13,11 +14,9 @@ import "./identity/ERC165Query.sol";
  */
 contract IdentityManager is RegistryUser {
     using ERC165Query for address;
-    //Hold the list of MetaIds
-    //CreateMetaId
     
     address[] public metaIds;
-    mapping(address=>bool) metaIdExistence;
+    mapping(address=>bool) internal metaIdExistence;
 
     event CreateMetaId(address indexed managementKey, address metaId);
     
@@ -40,7 +39,6 @@ contract IdentityManager is RegistryUser {
         emit CreateMetaId(_managementKey, newMetaId);
 
         return true;
-
     }
 
     /**
@@ -63,15 +61,15 @@ contract IdentityManager is RegistryUser {
         return true;
     }
 
-    function getDeployedMetaIds() public view returns(address[] addrs) {
+    function getDeployedMetaIds() public view returns (address[] addrs) {
         return metaIds;
     }
 
-    function isMetaId(address _addr) public view returns(bool found) {
+    function isMetaId(address _addr) public view returns (bool found) {
         return metaIdExistence[_addr];
     }
 
-    function getLengthOfMetaIds() public view returns(uint256 length) {
+    function getLengthOfMetaIds() public view returns (uint256 length) {
         return metaIds.length;
     }
 }
