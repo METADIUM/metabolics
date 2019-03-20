@@ -8,7 +8,7 @@ contract('Identity', async (accounts) => {
 
   const oneUnit = web3.toWei(100, 'finney');
 
-  afterEach('print gas', printTestGas);
+  // afterEach('print gas', printTestGas);
 
   beforeEach('new contract', async () => {
     ({ identity, addr, keys } = await setupTest(

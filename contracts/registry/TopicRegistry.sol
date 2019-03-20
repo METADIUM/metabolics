@@ -30,7 +30,7 @@ contract TopicRegistry is RegistryUser {
         THIS_NAME = "TopicRegistry";
         total = RESERVED_TOPICS;
     }
-    
+
     /**
      * @dev Register new topic by system. this topic numbers should be 0~1024.
      * @param _id basic managementKey to use
@@ -64,10 +64,9 @@ contract TopicRegistry is RegistryUser {
      * @return new topic id
      */
     function registerTopic(bytes32 _title, bytes32 _explanation) public returns (uint256 topicId) {
-        IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
-
         // Only Attestation Agency or permissioned can register topic
-        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender), "No permission"); 
+        IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
+        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender), "No permission");
 
         Topic memory t;
         t.id = total;
@@ -93,26 +92,27 @@ contract TopicRegistry is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function updateTopic(uint256 _id, bytes32 _explanation) public returns (bool success) {
-        require(topics[_id].issuer == msg.sender, "issuer mismatch");
+        // Only Attestation Agency or permissioned can register topic
+        IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
+        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender), "No permission");
+        require(topics[_id].issuer == msg.sender, "Issuer mismatch");
 
         topics[_id].explanation = _explanation;
 
         emit UpdateTopic(_id, msg.sender, _explanation);
 
         return true;
-
     }
 
     function isRegistered(uint256 _id) public view returns (bool found) {
         return isTopicRegistered[_id];
     }
 
-
     function getTotal() public view returns (uint256 length) {
         return total;
     }
-    
-    function getTopic(uint256 _id) public view returns(address issuer, bytes32 title, bytes32 explanation, uint256 createdAt) {
+
+    function getTopic(uint256 _id) public view returns (address issuer, bytes32 title, bytes32 explanation, uint256 createdAt) {
         return (topics[_id].issuer, topics[_id].title, topics[_id].explanation, topics[_id].createdAt);
     }
 
@@ -123,9 +123,9 @@ contract TopicRegistry is RegistryUser {
      * @return topic data
      */
     function getTopicFromTo(uint256 _from, uint256 _to) 
-        public 
+        public
         view
-        returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
+        returns (address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
     {
         require(_to >= _from, "from to mismatch");
         address[] memory saddrs = new address[](_to-_from+1);

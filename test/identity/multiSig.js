@@ -1,14 +1,14 @@
 const { reverting } = require('openzeppelin-solidity/test/helpers/shouldFail');
 
 import { setupTest, assertKeyCount, Purpose, KeyType } from './base';
-import { printTestGas, assertOkTx } from '../util';
+import { assertOkTx, printTestGas } from '../util';
 
 const TestContract = artifacts.require('TestContract');
 
 contract('MultiSig', async (accounts) => {
   let identity, otherContract, addr, keys;
 
-  afterEach('print gas', printTestGas);
+  // afterEach('print gas', printTestGas);
 
   beforeEach('new contract', async () => {
     ({ identity, addr, keys } = await setupTest(accounts, [3, 3, 0, 0], [4, 4, 1, 0]));

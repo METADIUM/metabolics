@@ -22,5 +22,4 @@ contract SignatureVerifier {
     {
         return keccak256(abi.encodePacked(ETH_PREFIX, toSign)).recover(signature);
     }
-
 }
