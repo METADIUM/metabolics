@@ -8,10 +8,10 @@ import "./MultiSig.sol";
 import "./ClaimManager.sol";
 import "./Slice.sol";
 
+
 /// @title Identity
 /// @author Mircea Pasoi
 /// @notice Identity contract implementing both ERC 725 and ERC 735
-
 contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetters {
     using Slice for bytes;
     using Slice for string;
@@ -42,7 +42,8 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         string _uris,
         uint8[] _sizes
     )
-    public {
+        public
+    {
         _validateKeys(_keys, _purposes);
         _validateClaims(_issuers, _topics, _sizes);
 
@@ -66,8 +67,8 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         bytes32[] _keys,
         uint256[] _purposes
     )
-    private
-    pure
+        private
+        pure
     {
         // Validate keys are sorted and unique
         require(_keys.length == _purposes.length);
@@ -92,7 +93,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         uint256 _managementThreshold,
         uint256 _actionThreshold
     )
-    private
+        private
     {
         uint256 actionCount;
         uint256 managementCount;
@@ -134,8 +135,8 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         uint256[] _topics,
         uint8[] _sizes
     )
-    private
-    pure
+        private
+        pure
     {
         // Validate claims are sorted and unique
         require(_issuers.length == _topics.length);
@@ -164,7 +165,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         string _uris,
         uint8[] _sizes
     )
-    private
+        private
     {
         // Add constructor claims
         uint[3] memory offset;

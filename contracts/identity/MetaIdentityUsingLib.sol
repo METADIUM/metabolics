@@ -1,5 +1,6 @@
 pragma solidity ^0.4.24;
 
+
 /**
  * @title MetaIdentityUsingLib
  * @dev Interface for MetaIdentityUsingLib
@@ -13,7 +14,6 @@ contract MetaIdentityUsingLib {
     mapping(bytes4 => bool) internal supportedInterfaces;
 
     //KeyBase
-
     //uint256 public constant MANAGEMENT_KEY = 1;
 
     // For multi-sig
@@ -77,7 +77,6 @@ contract MetaIdentityUsingLib {
     }
     
     constructor(address _registry, address _managementKey) public {
-        
         bytes4 sig = bytes4(keccak256("init(address)"));
         REG = IReg(_registry);
 
@@ -96,7 +95,7 @@ contract MetaIdentityUsingLib {
             suc := delegatecall(sub(gas, 10000), target, 0x0, add(argsize, 0x4), 0x0, 0x0)
         }
     }
-    
+
     /**
     * @dev Tells the type of proxy (EIP 897)
     * @return Type of proxy, 2 for upgradeable proxy
@@ -104,7 +103,6 @@ contract MetaIdentityUsingLib {
     function proxyType() public pure returns (uint256 proxyTypeId) {
         return 2;
     }
-    
 
     /**
      * @dev Fallback function for delegate call. This function will return whatever the implementaion call returns
@@ -128,10 +126,10 @@ contract MetaIdentityUsingLib {
         }
     }
 }
+
 contract IReg {
     function getContractAddress(bytes32 _name) public view returns(address addr);
 }
-
 
 library KeyStore {
     struct Key {

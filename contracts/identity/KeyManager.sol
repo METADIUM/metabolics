@@ -1,5 +1,6 @@
 pragma solidity ^0.4.24;
 
+import "openzeppelin-solidity/contracts/utils/Address.sol";
 import "./Pausable.sol";
 import "./ERC725.sol";
 
@@ -9,6 +10,8 @@ import "./ERC725.sol";
 /// @notice Implement add/remove functions from ERC725 spec
 /// @dev Key data is stored using KeyStore library. Inheriting ERC725 for the events
 contract KeyManager is Pausable, ERC725 {
+    using Address for address;
+
     /// @dev Add key data to the identity if key + purpose tuple doesn't already exist
     /// @param _key Key bytes to add
     /// @param _purpose Purpose to add
@@ -88,7 +91,8 @@ contract KeyManager is Pausable, ERC725 {
         returns (bool success)
     {
         require(allKeys.isExist(_key));
-        allKeys.setFunc(_key, _to, _func, _executable);   
+        require(_to.isContract());
+        allKeys.setFunc(_key, _to, _func, _executable);
         return true;
     }
 }

@@ -1,6 +1,8 @@
 import { setupTest, Purpose, KeyType } from './base';
 import { assertOkTx, printTestGas } from '../util';
 
+const TestContract = artifacts.require('TestContract');
+
 contract('KeyGetters', async (accounts) => {
   let identity, addr, keys;
 
@@ -78,8 +80,9 @@ contract('KeyGetters', async (accounts) => {
     });
 
     it('should return true when function is registered for the key', async () => {
-      await assertOkTx(identity.setFunc(keys.action[0], addr.manager[0], '0xabcd1234', 'true', { from: addr.manager[0] }));
-      const k = await identity.keyCanExecute(keys.action[0], addr.manager[0], '0xabcd1234');
+      const testContract = await TestContract.deployed();
+      await assertOkTx(identity.setFunc(keys.action[0], testContract.address, '0xabcd1234', 'true', { from: addr.manager[0] }));
+      const k = await identity.keyCanExecute(keys.action[0], testContract.address, '0xabcd1234');
       assert.equal(k, true);
     });
   });
