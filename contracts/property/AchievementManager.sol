@@ -9,6 +9,7 @@ import "../interface/IAchievement.sol";
 import "../interface/IIdentityManager.sol";
 import "../interface/IAttestationAgencyRegistry.sol";
 
+
 /**
  * @title AchievementManager
  * @dev AchievementManager Contract used to manage achievement system in metadium
@@ -46,8 +47,7 @@ contract AchievementManager is RegistryUser {
         THIS_NAME = "AchievementManager";
     }
 
-    function isAAttestationAgency(address _addr) public view returns(bool found) {
-        
+    function isAAttestationAgency(address _addr) public view returns (bool found) {
         IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
         require(ar.isRegistered(_addr) != 0, "address is not AA");
 
@@ -70,34 +70,37 @@ contract AchievementManager is RegistryUser {
      * @param _uri basically used for ipfs id or something
      * @return A boolean that indicates if the operation was successful.
      */
-    function createAchievement(uint256[] _topics, address[] _issuers, bytes32 _title, bytes32 _achievementExplanation, uint256 _reward, string _uri)
-    public
-    onlyAttestationAgency
-    payable returns (bool success)
+    function createAchievement(
+        uint256[] _topics,
+        address[] _issuers,
+        bytes32 _title,
+        bytes32 _achievementExplanation,
+        uint256 _reward,
+        string _uri
+    )
+        public
+        onlyAttestationAgency
+        payable
+        returns (bool success)
     {
-
-        //check staking amount used for reward
+        // Check staking amount used for reward
         require(msg.value >= minimumDeposit, "deposit is not enough");
 
-        //topics should be registered already
+        // Check if topics are registered
         TopicRegistry topicRegistry = TopicRegistry(REG.getContractAddress("TopicRegistry"));
-        for (uint256 i = 0;i<_topics.length;i++) {
-            if (i > 0) {
-                if (
-                    _topics[i] < _topics[i-1] ||
-                    (_topics[i] == _topics[i-1] && _issuers[i] == _issuers[i-1])
-
-                ) {
-                    revert("Topic and Issuer condition is wrong");
+        for (uint256 i = 0; i < _topics.length; i++) {
+            require(topicRegistry.isRegistered(_topics[i]), "Not registered topic");
+            for (uint256 j = 0; j < _topics.length; j++) {
+                if (i == j) continue;
+                else if (_topics[i] == _topics[j] && _issuers[i] == _issuers[j]) {
+                    revert("Duplicated topic/issuer pair");
                 }
             }
-            require(topicRegistry.isRegistered(_topics[i]), "topic not registered");
         }
 
-        //check if achievement is already registered
+        // Check if achievement is registered
         bytes32 achievementId = getAchievementId(msg.sender, _topics, _issuers);
         require(achievements[achievementId].id == 0, "achievement already exists");
-
 
         Achievement memory newAc;
         newAc.id = achievementId;
@@ -165,6 +168,7 @@ contract AchievementManager is RegistryUser {
 
         return true;
     }
+
     /**
      * @dev Request achievement. If user have proper claims, user get acievement(ERC721) token and meta reward
      * @param _achievementId _achievementId user want to request
@@ -205,8 +209,6 @@ contract AchievementManager is RegistryUser {
         bytes32[] memory managementKeys = ERC725(msg.sender).getKeysByPurpose(1); // 1 : MANAGEMENT KEY
         address(managementKeys[0]).transfer(achievements[_achievementId].reward); // reward goes to the 0th management key
         // msg.sender.transfer(achievements[_achievementId].reward);
-        
-        
 
         // mint achievement erc721 to msg.sender;
         IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
@@ -216,7 +218,6 @@ contract AchievementManager is RegistryUser {
 
         return true;
     }
-
 
     function hasSelfClaim(address _identity, uint256 _topic) public view returns (bool) {
         bytes32[] memory claims = ERC735(_identity).getClaimIdsByType(_topic);
@@ -234,6 +235,7 @@ contract AchievementManager is RegistryUser {
         return false;
 
     }
+
     function getAllAchievementList() public view returns (bytes32[] list) {
         return allAchievements;
     }
@@ -247,7 +249,21 @@ contract AchievementManager is RegistryUser {
         return allAchievements.length;
     }
 
-    function getAchievementById(bytes32 _achievementId) public view returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 createdAt) {
+    function getAchievementById(bytes32 _achievementId)
+        public
+        view
+        returns (
+            bytes32 id,
+            address creator,
+            address[] issuers,
+            uint256[] claimTopics,
+            bytes32 title,
+            bytes32 explanation,
+            uint256 reward,
+            string uri,
+            uint256 createdAt
+        )
+    {
         Achievement memory ac = achievements[_achievementId];
         return (
             ac.id, 
@@ -262,7 +278,21 @@ contract AchievementManager is RegistryUser {
             );
     }
 
-    function getAchievementByIndex(uint256 _index) public view returns(bytes32 id, address creator, address[] issuers, uint256[] claimTopics, bytes32 title, bytes32 explanation, uint256 reward, string uri, uint256 createdAt) {
+    function getAchievementByIndex(uint256 _index)
+        public
+        view
+        returns (
+            bytes32 id,
+            address creator,
+            address[] issuers,
+            uint256[] claimTopics,
+            bytes32 title,
+            bytes32 explanation,
+            uint256 reward,
+            string uri,
+            uint256 createdAt
+        )
+    {
         bytes32 _achievementId = allAchievements[_index];
         return (
             achievements[_achievementId].id, 
@@ -275,7 +305,6 @@ contract AchievementManager is RegistryUser {
             achievements[_achievementId].uri,
             achievements[_achievementId].createdAt
             );
-
     }
 
     /**
@@ -286,7 +315,7 @@ contract AchievementManager is RegistryUser {
      * @param issuers issuers achievement requirements
      * @return A boolean that indicates if the operation was successful.
      */
-    function getAchievementId(address creator, uint256[] topics, address[] issuers) public pure returns(bytes32 id) {
+    function getAchievementId(address creator, uint256[] topics, address[] issuers) public pure returns (bytes32 id) {
         bytes memory idBytes;
         
         require(topics.length == issuers.length, "topic, issuer length mismatch");
@@ -298,5 +327,4 @@ contract AchievementManager is RegistryUser {
         }
         return keccak256(idBytes);
     }
-
 }
