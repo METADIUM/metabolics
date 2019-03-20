@@ -92,16 +92,18 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         string _uri,
         bytes _idSignature
     )
-    public
-    whenNotPaused
-    returns (bool success)
+        public
+        whenNotPaused
+        returns (bool success)
     {
         // Check signature
         require(_validSignature(_topic, _scheme, issuer, _signature, _data));
         
         // Check idSignature
         // Check if management key signed this transaction data
-        address signedBy = getSignatureAddress(keccak256(abi.encodePacked(_topic, _scheme, issuer, _signature, _data, _uri)), _idSignature);
+        address signedBy = getSignatureAddress(
+            keccak256(abi.encodePacked(_topic, _scheme, issuer, _signature, _data, _uri)),
+            _idSignature);
         
         require(allKeys.find(addrToKey(signedBy), MANAGEMENT_KEY));
 
@@ -123,7 +125,6 @@ contract ClaimManager is Pausable, ERC725, ERC735 {
         return true;
     }
 
-    
     /// @dev Removes a claim. Can only be removed by the claim issuer, or the claim holder itself.
     /// @param _claimId Claim ID to remove
     /// @return `true` if the claim is found and removed

@@ -8,10 +8,10 @@ import "./MultiSig.sol";
 import "./ClaimManager.sol";
 import "./Slice.sol";
 
+
 /// @title MetaIdentity
 /// @author Metadium, genie
 /// @notice Identity contract implementing ERC 725, ERC 735 and Metadium features.
-
 contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetters {
     using Slice for bytes;
     using Slice for string;
@@ -19,6 +19,7 @@ contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, Ke
     constructor() public { 
         init(msg.sender);
     }
+
     // Fallback function accepts Ether transactions
     // solhint-disable-next-line no-empty-blocks
     function () external payable {
@@ -41,5 +42,4 @@ contract MetaIdentityLib is KeyManager, MultiSig, ClaimManager, Destructible, Ke
         // Supports both ERC 725 & 735
         supportedInterfaces[ERC725ID() ^ ERC735ID()] = true;
     }
-
 }

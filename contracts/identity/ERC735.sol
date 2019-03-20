@@ -38,14 +38,66 @@ contract ERC735 is ERC165 {
     uint256 public constant CONTRACT_SCHEME = 3;
 
     // Events
-    event ClaimRequested(uint256 indexed claimRequestId, uint256 indexed topic, uint256 scheme, address indexed issuer, bytes signature, bytes data, string uri);
-    event ClaimAdded(bytes32 indexed claimId, uint256 indexed topic, uint256 scheme, address indexed issuer, bytes signature, bytes data, string uri);
-    event ClaimRemoved(bytes32 indexed claimId, uint256 indexed topic, uint256 scheme, address indexed issuer, bytes signature, bytes data, string uri);
-    event ClaimChanged(bytes32 indexed claimId, uint256 indexed topic, uint256 scheme, address indexed issuer, bytes signature, bytes data, string uri);
+    event ClaimRequested(
+        uint256 indexed claimRequestId,
+        uint256 indexed topic,
+        uint256 scheme,
+        address indexed issuer,
+        bytes signature,
+        bytes data,
+        string uri
+    );
+
+    event ClaimAdded(
+        bytes32 indexed claimId,
+        uint256 indexed topic,
+        uint256 scheme,
+        address indexed issuer,
+        bytes signature,
+        bytes data,
+        string uri
+    );
+
+    event ClaimRemoved(
+        bytes32 indexed claimId,
+        uint256 indexed topic,
+        uint256 scheme,
+        address indexed issuer,
+        bytes signature,
+        bytes data,
+        string uri
+    );
+
+    event ClaimChanged(
+        bytes32 indexed claimId,
+        uint256 indexed topic,
+        uint256 scheme,
+        address indexed issuer,
+        bytes signature,
+        bytes data,
+        string uri
+    );
 
     // Functions
-    function getClaim(bytes32 _claimId) public view returns(uint256 topic, uint256 scheme, address issuer, bytes signature, bytes data, string uri);
+    function getClaim(bytes32 _claimId) public view returns (
+        uint256 topic,
+        uint256 scheme,
+        address issuer,
+        bytes signature,
+        bytes data,
+        string uri
+        );
+
     function getClaimIdsByType(uint256 _topic) public view returns(bytes32[] claimIds);
-    function addClaim(uint256 _topic, uint256 _scheme, address issuer, bytes _signature, bytes _data, string _uri) public returns (uint256 claimRequestId);
+
+    function addClaim(
+        uint256 _topic,
+        uint256 _scheme,
+        address issuer,
+        bytes _signature,
+        bytes _data,
+        string _uri
+        ) public returns (uint256 claimRequestId);
+
     function removeClaim(bytes32 _claimId) public returns (bool success);
 }

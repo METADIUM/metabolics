@@ -11,11 +11,8 @@ import "./RegistryUser.sol";
  * permissoined sender can create metadium identity through this contract
  */
 contract IdentityManager is RegistryUser {
-    //Hold the list of MetaIds
-    //CreateMetaId
-    
     address[] public metaIds;
-    mapping(address=>bool) metaIdExistence;
+    mapping(address=>bool) internal metaIdExistence;
 
     event CreateMetaId(address indexed managementKey, address metaId);
     
@@ -38,7 +35,6 @@ contract IdentityManager is RegistryUser {
         emit CreateMetaId(_managementKey, newMetaId);
 
         return true;
-
     }
 
     /**

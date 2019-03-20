@@ -25,7 +25,15 @@ contract AchievementManager is RegistryUser {
 
     bytes32[] public allAchievements;
 
-    event CreateAchievement(bytes32 indexed achievementId, uint256[] topics, address[] issuers, uint256 staked, string uri, uint256 createdAt);
+    event CreateAchievement(
+        bytes32 indexed achievementId,
+        uint256[] topics,
+        address[] issuers,
+        uint256 staked,
+        string uri,
+        uint256 createdAt
+    );
+
     event UpdateAchievement(bytes32 indexed achievementId, uint256 reward, uint256 charge);
     event FundAchievement(bytes32 indexed achievementId, uint256 charge);
     event DeleteAchievement(bytes32 indexed achievementId, uint256 refund);
@@ -134,7 +142,9 @@ contract AchievementManager is RegistryUser {
 
         achievements[_achievementId].reward = _reward;
         balance[_achievementId] = balance[_achievementId].add(msg.value);
+
         emit UpdateAchievement(_achievementId, _reward, msg.value);
+
         return true;
     }
 
@@ -160,7 +170,6 @@ contract AchievementManager is RegistryUser {
         require(achievements[_achievementId].creator == msg.sender, "sender is not creator");
 
         uint256 rest = balance[_achievementId];
-        
         balance[_achievementId] = 0;
         msg.sender.transfer(rest);
         
@@ -178,28 +187,22 @@ contract AchievementManager is RegistryUser {
         // check whether msg.sender is deployed using IdentityManager
         IIdentityManager im = IIdentityManager(REG.getContractAddress("IdentityManager"));
         require(im.isMetaId(msg.sender), "msg.sender is not identity created by IdentityManager");
-        
-        uint256 i;
+
         ERC735 identity = ERC735(msg.sender);
         // // check if sender has enough claims
-        for (i = 0;i<achievements[_achievementId].claimTopics.length;i++) {
+        for (uint256 i = 0; i < achievements[_achievementId].claimTopics.length; i++) {
             address issuer;
             // check this claim issuer is for self claim
             if (achievements[_achievementId].issuers[i] == 0xFFfFfFffFFfffFFfFFfFFFFFffFFFffffFfFFFfF) {
-                //self claim
-                //bytes32 claimId = keccak256(abi.encodePacked(msg.sender, achievements[_achievementId].claimTopics[i]));
-                //check msg.sender is erc735 implementation
-                //
-                //identity.getClaimIdsByType(achievements[_achievementId].claimTopics[i]);
                 require(hasSelfClaim(msg.sender, achievements[_achievementId].claimTopics[i]), "Self-Claim prove Fail");
-
-            }else {
+            } else {
                 // claimId is made by topic and issuer.
-                bytes32 claimId = keccak256(abi.encodePacked(achievements[_achievementId].issuers[i], achievements[_achievementId].claimTopics[i]));
-                (, , issuer, , , ) = identity.getClaim(claimId); // getClaim returns (topic, scheme, issuer, signature, data, uri)
+                bytes32 claimId = keccak256(abi.encodePacked(
+                    achievements[_achievementId].issuers[i],
+                    achievements[_achievementId].claimTopics[i]));
+                (, , issuer, , , ) = identity.getClaim(claimId);
                 require(issuer != address(0), "Claim not exist");
             }
-
         }
         
         // give reward to msg.sender(identity contract)'s 0th managementKey
@@ -207,14 +210,25 @@ contract AchievementManager is RegistryUser {
         balance[_achievementId] = balance[_achievementId].sub(achievements[_achievementId].reward);
 
         bytes32[] memory managementKeys = ERC725(msg.sender).getKeysByPurpose(1); // 1 : MANAGEMENT KEY
-        address(managementKeys[0]).transfer(achievements[_achievementId].reward); // reward goes to the 0th management key
-        // msg.sender.transfer(achievements[_achievementId].reward);
+        address(managementKeys[0]).transfer(achievements[_achievementId].reward);
 
         // mint achievement erc721 to msg.sender;
         IAchievement achievement = IAchievement(REG.getContractAddress("Achievement"));
-        require(achievement.mint(msg.sender, uint256(keccak256(abi.encodePacked(msg.sender, _achievementId))), string(abi.encodePacked(block.timestamp,achievements[_achievementId].uri))), "achievement cannot be minted");
-        
-        emit RequestAchievement(_achievementId, msg.sender, achievements[_achievementId].reward, address(managementKeys[0]));
+        require(
+            achievement.mint(
+                msg.sender,
+                uint256(keccak256(abi.encodePacked(msg.sender, _achievementId))),
+                string(abi.encodePacked(block.timestamp, achievements[_achievementId].uri))
+            ),
+            "achievement cannot be minted"
+        );
+
+        emit RequestAchievement(
+            _achievementId,
+            msg.sender,
+            achievements[_achievementId].reward,
+            address(managementKeys[0])
+        );
 
         return true;
     }
@@ -222,18 +236,16 @@ contract AchievementManager is RegistryUser {
     function hasSelfClaim(address _identity, uint256 _topic) public view returns (bool) {
         bytes32[] memory claims = ERC735(_identity).getClaimIdsByType(_topic);
         address c;
-        for (uint256 i = 0;i<claims.length;i++) {
+        for (uint256 i = 0; i < claims.length; i++) {
             (, , c, , ,) = ERC735(_identity).getClaim(claims[i]);
             //3: CLAIM signer keys, used to sign claims on other identities which need to be revokable.
             //bytes32(address) : addrToKey(addr)
             if (ERC725(_identity).keyHasPurpose(bytes32(c), 3) || c == msg.sender) {
                 //true if isuuer is identity's claim key or smart contract identity itself
                 return true;
-            }
-            
+            }   
         }
         return false;
-
     }
 
     function getAllAchievementList() public view returns (bytes32[] list) {
@@ -241,11 +253,11 @@ contract AchievementManager is RegistryUser {
     }
 
     //TODO : achievement with proper balance
-    function getActiveAchievementList() public view returns(bytes32[] list) {
+    function getActiveAchievementList() public view returns (bytes32[] list) {
         return allAchievements;
     }
 
-    function getLengthOfAchievements() public view returns(uint256 length) {
+    function getLengthOfAchievements() public view returns (uint256 length) {
         return allAchievements.length;
     }
 
@@ -275,7 +287,7 @@ contract AchievementManager is RegistryUser {
             ac.reward, 
             ac.uri,
             ac.createdAt
-            );
+        );
     }
 
     function getAchievementByIndex(uint256 _index)
@@ -304,7 +316,7 @@ contract AchievementManager is RegistryUser {
             achievements[_achievementId].reward, 
             achievements[_achievementId].uri,
             achievements[_achievementId].createdAt
-            );
+        );
     }
 
     /**
@@ -316,13 +328,11 @@ contract AchievementManager is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function getAchievementId(address creator, uint256[] topics, address[] issuers) public pure returns (bytes32 id) {
-        bytes memory idBytes;
-        
         require(topics.length == issuers.length, "topic, issuer length mismatch");
         
+        bytes memory idBytes;
         idBytes = abi.encodePacked(idBytes, creator);
-
-        for (uint i = 0;i<topics.length;i++) {
+        for (uint i = 0; i < topics.length; i++) {
             idBytes = abi.encodePacked(idBytes, topics[i], issuers[i]);
         }
         return keccak256(idBytes);

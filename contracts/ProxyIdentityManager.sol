@@ -11,18 +11,14 @@ import "./RegistryUser.sol";
  * permissoined sender can create metadium identity through this contract
  */
 contract ProxyIdentityManager is RegistryUser {
-    //Hold the list of MetaIds
-    //CreateMetaId
-    
     address[] public metaIds;
-    mapping(address=>bool) metaIdExistence;
+    mapping(address=>bool) internal metaIdExistence;
 
     event CreateMetaId(address indexed managementKey, address metaId);
     
     constructor() public {
         THIS_NAME = "IdentityManager";
     }
-
 
     /**
      * @dev Create Metadium Identity which is based upon erc725-735 
@@ -39,19 +35,17 @@ contract ProxyIdentityManager is RegistryUser {
         emit CreateMetaId(_managementKey, newMetaId);
 
         return true;
-
     }
 
-    function getDeployedMetaIds() public view returns(address[] addrs) {
+    function getDeployedMetaIds() public view returns (address[] addrs) {
         return metaIds;
     }
 
-    function isMetaId(address _addr) public view returns(bool found) {
+    function isMetaId(address _addr) public view returns (bool found) {
         return metaIdExistence[_addr];
     }
 
-    function getLengthOfMetaIds() public view returns(uint256 length) {
+    function getLengthOfMetaIds() public view returns (uint256 length) {
         return metaIds.length;
     }
-
 }

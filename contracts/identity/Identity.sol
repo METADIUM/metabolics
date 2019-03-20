@@ -20,7 +20,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
     ///  `msg.sender` is used as an initial MANAGEMENT_KEY, ACTION_KEY and CLAIM_SIGNER_KEY
     /// @param _keys Keys to start contract with, in ascending order; in case of equality, purposes must be ascending
     /// @param _purposes Key purposes (in the same order as _keys)
-    /// @param _issuers Claim issuers to start contract with, in ascending order; in case of equality, topics must be ascending
+    /// @param _issuers Claim issuers to start contract with, in ascending order
     /// @param _managementThreshold Multi-sig threshold for MANAGEMENT_KEY
     /// @param _actionThreshold Multi-sig threshold for ACTION_KEY
     /// @param _topics Claim topics (in the same order as _issuers)
@@ -126,7 +126,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
     }
 
     /// @dev Validate claims are sorted and unique
-    /// @param _issuers Claim issuers to start contract with, in ascending order; in case of equality, topics must be ascending
+    /// @param _issuers Claim issuers to start contract with, in ascending order
     /// @param _topics Claim topics (in the same order as _issuers)
     /// @param _sizes Triples of signature, claim data, URI sizes (each must be ≤ 256)
     function _validateClaims
@@ -150,7 +150,7 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
     }
 
     /// @dev Add claims to contract without an URI
-    /// @param _issuers Claim issuers to start contract with, in ascending order; in case of equality, topics must be ascending
+    /// @param _issuers Claim issuers to start contract with, in ascending order
     /// @param _topics Claim topics (in the same order as _issuers)
     /// @param _signatures All the initial claim signatures concatenated in one bytes array
     /// @param _datas All the initial claim data concatenated in one bytes array

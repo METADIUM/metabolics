@@ -39,7 +39,6 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         returns (uint256 executionId)
     {
         return preExecute(msg.sender, _to, _value, _data);
-        
     }
 
     function delegatedExecute(address _to, uint256 _value, bytes _data, uint256 _nonce, bytes _sig)
@@ -48,7 +47,7 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         returns (uint256 executionId)
     {
         // check nonce
-        require(_nonce == nonce,"nonce mismatch");
+        require(_nonce == nonce, "nonce mismatch");
 
         // sinature verify
         //TODO : 'this' should be addded
@@ -152,7 +151,9 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                 // addKey function Signautre == 0x1d381240
                 if (
                     allKeys.find(addrToKey(_sender), MANAGEMENT_KEY) ||
-                    allKeys.find(addrToKey(_sender), RESTORE_KEY) && getFunctionSignature(_data) == bytes4(0x1d381240)) {
+                    allKeys.find(addrToKey(_sender), RESTORE_KEY) &&
+                    getFunctionSignature(_data) == bytes4(0x1d381240)
+                ) {
                     threshold = managementThreshold - 1;
                 } else {
                     revert();
@@ -169,7 +170,8 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                     allKeys.find(addrToKey(_sender), ACTION_KEY) ||
                     allKeys.find(addrToKey(_sender), DELEGATE_KEY) ||
                     allKeys.find(addrToKey(_sender), CUSTOM_KEY) &&
-                    allKeys.keyData[addrToKey(_sender)].func[_to][getFunctionSignature(_data)]) {
+                    allKeys.keyData[addrToKey(_sender)].func[_to][getFunctionSignature(_data)]
+                ) {
                     threshold = actionThreshold - 1;
                 } else {
                     revert();
@@ -178,7 +180,10 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
         }
     }
 
-    function preExecute(address _sender, address _to, uint256 _value, bytes _data) internal returns (uint256 executionId) {
+    function preExecute(address _sender, address _to, uint256 _value, bytes _data)
+        internal
+        returns (uint256 executionId)
+    {
         // TODO: Using threshold at time of execution
         uint256 threshold = hasPermission(_sender, _to, _data);
         
@@ -240,67 +245,8 @@ contract MultiSig is Pausable, ERC725, SignatureVerifier {
                 return _execute(_id, e, true);
             }
             return true;
-        }
-        
+        }    
     }
-
-    
-
-    /// @dev Approves an execution. If the execution is being approved multiple times,
-    ///  it will throw an error. Disapproving multiple times will work i.e. not do anything.
-    ///  The approval could potentially trigger an execution (if the threshold is met).
-    /// @param _id Execution ID
-    /// @param _approve `true` if it's an approval, `false` if it's a disapproval
-    /// @return `false` if it's a disapproval and there's no previous approval from the sender OR
-    ///  if it's an approval that triggered a failed execution. `true` if it's a disapproval that
-    ///  undos a previous approval from the sender OR if it's an approval that succeded OR
-    ///  if it's an approval that triggered a succesful execution
-    // function approve(uint256 _id, bool _approve)
-    //     public
-    //     whenNotPaused
-    //     returns (bool success)
-    // {
-    //     require(_id != 0);
-    //     Execution storage e = execution[_id];
-    //     // Must exist
-    //     require(e.to != 0);
-
-    //     // Must be approved with the right key
-    //     hasPermission(msg.sender, e.to, e.data);
-
-    //     emit Approved(_id, _approve);
-
-    //     address[] storage approvals = approved[_id];
-    //     if (!_approve) {
-    //         // Find in approvals
-    //         for (uint i = 0; i < approvals.length; i++) {
-    //             if (approvals[i] == msg.sender) {
-    //                 // Undo approval
-    //                 approvals[i] = approvals[approvals.length - 1];
-    //                 delete approvals[approvals.length - 1];
-    //                 approvals.length--;
-    //                 e.needsApprove += 1;
-    //                 return true;
-    //             }
-    //         }
-    //         return false;
-    //     } else {
-    //         // Only approve once
-    //         for (i = 0; i < approvals.length; i++) {
-    //             require(approvals[i] != msg.sender);
-    //         }
-
-    //         // Approve
-    //         approvals.push(msg.sender);
-    //         e.needsApprove -= 1;
-
-    //         // Do we need more approvals?
-    //         if (e.needsApprove == 0) {
-    //             return _execute(_id, e, true);
-    //         }
-    //         return true;
-    //     }
-    // }
 
     /// @dev Executes an action on other contracts, or itself, or a transfer of ether
     /// @param _id Execution ID

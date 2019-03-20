@@ -58,24 +58,8 @@ contract MetaIdentityUsingLib {
 
     //Proxy Only
     address internal libImplementation;
-    IReg REG;
-/*
-    function setImplementation(address _newImple) public returns (bool) {
-        require(allKeys.find(bytes32(msg.sender), 1),"not a management key");
-        libImplementation = _newImple;
-        return true;
-    }
-*/
-    function implementation() public view returns (address) {
-        return REG.getContractAddress("MetaIdLibraryV1");
-    }
+    IReg internal REG;
 
-    function setRegistry(address _addr) public returns (bool) {
-        require(allKeys.find(bytes32(msg.sender), 1),"not a management key");
-        REG = IReg(_addr);
-        return true;
-    }
-    
     constructor(address _registry, address _managementKey) public {
         bytes4 sig = bytes4(keccak256("init(address)"));
         REG = IReg(_registry);
@@ -90,24 +74,16 @@ contract MetaIdentityUsingLib {
             mstore(0x0, sig)
             // Add the call data, which is at the end of the
             // code
-            codecopy(0x4,  sub(codesize, argsize), argsize)
+            codecopy(0x4, sub(codesize, argsize), argsize)
             // Delegate call to the library
             suc := delegatecall(sub(gas, 10000), target, 0x0, add(argsize, 0x4), 0x0, 0x0)
         }
     }
 
     /**
-    * @dev Tells the type of proxy (EIP 897)
-    * @return Type of proxy, 2 for upgradeable proxy
-    */
-    function proxyType() public pure returns (uint256 proxyTypeId) {
-        return 2;
-    }
-
-    /**
      * @dev Fallback function for delegate call. This function will return whatever the implementaion call returns
      */
-    function () payable public {
+    function () public payable {
         address _impl = implementation();
         require(_impl != address(0));
 
@@ -124,6 +100,24 @@ contract MetaIdentityUsingLib {
             default { return(ptr, size) }
 
         }
+    }
+
+    function implementation() public view returns (address) {
+        return REG.getContractAddress("MetaIdLibraryV1");
+    }
+
+    function setRegistry(address _addr) public returns (bool) {
+        require(allKeys.find(bytes32(msg.sender), 1), "not a management key");
+        REG = IReg(_addr);
+        return true;
+    }
+
+    /**
+    * @dev Tells the type of proxy (EIP 897)
+    * @return Type of proxy, 2 for upgradeable proxy
+    */
+    function proxyType() public pure returns (uint256 proxyTypeId) {
+        return 2;
     }
 }
 
