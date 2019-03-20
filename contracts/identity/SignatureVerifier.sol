@@ -9,7 +9,6 @@ import "openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
 /// @dev almost all of the data need to be verified would use this logic
 contract SignatureVerifier {
     using ECDSA for bytes32;
-    bytes constant internal ETH_PREFIX = "\x19Ethereum Signed Message:\n32";
 
     /// @dev Recover address used to sign a claim
     /// @param toSign Hash to be signed, potentially generated with `claimToSign`
@@ -20,6 +19,6 @@ contract SignatureVerifier {
         pure
         returns (address addr)
     {
-        return keccak256(abi.encodePacked(ETH_PREFIX, toSign)).recover(signature);
+        return toSign.toEthSignedMessageHash().recover(signature);
     }
 }

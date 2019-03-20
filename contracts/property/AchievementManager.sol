@@ -154,6 +154,8 @@ contract AchievementManager is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function fundAchievement(bytes32 _achievementId) public payable returns (bool success) {
+        require(msg.value != 0, "fund amount should be greater than zero");
+        require(achievements[_achievementId].creator != address(0), "achievementid is not valid");
         balance[_achievementId] = balance[_achievementId].add(msg.value);
         emit FundAchievement(_achievementId, msg.value);
         return true;

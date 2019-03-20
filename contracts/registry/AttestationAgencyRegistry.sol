@@ -48,6 +48,7 @@ contract AttestationAgencyRegistry is RegistryUser {
         permissioned
         returns (bool success)
     {
+        require(_addr != address(0), "Address should be non-zero");
         require(isAAregistered[_addr] == 0, "zero address");
         
         attestationAgencies[attestationAgencyNum].addr = _addr;

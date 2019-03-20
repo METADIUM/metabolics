@@ -3,6 +3,8 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./identity/MetaIdentity.sol";
 import "./RegistryUser.sol";
+import "./identity/ERC725.sol";
+import "./identity/ERC165Query.sol";
 
 
 /**
@@ -11,6 +13,8 @@ import "./RegistryUser.sol";
  * permissoined sender can create metadium identity through this contract
  */
 contract IdentityManager is RegistryUser {
+    using ERC165Query for address;
+    
     address[] public metaIds;
     mapping(address=>bool) internal metaIdExistence;
 
@@ -43,6 +47,12 @@ contract IdentityManager is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function addMetaId(address _metaId, address _managementKey) public permissioned returns (bool success) {
+        require(_metaId != address(0), "_metaId should be non-zero"); 
+        require(_managementKey != address(0), "_managementKey should be non-zero"); 
+        require(!metaIdExistence[_metaId], "Already existed"); 
+        require(_metaId.doesContractImplementInterface(0xDC3D2A7B), "_metaId is not MetaID Contract");
+        require(ERC725(_metaId).keyHasPurpose(bytes32(_managementKey), 1), "_managementKey is not management key");
+        
         metaIds.push(_metaId);
         metaIdExistence[_metaId] = true;
 
@@ -51,15 +61,15 @@ contract IdentityManager is RegistryUser {
         return true;
     }
 
-    function getDeployedMetaIds() public view returns(address[] addrs) {
+    function getDeployedMetaIds() public view returns (address[] addrs) {
         return metaIds;
     }
 
-    function isMetaId(address _addr) public view returns(bool found) {
+    function isMetaId(address _addr) public view returns (bool found) {
         return metaIdExistence[_addr];
     }
 
-    function getLengthOfMetaIds() public view returns(uint256 length) {
+    function getLengthOfMetaIds() public view returns (uint256 length) {
         return metaIds.length;
     }
 }

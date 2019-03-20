@@ -18,6 +18,7 @@ contract RegistryUser is Ownable {
      * @return A boolean that indicates if the operation was successful.
      */
     function setRegistry(address _addr) public onlyOwner {
+        require(_addr != address(0), "Address should be non-zero");
         REG = Registry(_addr);
     }
     
