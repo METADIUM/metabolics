@@ -98,9 +98,9 @@ contract('Achievement Manager(MetaIdUsingLib)', function ([deployer, identity1, 
       await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: user1, value: ether1 }));
     });
 
-    it('topics should be ascending order', async () => {
+    it('topics can be any order', async () => {
       _topics = [1025, 1027, 1026];
-      await reverting(achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 }));
+      await achievementManager.createAchievement(_topics, _issuers, _title, _achievementExplanation, _reward, _uri, { from: aa1, value: ether1 });
     });
   });
 

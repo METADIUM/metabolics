@@ -90,9 +90,6 @@ contract AchievementManager is RegistryUser {
         TopicRegistry topicRegistry = TopicRegistry(REG.getContractAddress("TopicRegistry"));
         for (uint256 i = 0; i < _topics.length; i++) {
             require(topicRegistry.isRegistered(_topics[i]), "Not registered topic");
-            if (i > 0 && _topics[i] < _topics[i-1]) {
-                revert("Wrong topic ordering");
-            }
             for (uint256 j = 0; j < _topics.length; j++) {
                 if (i == j) continue;
                 else if (_topics[i] == _topics[j] && _issuers[i] == _issuers[j]) {

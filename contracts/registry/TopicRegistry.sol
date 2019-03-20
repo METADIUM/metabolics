@@ -3,12 +3,12 @@ pragma solidity ^0.4.24;
 import "../RegistryUser.sol";
 import "../interface/IAttestationAgencyRegistry.sol";
 
+
 /// @title TopicRegistry
 /// @author genie
 /// @notice Topic Registry.
 /// @dev  Topics can be registered when create achievement or the permissioned.
 contract TopicRegistry is RegistryUser {
-    
     struct Topic {
         uint256 id;
         bytes32 title;
@@ -29,7 +29,6 @@ contract TopicRegistry is RegistryUser {
     constructor() public {
         THIS_NAME = "TopicRegistry";
         total = RESERVED_TOPICS;
-
     }
     
     /**
@@ -40,9 +39,8 @@ contract TopicRegistry is RegistryUser {
      * @return new topic id
      */
     function registerTopicBySystem(uint256 _id, bytes32 _title, bytes32 _explanation) public permissioned returns (uint256 topicId) {
-
         // check topic doesn't exist
-        require(topics[_id].id == 0 && _id < RESERVED_TOPICS, "Topic term is wrong");
+        require(topics[_id].createdAt == 0 && _id < RESERVED_TOPICS, "Topic term is wrong");
 
         Topic memory t;
         t.id = _id;
@@ -57,7 +55,7 @@ contract TopicRegistry is RegistryUser {
         emit RegisterTopic(_id, msg.sender, _explanation);
         
         return _id;
-    }  
+    }
 
     /**
      * @dev Register topic by general user(usually aa). this topic numbers are incrementally set.
@@ -68,8 +66,8 @@ contract TopicRegistry is RegistryUser {
     function registerTopic(bytes32 _title, bytes32 _explanation) public returns (uint256 topicId) {
         IAttestationAgencyRegistry ar = IAttestationAgencyRegistry(REG.getContractAddress("AttestationAgencyRegistry"));
 
-        //Only Attestation Agency or permissioned can register topic
-        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender),"No permission"); 
+        // Only Attestation Agency or permissioned can register topic
+        require(ar.isRegistered(msg.sender) != 0 || isPermitted(msg.sender), "No permission"); 
 
         Topic memory t;
         t.id = total;
@@ -88,7 +86,6 @@ contract TopicRegistry is RegistryUser {
         return total-1; // return new topic id
     }    
 
-    
     /**
      * @dev Update topic by creator.
      * @param _id topic to update
@@ -96,8 +93,7 @@ contract TopicRegistry is RegistryUser {
      * @return A boolean that indicates if the operation was successful.
      */
     function updateTopic(uint256 _id, bytes32 _explanation) public returns (bool success) {
-        
-        require(topics[_id].issuer == msg.sender,"issuer mismatch");
+        require(topics[_id].issuer == msg.sender, "issuer mismatch");
 
         topics[_id].explanation = _explanation;
 
@@ -106,7 +102,6 @@ contract TopicRegistry is RegistryUser {
         return true;
 
     }
-
 
     function isRegistered(uint256 _id) public view returns (bool found) {
         return isTopicRegistered[_id];
@@ -128,9 +123,9 @@ contract TopicRegistry is RegistryUser {
      * @return topic data
      */
     function getTopicFromTo(uint256 _from, uint256 _to) 
-    public 
-    view
-    returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
+        public 
+        view
+        returns(address[] addrs, bytes32[] titles, bytes32[] explans, uint256[] createds)
     {
         require(_to >= _from, "from to mismatch");
         address[] memory saddrs = new address[](_to-_from+1);
@@ -147,5 +142,4 @@ contract TopicRegistry is RegistryUser {
 
         return (saddrs, stitles, sexplans, screateds);
     }
-
 }
