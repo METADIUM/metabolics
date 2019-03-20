@@ -1,6 +1,8 @@
 import { setupTest, Purpose, KeyType } from './base';
 import { assertOkTx, printTestGas } from '../util';
 
+const TestContract = artifacts.require('TestContract');
+
 contract('KeyGetters', async (accounts) => {
   let identity, addr, keys;
 
