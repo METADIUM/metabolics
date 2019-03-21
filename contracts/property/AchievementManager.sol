@@ -91,12 +91,13 @@ contract AchievementManager is RegistryUser {
         payable
         returns (bool success)
     {
+        require(_issuers.length == _topics.length);
         // Check staking amount used for reward
         require(msg.value >= minimumDeposit, "deposit is not enough");
 
-        // Check if topics are registered
         TopicRegistry topicRegistry = TopicRegistry(REG.getContractAddress("TopicRegistry"));
         for (uint256 i = 0; i < _topics.length; i++) {
+            // Check if topics are registered
             require(topicRegistry.isRegistered(_topics[i]), "Not registered topic");
             for (uint256 j = 0; j < _topics.length; j++) {
                 if (i == j) continue;
