@@ -141,11 +141,11 @@ contract Identity is KeyManager, MultiSig, ClaimManager, Destructible, KeyGetter
         // Validate claims are sorted and unique
         require(_issuers.length == _topics.length);
         require(3 * _topics.length == _sizes.length);
-        for (uint i = 1; i < _issuers.length; i++) {
-            // Expect input to be in sorted order, first by issuer, then by topic
-            // Sorted order guarantees (issuer, topic) pairs are unique
-            address prevIssuer = _issuers[i - 1];
-            require(_issuers[i] != prevIssuer || (_issuers[i] == prevIssuer && _topics[i] > _topics[i - 1]));
+        for (uint256 i = 0; i < _topics.length; i++) {
+            for (uint256 j = 0; j < _topics.length; j++) {
+                if (i == j) continue;
+                require(_topics[i] != _topics[j] || _issuers[i] != _issuers[j]);
+            }
         }
     }
 
