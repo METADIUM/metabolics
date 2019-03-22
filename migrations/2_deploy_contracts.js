@@ -1,7 +1,5 @@
-
 const Identity = artifacts.require('./Identity.sol');
 const TestContract = artifacts.require('./TestContract.sol');
-
 const Registry = artifacts.require('Registry.sol');
 const IdentityManager = artifacts.require('IdentityManager.sol');
 const TopicRegistry = artifacts.require('TopicRegistry.sol');
