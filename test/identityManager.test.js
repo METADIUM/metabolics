@@ -14,7 +14,6 @@ contract('Metadium Identity Manager', function ([deployer, owner, proxy1, proxy2
     registry = await Registry.new();
     await identityManager.setRegistry(registry.address);
     await registry.setContractDomain('IdentityManager', identityManager.address);
-
     await registry.setPermission('IdentityManager', proxy1, 'true');
   });
 

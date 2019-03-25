@@ -16,9 +16,6 @@ contract Achievement is ERC721Full, RegistryUser {
     
     bool public transferEnabled = false;
 
-    // Optional mapping for token URIs
-    mapping(uint256 => string) private _tokenURIs;
-
     modifier isTradable() {
         require(transferEnabled || REG.getPermission(THIS_NAME, msg.sender), "Transfer not enabled");
         _;
@@ -62,16 +59,6 @@ contract Achievement is ERC721Full, RegistryUser {
     function disableTransfer() public permissioned returns (bool success) {
         transferEnabled = false;
         return true;
-    }
-
-    /**
-     * @dev Returns an URI as bytes for a given token ID
-     * @dev Throws if the token ID does not exist. May return an empty string.
-     * @param _tokenId uint256 ID of the token to query
-     */
-    function tokenURIAsBytes(uint256 _tokenId) public view returns (bytes uri) {
-        require(_exists(_tokenId), "Token ID cannot be found");
-        return bytes(_tokenURIs[_tokenId]);
     }
 
     function transferFrom(address _from, address _to, uint256 _tokenId) public isTradable {
