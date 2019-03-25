@@ -12,7 +12,9 @@
     "lint:sol": "solhint --max-warnings 0 \"contracts/**/*.sol\"",
     "analyze": "scripts/analyze.sh",
     "coverage": "scripts/coverage.sh",
-    "flatten": "scripts/flatten.sh"
+    "flatten": "scripts/flatten.sh",
+    "migrate": "truffle migrate --network metadiumTestnetWithKeystore --reset",
+    "deploy": "truffle deploy --network metadiumTestnetWithKeystore"
   },
   "keywords": [],
   "author": "Metadium",
@@ -51,6 +53,6 @@
     "web3": "1.0.0-beta.37"
   },
   "dependencies": {
-    "node": "^9.11.0"
+    "node": "10.15.1"
   }
 }
